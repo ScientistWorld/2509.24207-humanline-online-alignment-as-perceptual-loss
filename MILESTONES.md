@@ -29,5 +29,10 @@
 - Constant-format collapse was fixed, but both RL variants degraded from the warm-start policy; stale GRPO reached `pass_at_1=0.14375` and offline humanline GRPO reached `0.10`.
 - Revised the verifier reward to be exact-dominant and widened action-level humanline clipping for the next run.
 
+### [2026-05-27 03:23] - method_runs
+- Fifth compute job exited successfully with exact-dominant reward and wider action-level clipping.
+- Stale GRPO reached `pass_at_1=0.14375`; offline humanline GRPO reached `0.11875`, still below the warm-start `0.18125`.
+- Revised the next run to use less SFT, larger generated groups, lower RL learning rate, and stronger KL pressure.
+
 ## Stop Justification
 - Not stopped.

@@ -14,9 +14,11 @@ Third CPU job completed successfully after masking warm-start loss to answer tok
 
 Fourth CPU job completed successfully with the structured answer policy. It removed constant-output collapse, but still did not support the core claim: the warm-start policy began at `pass_at_1=0.18125`, stale GRPO ended at `0.14375`, and offline humanline GRPO ended at `0.10`.
 
+Fifth CPU job completed successfully with exact-dominant reward and wider humanline clipping. It still did not support the core claim: warm-start began at `pass_at_1=0.18125`, stale GRPO ended at `0.14375`, and offline humanline GRPO ended at `0.11875`.
+
 ## Remaining
 
-Run the exact-dominant verifier reward with wider humanline log-ratio bounds for the structured answer-policy GRPO implementation. If this still degrades from the warm-start state, the next issue to inspect is whether stale-batch reuse needs an online comparison run or a smaller learning rate.
+Run a lower-warm-start, higher-sampling structured GRPO setting with stronger KL pressure. This tests whether humanline syncing helps when the fixed-reference stale baseline is constrained and exact rewards are sampled more often.
 
 ## Issues
 
@@ -27,6 +29,8 @@ The second run showed that the model learned formatting but not enough prompt-co
 The third run confirmed that character-level generation, not the GRPO code path, was dominating the failure mode. I added a structured policy over complete formatted arithmetic answers so the next job tests the paper's online-alignment computation without sequence-format collapse.
 
 The fourth run showed that the dense closeness reward can favor close but wrong sums. I reduced the format/closeness terms and made exact correctness dominate, and widened the humanline clipping range for the action-level scaled policy so the sync behavior is not masked by overly tight action-logit clipping.
+
+The fifth run improved humanline slightly relative to the prior structured-policy run but still degraded from the warm-start. I reduced SFT steps, increased batch/group size, lowered RL learning rate, and increased KL pressure for the next run so the RL phase has room to improve and the fixed stale reference is a meaningful constraint.
 
 ## Deviations from Paper
 

@@ -13,13 +13,16 @@ set -e
 
 cd /home/user
 
-export TRAIN_STEPS="${TRAIN_STEPS:-768}"
-export SFT_STEPS="${SFT_STEPS:-80}"
+export TRAIN_STEPS="${TRAIN_STEPS:-1024}"
+export SFT_STEPS="${SFT_STEPS:-20}"
 export REFRESH_INTERVAL="${REFRESH_INTERVAL:-64}"
 export SYNC_K="${SYNC_K:-12}"
-export GROUP_SIZE="${GROUP_SIZE:-8}"
+export BATCH_SIZE="${BATCH_SIZE:-64}"
+export GROUP_SIZE="${GROUP_SIZE:-16}"
 export HIDDEN_SIZE="${HIDDEN_SIZE:-64}"
 export TEMPERATURE="${TEMPERATURE:-1.0}"
+export RL_LR="${RL_LR:-3e-4}"
+export BETA_KL="${BETA_KL:-0.05}"
 export LOG_EPSILON_P="${LOG_EPSILON_P:--5.0}"
 export LOG_EPSILON_R="${LOG_EPSILON_R:-5.0}"
 
