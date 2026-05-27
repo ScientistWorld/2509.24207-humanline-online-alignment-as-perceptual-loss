@@ -19,11 +19,12 @@ mkdir -p "${OUT_DIR}"
 
 COMMON_ARGS=(
   --pool-stale-batches
-  --train-steps "${TRAIN_STEPS:-256}"
-  --sft-steps "${SFT_STEPS:-600}"
-  --train-size "${TRAIN_SIZE:-768}"
+  --balanced-train
+  --train-steps "${TRAIN_STEPS:-128}"
+  --sft-steps "${SFT_STEPS:-1000}"
+  --train-size "${TRAIN_SIZE:-512}"
   --eval-size "${EVAL_SIZE:-160}"
-  --batch-size "${BATCH_SIZE:-24}"
+  --batch-size "${BATCH_SIZE:-16}"
   --group-size "${GROUP_SIZE:-6}"
   --hidden-size "${HIDDEN_SIZE:-128}"
   --max-new-tokens "${MAX_NEW_TOKENS:-24}"
@@ -34,8 +35,8 @@ COMMON_ARGS=(
   --log-epsilon-p "${LOG_EPSILON_P:--1.5}"
   --log-epsilon-r "${LOG_EPSILON_R:-1.5}"
   --min-value "${MIN_VALUE:-0}"
-  --max-value "${MAX_VALUE:-19}"
-  --log-every "${LOG_EVERY:-64}"
+  --max-value "${MAX_VALUE:-9}"
+  --log-every "${LOG_EVERY:-32}"
   --output-dir "${OUT_DIR}"
 )
 
@@ -51,21 +52,5 @@ python -m method.humanline_grpo \
   --refresh-interval 64 \
   --sync-k "${SYNC_K:-12}" \
   "${COMMON_ARGS[@]}"
-
-python -m method.humanline_grpo \
-  --name offline_humanline_grpo_sync8 \
-  --humanline \
-  --refresh-interval 64 \
-  --sync-k 8 \
-  "${COMMON_ARGS[@]}"
-
-python -m method.humanline_grpo \
-  --name offline_humanline_grpo_wideclip \
-  --humanline \
-  --refresh-interval 64 \
-  --sync-k "${SYNC_K:-12}" \
-  "${COMMON_ARGS[@]}" \
-  --log-epsilon-p "${WIDE_LOG_EPSILON_P:--4.0}" \
-  --log-epsilon-r "${WIDE_LOG_EPSILON_R:-4.0}"
 
 bash scripts/evaluate.sh --runs-dir "${OUT_DIR}"

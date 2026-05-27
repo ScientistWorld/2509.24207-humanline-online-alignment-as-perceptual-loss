@@ -5,4 +5,4 @@ action: submit
 gpus: 0
 test: false
 milestone: method_runs
-notes: "Run corrected token-level Humanline GRPO on a harder arithmetic setting with stale baseline, sync8, and wide-clipping variants."
+notes: "Run a shorter corrected token-level stale GRPO vs Humanline GRPO comparison after removing central-answer reward shaping and adding balanced warm-start data."

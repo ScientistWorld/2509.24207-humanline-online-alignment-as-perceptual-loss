@@ -10,7 +10,7 @@ from pathlib import Path
 import torch
 import torch.nn.functional as F
 
-from data.synthetic_math import CHARS, EOS, PAD, decode, encode, make_examples, reward_completion, target_text
+from data.synthetic_math import CHARS, EOS, PAD, decode, encode, make_balanced_examples, make_examples, reward_completion, target_text
 from method.model import TinyGRUPolicy
 
 
@@ -257,12 +257,16 @@ def grpo_update(
 def run(args: argparse.Namespace) -> RunMetrics:
     set_seed(args.seed)
     device = torch.device("cuda" if torch.cuda.is_available() and not args.cpu else "cpu")
-    train_examples = make_examples(args.train_size, args.seed, args.min_value, args.max_value)
+    if args.balanced_train:
+        train_examples = make_balanced_examples(args.train_size, args.seed, args.min_value, args.max_value)
+    else:
+        train_examples = make_examples(args.train_size, args.seed, args.min_value, args.max_value)
     eval_examples = make_examples(args.eval_size, args.seed + 10_000, args.min_value, args.max_value)
 
     policy = TinyGRUPolicy(len(CHARS), args.hidden_size).to(device)
     supervised_warm_start(policy, train_examples, device, args.sft_steps, args.batch_size, args.sft_lr)
-    initial_pass_at_1, initial_mean_reward, _ = evaluate_policy(policy, eval_examples, device, args.max_new_tokens)
+    initial_predictions = collect_predictions(policy, eval_examples, device, args.max_new_tokens)
+    initial_pass_at_1, initial_mean_reward, _ = score_prediction_rows(initial_predictions)
     reference = TinyGRUPolicy(len(CHARS), args.hidden_size).to(device)
     reference.load_state_dict(policy.state_dict())
     behavior = TinyGRUPolicy(len(CHARS), args.hidden_size).to(device)
@@ -333,6 +337,9 @@ def run(args: argparse.Namespace) -> RunMetrics:
     out_dir = Path(args.output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     torch.save(policy.state_dict(), out_dir / f"{args.name}.pt")
+    with (out_dir / f"{args.name}_initial_predictions.jsonl").open("w") as f:
+        for row in initial_predictions:
+            f.write(json.dumps(row) + "\n")
     with (out_dir / f"{args.name}_predictions.jsonl").open("w") as f:
         for row in final_predictions:
             f.write(json.dumps(row) + "\n")
@@ -365,6 +372,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--disable-humanline-clipping", action="store_true")
     parser.add_argument("--disable-humanline-sync", action="store_true")
     parser.add_argument("--pool-stale-batches", action="store_true")
+    parser.add_argument("--balanced-train", action="store_true")
     parser.add_argument("--sync-k", type=int, default=12)
     parser.add_argument("--refresh-interval", type=int, default=64)
     parser.add_argument("--train-steps", type=int, default=256)

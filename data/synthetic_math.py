@@ -37,25 +37,46 @@ def make_examples(n: int, seed: int, min_value: int = 10, max_value: int = 99) -
     return examples
 
 
+def make_balanced_examples(n: int, seed: int, min_value: int = 10, max_value: int = 99) -> list[Example]:
+    """Cycle over the full arithmetic grid before repeating examples.
+
+    The reduced arithmetic benchmark has a finite prompt space.  Balanced
+    warm-start data prevents the policy from learning only the central answer
+    prior from a small random sample, while leaving evaluation on the same
+    problem distribution independent of the method implementation.
+    """
+    rng = random.Random(seed)
+    grid = [
+        Example(prompt=f"{a}+{b}=?", answer=a + b)
+        for a in range(min_value, max_value + 1)
+        for b in range(min_value, max_value + 1)
+    ]
+    examples: list[Example] = []
+    while len(examples) < n:
+        block = grid[:]
+        rng.shuffle(block)
+        examples.extend(block)
+    return examples[:n]
+
+
 def target_text(answer: int) -> str:
     return f" <answer>{answer}</answer>"
 
 
 def reward_completion(text: str, answer: int) -> float:
-    """Formatting, numeric closeness, and correctness reward.
+    """Formatting and exact-correctness reward.
 
     The paper's math setup is driven by verifiable correctness.  The scaled
-    task keeps a small closeness term for exploration but makes exact answer
-    correctness dominate so near misses do not outscore learning the sum.
+    task gives a small format bonus but no numeric-nearness reward, avoiding
+    constant central answers that score well without solving the prompt.
     """
     match = ANSWER_RE.search(text)
     if not match:
         return 0.0
     pred = int(match.group(1))
     fmt = 0.05
-    closeness = max(0.0, 1.0 - abs(pred - answer) / 40.0) * 0.1
     correct = 1.0 if pred == answer else 0.0
-    return fmt + closeness + correct
+    return fmt + correct
 
 
 def extract_answer(text: str) -> int | None:

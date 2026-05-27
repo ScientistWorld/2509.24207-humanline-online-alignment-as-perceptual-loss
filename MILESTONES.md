@@ -19,5 +19,10 @@
 - Fixed the GRPO ratio to match the paper appendix: Humanline and regular token ratios are now computed against the reference model, with Humanline clipping applied upstream before GRPO clipping.
 - Removed dropout from the tiny policy and made generation run in eval mode; queued a harder `0..19` arithmetic run with sync and clipping variants.
 
+### [2026-05-27 06:31] - method_runs
+- Cancelled the harder token-level run after both stale GRPO and Humanline GRPO collapsed to the same constant `<answer>18</answer>` output (`pass_at_1=0.0375`).
+- Removed the dense numeric-closeness reward that made central wrong answers attractive, added balanced finite-grid warm-start data, and saved initial SFT predictions for diagnostics.
+- Queued a shorter core token-level run on the `0..9` arithmetic range with exact-dominant rewards, stale GRPO, and Humanline GRPO only.
+
 ## Stop Justification
-- Not stopped. A corrected token-level Humanline GRPO job is queued on a harder arithmetic setting to test whether the actual algorithm supports the core stale-data claim.
+- Not stopped. A corrected token-level Humanline GRPO job is queued to test whether the actual algorithm supports the core stale-data claim after fixing the constant-answer failure mode.
