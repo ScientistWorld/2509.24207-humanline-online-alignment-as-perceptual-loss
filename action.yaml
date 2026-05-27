@@ -3,6 +3,6 @@
 # only after your turn ends. Sleeping blocks the entire pipeline.
 action: submit
 gpus: 0
-test: false
+test: true
 milestone: core_claim
-notes: "Run the validated reproduction plus ablations and add a 32-step stale-refresh expansion to restore additional-setting coverage after the 128-step expansion failed."
+notes: "Run a targeted 64-step Humanline sync-frequency sweep (sync_k 8, 16, 20, 24) and re-evaluate existing artifacts to look for additional-setting coverage."

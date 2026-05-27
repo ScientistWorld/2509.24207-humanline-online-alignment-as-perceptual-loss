@@ -20,5 +20,10 @@
 - Component ablations support the paper's secondary syncing claim: syncing-only matched full humanline, while clipping-only matched the stale baseline.
 - The 128-step expansion failed to support the core claim in this rerun, so a 32-step expansion is queued before restoring a higher milestone.
 
+### [2026-05-27 04:00] - core_claim
+- Job `b4150f04-d9c` completed successfully and evaluated the 32-step stale-refresh expansion.
+- The 32-step setting improved absolute accuracy but did not support a Humanline advantage: stale GRPO reached `pass_at_1=0.2375`, while offline humanline GRPO reached `0.21875`.
+- Added the 32-step results to `reference.json` and queued a 64-step Humanline sync-frequency sweep before considering any milestone above `core_claim`.
+
 ## Stop Justification
-- Active job will measure a 32-step stale-refresh expansion before restoring or advancing the milestone.
+- Active job will measure Humanline sync-frequency variants at the successful 64-step stale-refresh setting before restoring or advancing the milestone.
