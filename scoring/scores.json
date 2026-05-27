@@ -3,20 +3,20 @@
     "synthetic_math_stale_grpo": {
       "results": {
         "offline_humanline_grpo": {
-          "pass_at_1": 0.7,
-          "mean_reward": 0.8492031250000001,
+          "pass_at_1": 0.61875,
+          "mean_reward": 0.6687499999999983,
           "format_rate": 1.0,
           "stale_refresh_interval": 64,
-          "generated_examples": 36864,
-          "initial_pass_at_1": 0.85625
+          "generated_examples": 65536,
+          "initial_pass_at_1": 0.48125
         },
         "stale_grpo_64x_offpolicy": {
-          "pass_at_1": 0.94375,
-          "mean_reward": 1.09359375,
+          "pass_at_1": 0.61875,
+          "mean_reward": 0.6687499999999981,
           "format_rate": 1.0,
           "stale_refresh_interval": 64,
-          "generated_examples": 36864,
-          "initial_pass_at_1": 0.85625
+          "generated_examples": 65536,
+          "initial_pass_at_1": 0.48125
         }
       }
     }
