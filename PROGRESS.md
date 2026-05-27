@@ -36,9 +36,11 @@ Eleventh CPU job `639ed704-46f` completed successfully and evaluated four 64-ste
 
 CPU job `a15a0a07-953` completed successfully on the active structured token policy. Both 64-step stale GRPO and 64-step Humanline GRPO improved from `initial_pass_at_1=0.48125` to `pass_at_1=0.61875` with `format_rate=1.0` and the same `65536` generated examples. This restores a real token-wise learning signal, but I am keeping the milestone at `method_runs` until the same reduced benchmark also includes an online-refresh comparator; the paper's central math claim is that stale Humanline remains close to online updates, not only that it improves over initialization.
 
+CPU job `9e3a4fbb-a50` completed successfully and reached `core_claim` in the active token-level setup. The online-refresh comparator reached `pass_at_1=0.59375`, while 64-step stale GRPO and 64-step Humanline GRPO both reached `0.61875` with the same `65536` generated examples and `format_rate=1.0`. The 128-step expansion is recorded as a diagnostic failure for Humanline: 128-step Humanline reached `0.51875`, below 128-step stale GRPO at `0.6125`, although it remained above the `0.48125` warm-start.
+
 ## Remaining
 
-The current milestone remains `method_runs`. The next queued job adds `online_refresh_grpo` and a 128-step stale-refresh expansion to the structured token-level run. If 64-step Humanline matches or nearly matches online refresh while using the same generated-example budget and a stale refresh cadence, update to `core_claim`; if the 128-step setting also works, update to `core_claim_plus`.
+The current milestone is `core_claim`. The next queued job reruns the 64-step setting with syncing-only, clipping-only, and sync-cadence variants. If these support the paper's component claim that reference syncing is the main useful ingredient, update to `secondary_claims`; if not, keep the milestone at `core_claim` and wrap up with the failed ablation documented.
 
 ## Issues
 
@@ -77,6 +79,8 @@ Cancelled token-level job `c5f1c50e-49a` after the harder `0..19` run showed a d
 Cancelled token-level job `0a6d0194-2ad` after the balanced-data GRU run still produced a constant `<answer>11</answer>` policy with no SFT improvement. I replaced the reduced benchmark's weak character-GRU policy with a prompt-conditioned structured token policy over valid answer-tag completions. The Humanline computation remains token-wise: generated completions are scored through autoregressive answer-character log probabilities, the policy/reference log-ratio is clipped per token upstream of GRPO, and the reference is synced on the Humanline schedule. The next job runs only stale GRPO and full Humanline GRPO on this structured token policy to test the core stale-data claim within the CPU time limit.
 
 Completed job `a15a0a07-953` showed that the structured token policy can learn from the GRPO loop, but it only compared stale GRPO against Humanline. I added `online_refresh_grpo` to `scripts/run.sh` and `scripts/reproduce.sh`, updated the scoring target docs to make the online comparator explicit, and queued a combined 64-step core plus 128-step expansion job.
+
+Completed job `9e3a4fbb-a50` verified that 64-step Humanline stays at least as strong as online refresh in this reduced benchmark. I updated `reference.json` to match the active token-level artifacts, disabled the unverified 32-step expansion by default in `scripts/reproduce.sh`, and changed `scripts/run.sh` to run the 64-step ablations and sync sweep next.
 
 ## Deviations from Paper
 

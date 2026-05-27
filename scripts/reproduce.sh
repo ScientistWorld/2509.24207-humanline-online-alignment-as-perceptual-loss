@@ -42,7 +42,7 @@ if [ "${RUN_EXTRA_REFRESH:-1}" = "1" ]; then
   bash scripts/method.sh
 fi
 
-if [ "${RUN_EXTRA_32_REFRESH:-1}" = "1" ]; then
+if [ "${RUN_EXTRA_32_REFRESH:-0}" = "1" ]; then
   BASELINE_NAME="stale_grpo_32x_offpolicy" \
   METHOD_NAME="offline_humanline_grpo_32x" \
   REFRESH_INTERVAL=32 \

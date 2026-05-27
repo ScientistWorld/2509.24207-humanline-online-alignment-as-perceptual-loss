@@ -4,5 +4,5 @@
 action: submit
 gpus: 0
 test: true
-milestone: method_runs
-notes: "Run structured token-level online refresh, 64-step stale GRPO, 64-step Humanline GRPO, and 128-step expansion to test the core stale-vs-online claim."
+milestone: core_claim
+notes: "Run structured token-level 64-step ablations and sync-cadence variants after core stale-vs-online claim passed."

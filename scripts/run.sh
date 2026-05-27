@@ -73,4 +73,29 @@ python -m method.humanline_grpo \
   --sync-k "${SYNC_K:-12}" \
   "${COMMON_ARGS[@]}"
 
+python -m method.humanline_grpo \
+  --name humanline_sync_only_grpo \
+  --humanline \
+  --disable-humanline-clipping \
+  --refresh-interval 64 \
+  --sync-k "${SYNC_K:-12}" \
+  "${COMMON_ARGS[@]}"
+
+python -m method.humanline_grpo \
+  --name humanline_clip_only_grpo \
+  --humanline \
+  --disable-humanline-sync \
+  --refresh-interval 64 \
+  --sync-k "${SYNC_K:-12}" \
+  "${COMMON_ARGS[@]}"
+
+for sync_k in 8 16 24; do
+  python -m method.humanline_grpo \
+    --name "offline_humanline_grpo_64x_sync${sync_k}" \
+    --humanline \
+    --refresh-interval 64 \
+    --sync-k "${sync_k}" \
+    "${COMMON_ARGS[@]}"
+done
+
 bash scripts/evaluate.sh --runs-dir "${OUT_DIR}"

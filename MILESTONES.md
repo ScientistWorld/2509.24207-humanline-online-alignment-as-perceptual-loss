@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: method_runs**
+**Current: core_claim**
 
 ## Progress Log
 
@@ -29,5 +29,10 @@
 - Kept the milestone at `method_runs` because the run did not yet include the online-refresh comparator needed for the paper's core stale-vs-online claim.
 - Added the online-refresh comparator and a 128-step stale-refresh expansion to the next job.
 
+### [2026-05-27 07:12] - core_claim
+- Completed job `9e3a4fbb-a50` with the online-refresh comparator: online GRPO reached `pass_at_1=0.59375`, while 64-step Humanline GRPO reached `0.61875` with the same `65536` generated examples and `format_rate=1.0`.
+- The 128-step diagnostic did not support an additional-setting claim: 128-step Humanline reached `0.51875`, below 128-step stale GRPO at `0.6125`.
+- Queued a 64-step ablation and sync-cadence job to test whether any secondary Humanline component claims hold in the active token-level setup.
+
 ## Stop Justification
-- Not stopped. A structured token-level Humanline GRPO job is queued with online-refresh, 64-step stale, 64-step Humanline, and 128-step expansion runs.
+- Not stopped. The core stale-vs-online claim is reproduced at reduced scale; a 64-step ablation/sync job is queued to test for secondary claims.
