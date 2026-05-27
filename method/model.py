@@ -15,7 +15,7 @@ class TinyGRUPolicy(nn.Module):
             hidden_size,
             num_layers=layers,
             batch_first=True,
-            dropout=0.1 if layers > 1 else 0.0,
+            dropout=0.0,
         )
         self.lm_head = nn.Linear(hidden_size, vocab_size)
 

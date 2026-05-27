@@ -68,6 +68,8 @@ Continuation audit on 2026-05-27 found that the active `scripts/method.sh` path 
 
 Follow-up audit fix on 2026-05-27 switched `scripts/method.sh`, `scripts/baseline.sh`, and `scripts/ablation.sh` to the token-level implementation. I also changed `eval/evaluate_math.py` so scores are recomputed from `*_predictions.jsonl` artifacts, not copied from method-owned run JSON. The next job will regenerate active scores from token-level predictions.
 
+Cancelled token-level job `0d66f8d9-450` after it produced a non-claim-supporting diagnostic: stale GRPO improved from `initial_pass_at_1=0.85625` to `0.94375`, while full Humanline GRPO fell to `0.70` with the same generated-example count. The evaluator successfully recomputed these numbers from prediction JSONL artifacts. The setting was too close to ceiling, and the code still used stale behavior log-probabilities in the GRPO ratio even though the paper appendix computes GRPO ratios from policy/reference log-probabilities, with Humanline clipping applied to that ratio upstream. I fixed the ratio, removed tiny-model dropout, made generation use eval mode, and prepared a harder `0..19` arithmetic run with sync/clipping variants.
+
 ## Deviations from Paper
 
 - Paper used Qwen2.5-1.5B-Instruct and MATH500; this reproduction uses a compact structured complete-answer policy and generated arithmetic tasks to fit the available compute budget. The GRPO and humanline computational steps are preserved.

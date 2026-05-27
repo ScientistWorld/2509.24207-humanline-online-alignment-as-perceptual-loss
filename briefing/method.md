@@ -8,7 +8,7 @@ The paper introduces humanline variants of reference-model-based alignment objec
 
 For each token in an aligned completion, compute the likelihood ratio between the policy and the reference model. Humanline clipping clamps this token-wise log-ratio to an asymmetric range before the normal objective sees it. Humanline syncing periodically updates the reference model from the previous policy state, after loss computation and before the optimizer step. For GRPO, these changes are applied upstream of the standard GRPO clipped surrogate, so the ratio is clipped once by the humanline rule and again by GRPO.
 
-The scaled implementation preserves this computation on complete formatted arithmetic-answer actions. Each action corresponds to a generated completion, and GRPO uses the same stale behavior log-probabilities, group-relative advantages, policy/reference log-ratio clipping, and lagged reference syncing as the paper's token-level language-model setting.
+The active scaled implementation preserves this computation with a small character-level language model that generates formatted arithmetic completions token by token. Training reuses stale generated completion pools, computes group-relative advantages from verifiable rewards, forms the GRPO token ratio from policy/reference log-probabilities as in the paper appendix, applies optional Humanline log-ratio clipping upstream of the GRPO surrogate, and syncs a lagged reference model from the policy.
 
 ## Main Claims
 

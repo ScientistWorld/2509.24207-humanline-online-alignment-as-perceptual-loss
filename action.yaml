@@ -3,6 +3,6 @@
 # only after your turn ends. Sleeping blocks the entire pipeline.
 action: submit
 gpus: 0
-test: true
+test: false
 milestone: method_runs
-notes: "Run token-level Humanline GRPO with paper-style stale pools against stale GRPO and online refresh on the reduced arithmetic task."
+notes: "Run corrected token-level Humanline GRPO on a harder arithmetic setting with stale baseline, sync8, and wide-clipping variants."

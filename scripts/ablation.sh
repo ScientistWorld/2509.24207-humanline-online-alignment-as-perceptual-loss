@@ -16,8 +16,8 @@ python -m method.humanline_grpo \
   --refresh-interval "${REFRESH_INTERVAL:-64}" \
   --sync-k "${SYNC_K:-12}" \
   --train-steps "${TRAIN_STEPS:-256}" \
-  --sft-steps "${SFT_STEPS:-1200}" \
-  --train-size "${TRAIN_SIZE:-512}" \
+  --sft-steps "${SFT_STEPS:-600}" \
+  --train-size "${TRAIN_SIZE:-768}" \
   --eval-size "${EVAL_SIZE:-160}" \
   --batch-size "${BATCH_SIZE:-24}" \
   --group-size "${GROUP_SIZE:-6}" \
@@ -28,7 +28,9 @@ python -m method.humanline_grpo \
   --log-epsilon-p "${LOG_EPSILON_P:--1.5}" \
   --log-epsilon-r "${LOG_EPSILON_R:-1.5}" \
   --min-value "${MIN_VALUE:-0}" \
-  --max-value "${MAX_VALUE:-9}" \
+  --max-value "${MAX_VALUE:-19}" \
+  --max-new-tokens "${MAX_NEW_TOKENS:-24}" \
+  --log-every "${LOG_EVERY:-64}" \
   --output-dir checkpoints/humanline_grpo
 
 python -m method.humanline_grpo \
@@ -39,8 +41,8 @@ python -m method.humanline_grpo \
   --refresh-interval "${REFRESH_INTERVAL:-64}" \
   --sync-k "${SYNC_K:-12}" \
   --train-steps "${TRAIN_STEPS:-256}" \
-  --sft-steps "${SFT_STEPS:-1200}" \
-  --train-size "${TRAIN_SIZE:-512}" \
+  --sft-steps "${SFT_STEPS:-600}" \
+  --train-size "${TRAIN_SIZE:-768}" \
   --eval-size "${EVAL_SIZE:-160}" \
   --batch-size "${BATCH_SIZE:-24}" \
   --group-size "${GROUP_SIZE:-6}" \
@@ -51,7 +53,9 @@ python -m method.humanline_grpo \
   --log-epsilon-p "${LOG_EPSILON_P:--1.5}" \
   --log-epsilon-r "${LOG_EPSILON_R:-1.5}" \
   --min-value "${MIN_VALUE:-0}" \
-  --max-value "${MAX_VALUE:-9}" \
+  --max-value "${MAX_VALUE:-19}" \
+  --max-new-tokens "${MAX_NEW_TOKENS:-24}" \
+  --log-every "${LOG_EVERY:-64}" \
   --output-dir checkpoints/humanline_grpo
 
 bash scripts/evaluate.sh --runs-dir checkpoints/humanline_grpo

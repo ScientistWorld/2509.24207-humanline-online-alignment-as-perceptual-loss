@@ -69,20 +69,26 @@ def generate_one(
     max_new_tokens: int,
     temperature: float,
 ) -> str:
-    ids = torch.tensor([encode(prompt, add_eos=False)], dtype=torch.long, device=device)
-    out: list[int] = []
-    for _ in range(max_new_tokens):
-        logits = model(ids)[:, -1, :] / max(temperature, 1e-6)
-        if temperature <= 0.05:
-            next_id = int(torch.argmax(logits, dim=-1).item())
-        else:
-            probs = F.softmax(logits, dim=-1)
-            next_id = int(torch.multinomial(probs, 1).item())
-        if next_id == EOS:
-            break
-        out.append(next_id)
-        ids = torch.cat([ids, torch.tensor([[next_id]], dtype=torch.long, device=device)], dim=1)
-    return decode(out)
+    was_training = model.training
+    model.eval()
+    try:
+        ids = torch.tensor([encode(prompt, add_eos=False)], dtype=torch.long, device=device)
+        out: list[int] = []
+        for _ in range(max_new_tokens):
+            logits = model(ids)[:, -1, :] / max(temperature, 1e-6)
+            if temperature <= 0.05:
+                next_id = int(torch.argmax(logits, dim=-1).item())
+            else:
+                probs = F.softmax(logits, dim=-1)
+                next_id = int(torch.multinomial(probs, 1).item())
+            if next_id == EOS:
+                break
+            out.append(next_id)
+            ids = torch.cat([ids, torch.tensor([[next_id]], dtype=torch.long, device=device)], dim=1)
+        return decode(out)
+    finally:
+        if was_training:
+            model.train()
 
 
 def supervised_warm_start(model: TinyGRUPolicy, examples, device: torch.device, steps: int, batch_size: int, lr: float) -> None:
@@ -221,7 +227,6 @@ def grpo_update(
 ) -> float:
     prompts = batch["prompts"]
     completions = batch["completions"]
-    old_logps = batch["old_logps"].to(device)
     mask = batch["mask"].to(device)
     adv = advantages(batch["rewards"], batch["group_ids"], device).unsqueeze(-1)
 
@@ -230,14 +235,13 @@ def grpo_update(
         ref_logps, _ = token_logps(reference, prompts, completions, device)
 
     if humanline:
-        # Paper's humanline clipping: clamp token log(pi_theta / pi_ref)
-        # upstream, before the already-clipped GRPO surrogate sees it.
-        clipped_delta = (policy_logps - ref_logps).clamp(log_epsilon_p, log_epsilon_r)
-        surrogate_policy_logps = ref_logps + clipped_delta
+        # Paper's Humanline GRPO uses policy/reference token ratios,
+        # clamped upstream before the standard GRPO surrogate clips them.
+        logratio = (policy_logps - ref_logps).clamp(log_epsilon_p, log_epsilon_r)
     else:
-        surrogate_policy_logps = policy_logps
+        logratio = policy_logps - ref_logps
 
-    ratio = torch.exp(surrogate_policy_logps - old_logps)
+    ratio = torch.exp(logratio)
     clipped_ratio = ratio.clamp(1.0 - epsilon, 1.0 + epsilon)
     pg_terms = torch.minimum(ratio * adv, clipped_ratio * adv)
     approx_kl = torch.exp(ref_logps - policy_logps) - (ref_logps - policy_logps) - 1.0
@@ -293,7 +297,7 @@ def run(args: argparse.Namespace) -> RunMetrics:
         use_humanline_clipping = args.humanline and not args.disable_humanline_clipping
         if use_humanline_sync and (step + 1) % args.sync_k == 0:
             pending_reference_state = {k: v.detach().cpu().clone() for k, v in policy.state_dict().items()}
-        grpo_update(
+        loss = grpo_update(
             policy,
             reference,
             optimizer,
@@ -305,6 +309,21 @@ def run(args: argparse.Namespace) -> RunMetrics:
             args.log_epsilon_p,
             args.log_epsilon_r,
         )
+        if not math.isfinite(loss):
+            raise FloatingPointError(f"Non-finite GRPO loss at step {step + 1}: {loss}")
+        if args.log_every and ((step + 1) % args.log_every == 0 or step == 0):
+            print(
+                json.dumps(
+                    {
+                        "event": "train_step",
+                        "method": args.name,
+                        "step": step + 1,
+                        "loss": loss,
+                        "generated_examples": generated_examples,
+                    }
+                ),
+                flush=True,
+            )
         if pending_reference_state is not None:
             reference.load_state_dict(pending_reference_state)
             pending_reference_state = None
@@ -365,6 +384,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--log-epsilon-r", type=float, default=1.5)
     parser.add_argument("--min-value", type=int, default=0)
     parser.add_argument("--max-value", type=int, default=19)
+    parser.add_argument("--log-every", type=int, default=64)
     return parser.parse_args()
 
 
