@@ -6,6 +6,7 @@ Tests whether a model trained from stale generated groups can still improve veri
 - **Metric**: `pass_at_1` (higher is better)
 - **Run**: `bash scripts/reproduce.sh`, then inspect `scoring/scores.json`
 - **Expansion**: `scripts/reproduce.sh` also runs an optional 128-step stale refresh setting by default; disable with `RUN_EXTRA_REFRESH=0`.
+- **Sync sweep**: `scripts/reproduce.sh` runs 64-step Humanline sync-cadence variants by default; disable with `RUN_SYNC_SWEEP=0`.
 
 ## Constraint: synthetic_math_stale_grpo
 

@@ -32,9 +32,11 @@ Ninth CPU job `1444d95f-1d6` completed successfully. The 64-step core setting st
 
 Tenth CPU job `b4150f04-d9c` completed successfully and evaluated eight methods. The 32-step expansion improved both methods over the 64-step setting but did not support a Humanline advantage: stale GRPO reached `pass_at_1=0.2375`, while offline humanline GRPO reached `0.21875` with the same `32768` generated examples. I added these actual scored methods to `reference.json` and queued a focused 64-step Humanline sync-frequency sweep to look for additional-setting coverage without changing the problem or evaluation.
 
+Eleventh CPU job `639ed704-46f` completed successfully and evaluated four 64-step Humanline sync cadences. `sync8` reached `pass_at_1=0.175`, `sync16` reached `0.1625`, and `sync24` reached `0.1625`, all above the stale 64-step baseline of `0.15` with identical `16384` generated examples; `sync20` tied the baseline at `0.15`. This restores additional-setting coverage around the successful 64-step stale-data condition. I also updated `scripts/reproduce.sh` so the final end-to-end script regenerates the 64-step core run, 128-step diagnostic, 32-step diagnostic, ablations, and sync sweep by default.
+
 ## Remaining
 
-Higher milestones would require either a second stale/off-policy math setting that supports the Humanline advantage or reproducing additional paper sections such as instruction-following win-rate experiments. The current environment is packaged for the core stale-GRPO math claim and syncing/clipping ablations; a sync-frequency sweep is queued to test whether the 64-step advantage is robust to the Humanline reference update cadence.
+The environment is packaged at `secondary_claims`: it supports the core stale-GRPO math claim, shows robustness across multiple Humanline sync cadences at the successful stale-refresh setting, and includes component ablations. Higher milestones would require reproducing additional paper sections such as instruction-following win-rate experiments.
 
 ## Issues
 
@@ -59,6 +61,8 @@ The final validation pass required reference targets to be on the same task scal
 The ablation rerun confirmed that the full method's benefit in this scaled setting is driven by reference syncing rather than clipping, matching the paper's qualitative Figure 5 claim.
 
 The 32-step expansion showed that more frequent data refresh improves the reduced arithmetic task for both stale GRPO and Humanline GRPO, but the stale baseline remains ahead in that setting. This is recorded as a failed expansion rather than counted toward `core_claim_plus`.
+
+The sync-frequency sweep showed that the 64-step Humanline advantage is sensitive to update cadence but not isolated to a single setting: three of four tested cadences improved over the stale baseline, with `sync8` the strongest in this reduced benchmark.
 
 ## Deviations from Paper
 

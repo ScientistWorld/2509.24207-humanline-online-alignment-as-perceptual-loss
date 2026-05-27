@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: core_claim**
+**Current: secondary_claims**
 
 ## Progress Log
 
@@ -25,5 +25,10 @@
 - The 32-step setting improved absolute accuracy but did not support a Humanline advantage: stale GRPO reached `pass_at_1=0.2375`, while offline humanline GRPO reached `0.21875`.
 - Added the 32-step results to `reference.json` and queued a 64-step Humanline sync-frequency sweep before considering any milestone above `core_claim`.
 
+### [2026-05-27 04:03] - secondary_claims
+- Job `639ed704-46f` completed successfully and evaluated 64-step Humanline sync-frequency variants.
+- Sync cadence variants `sync8`, `sync16`, and `sync24` all beat the stale 64-step baseline at the same generated-data budget; `sync20` tied the baseline.
+- Together with the completed syncing-only and clipping-only ablations, the reduced reproduction now supports the core stale-data claim plus the paper's secondary component claim that reference syncing is the important Humanline component in this setting.
+
 ## Stop Justification
-- Active job will measure Humanline sync-frequency variants at the successful 64-step stale-refresh setting before restoring or advancing the milestone.
+- Reached `secondary_claims` on the scaled arithmetic reproduction. Remaining paper sections, especially instruction-following judge experiments, would require a different large-model evaluation stack beyond the current reduced gym.

@@ -38,8 +38,29 @@ if [ "${RUN_EXTRA_REFRESH:-1}" = "1" ]; then
   bash scripts/method.sh
 fi
 
-if [ "${RUN_ABLATIONS:-0}" = "1" ]; then
+if [ "${RUN_EXTRA_32_REFRESH:-1}" = "1" ]; then
+  BASELINE_NAME="stale_grpo_32x_offpolicy" \
+  METHOD_NAME="offline_humanline_grpo_32x" \
+  REFRESH_INTERVAL=32 \
+  bash scripts/baseline.sh
+
+  BASELINE_NAME="stale_grpo_32x_offpolicy" \
+  METHOD_NAME="offline_humanline_grpo_32x" \
+  REFRESH_INTERVAL=32 \
+  bash scripts/method.sh
+fi
+
+if [ "${RUN_ABLATIONS:-1}" = "1" ]; then
   bash scripts/ablation.sh
+fi
+
+if [ "${RUN_SYNC_SWEEP:-1}" = "1" ]; then
+  for sync_k in 8 16 20 24; do
+    METHOD_NAME="offline_humanline_grpo_64x_sync${sync_k}" \
+    REFRESH_INTERVAL=64 \
+    SYNC_K="${sync_k}" \
+    bash scripts/method.sh
+  done
 fi
 
 bash scripts/evaluate.sh --runs-dir checkpoints/humanline_grpo

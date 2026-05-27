@@ -26,11 +26,4 @@ export BETA_KL="${BETA_KL:-0.05}"
 export LOG_EPSILON_P="${LOG_EPSILON_P:--5.0}"
 export LOG_EPSILON_R="${LOG_EPSILON_R:-5.0}"
 
-for sync_k in 8 16 20 24; do
-  METHOD_NAME="offline_humanline_grpo_64x_sync${sync_k}" \
-  REFRESH_INTERVAL=64 \
-  SYNC_K="${sync_k}" \
-  bash scripts/method.sh
-done
-
-bash scripts/evaluate.sh --runs-dir checkpoints/humanline_grpo
+bash scripts/reproduce.sh

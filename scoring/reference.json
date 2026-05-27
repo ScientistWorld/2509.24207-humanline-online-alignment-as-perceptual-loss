@@ -84,6 +84,42 @@
           "stale_refresh_interval": 32,
           "generated_examples": 32768,
           "initial_pass_at_1": 0.06875
+        },
+        "offline_humanline_grpo_64x_sync8": {
+          "type": "proposed",
+          "pass_at_1": 0.175,
+          "mean_reward": 0.318484375,
+          "format_rate": 1.0,
+          "stale_refresh_interval": 64,
+          "generated_examples": 16384,
+          "initial_pass_at_1": 0.06875
+        },
+        "offline_humanline_grpo_64x_sync16": {
+          "type": "proposed",
+          "pass_at_1": 0.1625,
+          "mean_reward": 0.30596875,
+          "format_rate": 1.0,
+          "stale_refresh_interval": 64,
+          "generated_examples": 16384,
+          "initial_pass_at_1": 0.06875
+        },
+        "offline_humanline_grpo_64x_sync20": {
+          "type": "proposed",
+          "pass_at_1": 0.15,
+          "mean_reward": 0.293171875,
+          "format_rate": 1.0,
+          "stale_refresh_interval": 64,
+          "generated_examples": 16384,
+          "initial_pass_at_1": 0.06875
+        },
+        "offline_humanline_grpo_64x_sync24": {
+          "type": "proposed",
+          "pass_at_1": 0.1625,
+          "mean_reward": 0.306125,
+          "format_rate": 1.0,
+          "stale_refresh_interval": 64,
+          "generated_examples": 16384,
+          "initial_pass_at_1": 0.06875
         }
       }
     }
