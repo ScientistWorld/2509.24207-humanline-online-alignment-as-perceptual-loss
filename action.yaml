@@ -1,8 +1,8 @@
 # IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends. Sleeping blocks the entire pipeline.
-action: done
-gpus: 0
-test: true
-milestone: secondary_claims
-notes: "Reached secondary_claims: core 64-step stale-data claim, sync-cadence variants, and Humanline component ablations are reproduced in the scaled arithmetic gym; validation passes."
+action: pending
+gpus: 1
+test: false
+milestone: core_claim_plus
+notes: ""
