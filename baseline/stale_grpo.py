@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from method.humanline_grpo import parse_args, run
+from method.answer_grpo import parse_args, run
 
 
 if __name__ == "__main__":

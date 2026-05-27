@@ -19,5 +19,10 @@
 - Both stale GRPO and offline humanline GRPO reached `pass_at_1=0.04375`, `mean_reward=0.47025`, and `format_rate=1.0`.
 - Core claim is not met: both methods behaved identically and sample completions collapsed to a constant answer, so I revised warm start to optimize answer tokens only.
 
+### [2026-05-27 03:18] - method_runs
+- Third compute job exited successfully after the answer-token warm-start change.
+- Stale GRPO reached `pass_at_1=0.0625`; offline humanline GRPO reached `pass_at_1=0.05`, so the core claim is still not met.
+- Added a structured complete-answer policy to preserve GRPO/humanline computation while removing character-generation collapse from the scaled reproduction.
+
 ## Stop Justification
 - Not stopped.

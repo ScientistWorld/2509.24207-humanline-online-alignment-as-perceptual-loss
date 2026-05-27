@@ -19,7 +19,7 @@
           "mean_reward": 0.0,
           "format_rate": 0.0,
           "stale_refresh_interval": 64,
-          "generated_examples": 1152,
+          "generated_examples": 3072,
           "initial_pass_at_1": 0.0
         },
         "offline_humanline_grpo": {
@@ -28,7 +28,7 @@
           "mean_reward": 0.593,
           "format_rate": 1.0,
           "stale_refresh_interval": 64,
-          "generated_examples": 1152,
+          "generated_examples": 3072,
           "initial_pass_at_1": 0.0
         }
       }

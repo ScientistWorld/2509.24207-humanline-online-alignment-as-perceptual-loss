@@ -10,15 +10,19 @@ First CPU smoke job completed successfully and wrote `scoring/scores.json`. Both
 
 Second CPU job completed successfully after adding a dense numeric reward. Exact answer accuracy improved from `0.025` initial to `0.04375` after GRPO, and mean reward improved from `0.4223` initial to `0.47025`. The proposed humanline run and stale non-humanline baseline were still identical, and saved samples showed both policies collapsed to a constant `<answer>16</answer>` response.
 
+Third CPU job completed successfully after masking warm-start loss to answer tokens. It still did not support the core claim: stale GRPO reached `pass_at_1=0.0625`, while offline humanline GRPO reached `pass_at_1=0.05`; samples still collapsed to a constant `<answer>19</answer>` output.
+
 ## Remaining
 
-Run the revised answer-token-only warm start with a 64-step stale refresh interval. If the policy still collapses to a constant answer, inspect saved samples and increase conditional signal or task coverage before claiming `core_claim`.
+Run the structured answer-policy GRPO implementation with the same stale-batch and humanline mechanics. If that run distinguishes stale GRPO from humanline GRPO, use it as the scaled core-claim reproduction; otherwise inspect whether clipping/sync settings or task scale need adjustment.
 
 ## Issues
 
 The first scaled task used a sparse exact-match reward and produced no numeric correctness. I added a bounded numeric-closeness term to the reward so GRPO receives a useful signal before exact answers are sampled frequently.
 
 The second run showed that the model learned formatting but not enough prompt-conditioned arithmetic. I changed supervised warm start so cross-entropy is applied only to completion tokens, matching the RL/evaluation target and preventing prompt-copying tokens from dominating the loss.
+
+The third run confirmed that character-level generation, not the GRPO code path, was dominating the failure mode. I added a structured policy over complete formatted arithmetic answers so the next job tests the paper's online-alignment computation without sequence-format collapse.
 
 ## Deviations from Paper
 

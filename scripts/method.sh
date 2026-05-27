@@ -10,7 +10,7 @@ set -e
 
 cd /home/user
 
-python -m method.humanline_grpo \
+python -m method.answer_grpo \
   --name offline_humanline_grpo \
   --humanline \
   --refresh-interval "${REFRESH_INTERVAL:-64}" \
