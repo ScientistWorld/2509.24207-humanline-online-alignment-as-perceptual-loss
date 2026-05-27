@@ -2,4 +2,4 @@ action: submit
 gpus: 0
 test: false
 milestone: core_claim_plus
-notes: "Run evaluate_{train,test}.sh on frozen checkpoints/token_humanline_grpo artifacts; populate scoring/scores_{train,test}.json."
+notes: "Retry train/test scoring after fixing evaluator wrappers to expose /home/user on PYTHONPATH."

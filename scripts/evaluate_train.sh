@@ -10,4 +10,4 @@ cd /home/user
 
 mkdir -p scoring
 
-python eval/train/evaluate.py "$@"
+PYTHONPATH="/home/user:${PYTHONPATH:-}" python eval/train/evaluate.py "$@"
