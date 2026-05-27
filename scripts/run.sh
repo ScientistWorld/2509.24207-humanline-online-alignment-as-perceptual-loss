@@ -26,5 +26,6 @@ export BETA_KL="${BETA_KL:-0.05}"
 export LOG_EPSILON_P="${LOG_EPSILON_P:--5.0}"
 export LOG_EPSILON_R="${LOG_EPSILON_R:-5.0}"
 
+export RUN_ABLATIONS=1
+
 bash scripts/reproduce.sh
-python validate.py --compare

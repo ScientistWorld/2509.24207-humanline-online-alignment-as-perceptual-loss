@@ -26,6 +26,8 @@ Post-validation fix: the automated checker rejected the previous `reference.json
 
 Final validation on 2026-05-27 03:41 UTC passed with `python validate.py --compare`. The environment is packaged at `core_claim_plus`: the core 64-step stale setting supports the paper's math claim at reduced scale, and the 128-step stale-refresh setting provides additional coverage.
 
+Continuation audit on 2026-05-27 03:43 UTC reset the active milestone to `core_claim`. The audit found the existing method is recognizable as scaled Humanline GRPO and the evaluator remains independent. I added ablation switches and `scripts/ablation.sh` so the next job can test the secondary claim that syncing accounts for most of the Humanline gain while clipping is neutral-to-positive.
+
 ## Remaining
 
 Higher milestones would require reproducing additional paper sections such as instruction-following win-rate experiments or ablations of clipping vs syncing. The current environment is packaged and validated for the core stale-GRPO math claim plus one stale-refresh expansion.

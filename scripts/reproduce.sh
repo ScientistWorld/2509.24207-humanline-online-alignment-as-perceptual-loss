@@ -38,4 +38,8 @@ if [ "${RUN_EXTRA_REFRESH:-1}" = "1" ]; then
   bash scripts/method.sh
 fi
 
+if [ "${RUN_ABLATIONS:-0}" = "1" ]; then
+  bash scripts/ablation.sh
+fi
+
 bash scripts/evaluate.sh --runs-dir checkpoints/humanline_grpo

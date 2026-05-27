@@ -156,7 +156,7 @@ def grpo_update(
     device: torch.device,
     epsilon: float,
     beta_kl: float,
-    humanline: bool,
+    humanline_clipping: bool,
     log_epsilon_p: float,
     log_epsilon_r: float,
 ) -> float:
@@ -166,7 +166,7 @@ def grpo_update(
     with torch.no_grad():
         ref_logps = logps_for_actions(reference, batch["prompts"], batch["actions"], device)
 
-    if humanline:
+    if humanline_clipping:
         clipped_delta = (policy_logps - ref_logps).clamp(log_epsilon_p, log_epsilon_r)
         surrogate_policy_logps = ref_logps + clipped_delta
     else:
@@ -233,7 +233,9 @@ def run(args: argparse.Namespace) -> RunMetrics:
             sampled = random.sample(train_examples, args.batch_size)
             batch = sample_actions(behavior, sampled, device, args.group_size, args.temperature)
             generated_examples += len(sampled) * args.group_size
-        if args.humanline and (step + 1) % args.sync_k == 0:
+        use_humanline_sync = args.humanline and not args.disable_humanline_sync
+        use_humanline_clipping = args.humanline and not args.disable_humanline_clipping
+        if use_humanline_sync and (step + 1) % args.sync_k == 0:
             pending_reference_state = {k: v.detach().cpu().clone() for k, v in policy.state_dict().items()}
         grpo_update(
             policy,
@@ -243,7 +245,7 @@ def run(args: argparse.Namespace) -> RunMetrics:
             device,
             args.grpo_epsilon,
             args.beta_kl,
-            args.humanline,
+            use_humanline_clipping,
             args.log_epsilon_p,
             args.log_epsilon_r,
         )
@@ -259,7 +261,7 @@ def run(args: argparse.Namespace) -> RunMetrics:
         method=args.name,
         train_steps=args.train_steps,
         refresh_interval=args.refresh_interval,
-        humanline_sync_k=args.sync_k if args.humanline else 0,
+        humanline_sync_k=args.sync_k if args.humanline and not args.disable_humanline_sync else 0,
         pass_at_1=pass_at_1,
         mean_reward=mean_reward,
         format_rate=format_rate,
@@ -281,6 +283,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--seed", type=int, default=7)
     parser.add_argument("--cpu", action="store_true")
     parser.add_argument("--humanline", action="store_true")
+    parser.add_argument("--disable-humanline-clipping", action="store_true")
+    parser.add_argument("--disable-humanline-sync", action="store_true")
     parser.add_argument("--sync-k", type=int, default=12)
     parser.add_argument("--refresh-interval", type=int, default=64)
     parser.add_argument("--train-steps", type=int, default=768)
