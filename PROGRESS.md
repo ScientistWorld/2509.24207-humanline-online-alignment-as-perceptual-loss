@@ -18,9 +18,11 @@ Fifth CPU job completed successfully with exact-dominant reward and wider humanl
 
 Sixth CPU job completed successfully and reached `core_claim` on the scaled arithmetic setting. With the same `64`-step stale refresh and `16384` generated examples, offline humanline GRPO improved from `initial_pass_at_1=0.06875` to `pass_at_1=0.175`, while stale GRPO reached `0.15`. Mean reward also favored humanline (`0.31847` vs `0.29308`) with both methods retaining `format_rate=1.0`.
 
+Seventh CPU job ran the 128-step stale-refresh expansion but exited with a validation error because the new method names were not yet in `reference.json`. The actual 128-step artifacts were produced: offline humanline GRPO matched stale GRPO on `pass_at_1=0.11875`, slightly improved mean reward (`0.26071875` vs `0.26009375`), and used the same `8192` generated examples.
+
 ## Remaining
 
-Expand beyond the minimum by running the same structured-policy protocol at a harder `128`-step stale refresh interval. The 64-step run already supports `core_claim`; the next run tests whether the advantage persists when generated data is refreshed less often.
+Rerun the full script after adding 128-step entries to `reference.json` so the expansion validates cleanly end to end.
 
 ## Issues
 
@@ -35,6 +37,8 @@ The fourth run showed that the dense closeness reward can favor close but wrong 
 The fifth run improved humanline slightly relative to the prior structured-policy run but still degraded from the warm-start. I reduced SFT steps, increased batch/group size, lowered RL learning rate, and increased KL pressure for the next run so the RL phase has room to improve and the fixed stale reference is a meaningful constraint.
 
 The sixth run showed that the scaled humanline computation works when the warm-start is not already near its local ceiling and exact rewards are sampled densely enough. I added a 128-step refresh expansion to test the same claim at a stronger stale-data setting.
+
+The seventh run exposed an evaluator packaging gap: `scores.json` may include expansion methods only if `reference.json` lists the same method names. I added reference entries for the 128-step stale baseline and humanline method.
 
 ## Deviations from Paper
 

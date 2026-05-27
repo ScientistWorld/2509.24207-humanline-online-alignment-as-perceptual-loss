@@ -30,6 +30,24 @@
           "stale_refresh_interval": 64,
           "generated_examples": 16384,
           "initial_pass_at_1": 0.0
+        },
+        "stale_grpo_128x_offpolicy": {
+          "type": "baseline",
+          "pass_at_1": 0.0,
+          "mean_reward": 0.1,
+          "format_rate": 0.0,
+          "stale_refresh_interval": 128,
+          "generated_examples": 8192,
+          "initial_pass_at_1": 0.0
+        },
+        "offline_humanline_grpo_128x": {
+          "type": "proposed",
+          "pass_at_1": 0.593,
+          "mean_reward": 0.72,
+          "format_rate": 1.0,
+          "stale_refresh_interval": 128,
+          "generated_examples": 8192,
+          "initial_pass_at_1": 0.0
         }
       }
     }

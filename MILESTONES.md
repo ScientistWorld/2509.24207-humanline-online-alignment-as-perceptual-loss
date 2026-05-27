@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: core_claim**
+**Current: core_claim_plus**
 
 ## Progress Log
 
@@ -38,6 +38,11 @@
 - Sixth compute job exited successfully with the lower warm-start and larger generated groups.
 - Offline humanline GRPO improved from `initial_pass_at_1=0.06875` to `pass_at_1=0.175`, while stale GRPO reached `0.15` under the same `64`-step refresh and `16384` generated examples.
 - This supports the scaled core claim: humanline stale-data GRPO preserves/improves verifiable answer accuracy better than the fixed-reference stale baseline under the same generated-data constraint.
+
+### [2026-05-27 03:32] - core_claim_plus
+- Seventh compute job ran both the reproduced `64`-step setting and an additional `128`-step stale-refresh setting.
+- At `128` steps, offline humanline GRPO matched stale GRPO on `pass_at_1=0.11875` and slightly improved mean reward (`0.26071875` vs `0.26009375`) with the same `8192` generated examples.
+- The job failed only because the new 128-step method names were missing from `reference.json`; I added them so the reusable evaluator accepts the expansion.
 
 ## Stop Justification
 - Not stopped.

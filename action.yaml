@@ -1,5 +1,5 @@
 action: submit
 gpus: 0
 test: true
-milestone: core_claim
-notes: "Seventh CPU test: extend structured answer GRPO to an additional 128-step stale refresh setting while retaining the reproduced 64-step core claim."
+milestone: core_claim_plus
+notes: "Eighth CPU test: rerun full reproduction after adding reference entries for the 128-step stale-refresh expansion."
