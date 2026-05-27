@@ -2,101 +2,21 @@
   "experiments": {
     "synthetic_math_stale_grpo": {
       "results": {
-        "humanline_clip_only_grpo": {
-          "pass_at_1": 0.15,
-          "mean_reward": 0.29325000000000023,
-          "format_rate": 1.0,
-          "stale_refresh_interval": 64,
-          "generated_examples": 16384,
-          "initial_pass_at_1": 0.06875
-        },
-        "humanline_sync_only_grpo": {
-          "pass_at_1": 0.16875,
-          "mean_reward": 0.31226562500000016,
-          "format_rate": 1.0,
-          "stale_refresh_interval": 64,
-          "generated_examples": 16384,
-          "initial_pass_at_1": 0.06875
-        },
         "offline_humanline_grpo": {
-          "pass_at_1": 0.16875,
-          "mean_reward": 0.31226562500000016,
+          "pass_at_1": 0.7,
+          "mean_reward": 0.8492031250000001,
           "format_rate": 1.0,
           "stale_refresh_interval": 64,
-          "generated_examples": 16384,
-          "initial_pass_at_1": 0.06875
-        },
-        "offline_humanline_grpo_128x": {
-          "pass_at_1": 0.10625,
-          "mean_reward": 0.24753125000000006,
-          "format_rate": 1.0,
-          "stale_refresh_interval": 128,
-          "generated_examples": 8192,
-          "initial_pass_at_1": 0.06875
-        },
-        "offline_humanline_grpo_32x": {
-          "pass_at_1": 0.21875,
-          "mean_reward": 0.3644062500000002,
-          "format_rate": 1.0,
-          "stale_refresh_interval": 32,
-          "generated_examples": 32768,
-          "initial_pass_at_1": 0.06875
-        },
-        "offline_humanline_grpo_64x_sync16": {
-          "pass_at_1": 0.1625,
-          "mean_reward": 0.30596875000000023,
-          "format_rate": 1.0,
-          "stale_refresh_interval": 64,
-          "generated_examples": 16384,
-          "initial_pass_at_1": 0.06875
-        },
-        "offline_humanline_grpo_64x_sync20": {
-          "pass_at_1": 0.15,
-          "mean_reward": 0.29317187500000014,
-          "format_rate": 1.0,
-          "stale_refresh_interval": 64,
-          "generated_examples": 16384,
-          "initial_pass_at_1": 0.06875
-        },
-        "offline_humanline_grpo_64x_sync24": {
-          "pass_at_1": 0.1625,
-          "mean_reward": 0.3061250000000001,
-          "format_rate": 1.0,
-          "stale_refresh_interval": 64,
-          "generated_examples": 16384,
-          "initial_pass_at_1": 0.06875
-        },
-        "offline_humanline_grpo_64x_sync8": {
-          "pass_at_1": 0.175,
-          "mean_reward": 0.3184843750000001,
-          "format_rate": 1.0,
-          "stale_refresh_interval": 64,
-          "generated_examples": 16384,
-          "initial_pass_at_1": 0.06875
-        },
-        "stale_grpo_128x_offpolicy": {
-          "pass_at_1": 0.11875,
-          "mean_reward": 0.26034375000000004,
-          "format_rate": 1.0,
-          "stale_refresh_interval": 128,
-          "generated_examples": 8192,
-          "initial_pass_at_1": 0.06875
-        },
-        "stale_grpo_32x_offpolicy": {
-          "pass_at_1": 0.2375,
-          "mean_reward": 0.3832500000000003,
-          "format_rate": 1.0,
-          "stale_refresh_interval": 32,
-          "generated_examples": 32768,
-          "initial_pass_at_1": 0.06875
+          "generated_examples": 36864,
+          "initial_pass_at_1": 0.85625
         },
         "stale_grpo_64x_offpolicy": {
-          "pass_at_1": 0.15,
-          "mean_reward": 0.29304687500000026,
+          "pass_at_1": 0.94375,
+          "mean_reward": 1.09359375,
           "format_rate": 1.0,
           "stale_refresh_interval": 64,
-          "generated_examples": 16384,
-          "initial_pass_at_1": 0.06875
+          "generated_examples": 36864,
+          "initial_pass_at_1": 0.85625
         }
       }
     }
