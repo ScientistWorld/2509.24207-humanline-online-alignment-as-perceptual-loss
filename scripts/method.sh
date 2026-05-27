@@ -11,7 +11,7 @@ set -e
 cd /home/user
 
 python -m method.answer_grpo \
-  --name offline_humanline_grpo \
+  --name "${METHOD_NAME:-offline_humanline_grpo}" \
   --humanline \
   --refresh-interval "${REFRESH_INTERVAL:-64}" \
   --sync-k "${SYNC_K:-12}" \

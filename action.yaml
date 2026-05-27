@@ -1,5 +1,5 @@
 action: submit
 gpus: 0
 test: true
-milestone: method_runs
-notes: "Sixth CPU test: structured answer GRPO with lower warm-start, larger groups, lower RL learning rate, and stronger KL pressure."
+milestone: core_claim
+notes: "Seventh CPU test: extend structured answer GRPO to an additional 128-step stale refresh setting while retaining the reproduced 64-step core claim."

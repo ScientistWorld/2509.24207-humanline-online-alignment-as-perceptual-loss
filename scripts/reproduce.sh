@@ -21,6 +21,21 @@ cd /home/user
 rm -rf checkpoints/humanline_grpo
 mkdir -p checkpoints/humanline_grpo
 
+export BASELINE_NAME="${BASELINE_NAME:-stale_grpo_64x_offpolicy}"
+export METHOD_NAME="${METHOD_NAME:-offline_humanline_grpo}"
 bash scripts/baseline.sh
 bash scripts/method.sh
+
+if [ "${RUN_EXTRA_REFRESH:-1}" = "1" ]; then
+  BASELINE_NAME="stale_grpo_128x_offpolicy" \
+  METHOD_NAME="offline_humanline_grpo_128x" \
+  REFRESH_INTERVAL=128 \
+  bash scripts/baseline.sh
+
+  BASELINE_NAME="stale_grpo_128x_offpolicy" \
+  METHOD_NAME="offline_humanline_grpo_128x" \
+  REFRESH_INTERVAL=128 \
+  bash scripts/method.sh
+fi
+
 bash scripts/evaluate.sh --runs-dir checkpoints/humanline_grpo

@@ -18,7 +18,7 @@ set -e
 cd /home/user
 
 python -m baseline.stale_grpo \
-  --name stale_grpo_64x_offpolicy \
+  --name "${BASELINE_NAME:-stale_grpo_64x_offpolicy}" \
   --refresh-interval "${REFRESH_INTERVAL:-64}" \
   --train-steps "${TRAIN_STEPS:-256}" \
   --sft-steps "${SFT_STEPS:-500}" \

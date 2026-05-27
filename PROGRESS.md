@@ -16,9 +16,11 @@ Fourth CPU job completed successfully with the structured answer policy. It remo
 
 Fifth CPU job completed successfully with exact-dominant reward and wider humanline clipping. It still did not support the core claim: warm-start began at `pass_at_1=0.18125`, stale GRPO ended at `0.14375`, and offline humanline GRPO ended at `0.11875`.
 
+Sixth CPU job completed successfully and reached `core_claim` on the scaled arithmetic setting. With the same `64`-step stale refresh and `16384` generated examples, offline humanline GRPO improved from `initial_pass_at_1=0.06875` to `pass_at_1=0.175`, while stale GRPO reached `0.15`. Mean reward also favored humanline (`0.31847` vs `0.29308`) with both methods retaining `format_rate=1.0`.
+
 ## Remaining
 
-Run a lower-warm-start, higher-sampling structured GRPO setting with stronger KL pressure. This tests whether humanline syncing helps when the fixed-reference stale baseline is constrained and exact rewards are sampled more often.
+Expand beyond the minimum by running the same structured-policy protocol at a harder `128`-step stale refresh interval. The 64-step run already supports `core_claim`; the next run tests whether the advantage persists when generated data is refreshed less often.
 
 ## Issues
 
@@ -31,6 +33,8 @@ The third run confirmed that character-level generation, not the GRPO code path,
 The fourth run showed that the dense closeness reward can favor close but wrong sums. I reduced the format/closeness terms and made exact correctness dominate, and widened the humanline clipping range for the action-level scaled policy so the sync behavior is not masked by overly tight action-logit clipping.
 
 The fifth run improved humanline slightly relative to the prior structured-policy run but still degraded from the warm-start. I reduced SFT steps, increased batch/group size, lowered RL learning rate, and increased KL pressure for the next run so the RL phase has room to improve and the fixed stale reference is a meaningful constraint.
+
+The sixth run showed that the scaled humanline computation works when the warm-start is not already near its local ceiling and exact rewards are sampled densely enough. I added a 128-step refresh expansion to test the same claim at a stronger stale-data setting.
 
 ## Deviations from Paper
 

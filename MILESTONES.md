@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: method_runs**
+**Current: core_claim**
 
 ## Progress Log
 
@@ -33,6 +33,11 @@
 - Fifth compute job exited successfully with exact-dominant reward and wider action-level clipping.
 - Stale GRPO reached `pass_at_1=0.14375`; offline humanline GRPO reached `0.11875`, still below the warm-start `0.18125`.
 - Revised the next run to use less SFT, larger generated groups, lower RL learning rate, and stronger KL pressure.
+
+### [2026-05-27 03:27] - core_claim
+- Sixth compute job exited successfully with the lower warm-start and larger generated groups.
+- Offline humanline GRPO improved from `initial_pass_at_1=0.06875` to `pass_at_1=0.175`, while stale GRPO reached `0.15` under the same `64`-step refresh and `16384` generated examples.
+- This supports the scaled core claim: humanline stale-data GRPO preserves/improves verifiable answer accuracy better than the fixed-reference stale baseline under the same generated-data constraint.
 
 ## Stop Justification
 - Not stopped.

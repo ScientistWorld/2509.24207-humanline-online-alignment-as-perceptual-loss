@@ -5,6 +5,7 @@
 Tests whether a model trained from stale generated groups can still improve verifiable arithmetic answer accuracy.
 - **Metric**: `pass_at_1` (higher is better)
 - **Run**: `bash scripts/reproduce.sh`, then inspect `scoring/scores.json`
+- **Expansion**: `scripts/reproduce.sh` also runs an optional 128-step stale refresh setting by default; disable with `RUN_EXTRA_REFRESH=0`.
 
 ## Constraint: synthetic_math_stale_grpo
 
