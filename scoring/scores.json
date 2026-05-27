@@ -10,6 +10,22 @@
           "generated_examples": 16384,
           "initial_pass_at_1": 0.06875
         },
+        "offline_humanline_grpo_128x": {
+          "pass_at_1": 0.11875,
+          "mean_reward": 0.26071875,
+          "format_rate": 1.0,
+          "stale_refresh_interval": 128,
+          "generated_examples": 8192,
+          "initial_pass_at_1": 0.06875
+        },
+        "stale_grpo_128x_offpolicy": {
+          "pass_at_1": 0.11875,
+          "mean_reward": 0.26009375000000007,
+          "format_rate": 1.0,
+          "stale_refresh_interval": 128,
+          "generated_examples": 8192,
+          "initial_pass_at_1": 0.06875
+        },
         "stale_grpo_64x_offpolicy": {
           "pass_at_1": 0.15,
           "mean_reward": 0.2930781250000002,
