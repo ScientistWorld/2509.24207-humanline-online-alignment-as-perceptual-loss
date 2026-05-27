@@ -2,7 +2,7 @@
 
 ## What Works
 
-Implemented a scaled reproduction of the paper's verifiable-reward humanline GRPO setting. The method code includes upstream token log-ratio clipping, standard GRPO surrogate clipping, stale/off-policy batch reuse, and lagged humanline reference syncing.
+Implemented a scaled reproduction of the paper's verifiable-reward humanline GRPO setting. The token-level method code includes upstream token log-ratio clipping, standard GRPO surrogate clipping, stale/off-policy batch generation, and lagged humanline reference syncing. A separate structured complete-answer action policy has produced diagnostic positive results, but it is now treated as a scaled analogue rather than the milestone-carrying implementation.
 
 ## Results
 
@@ -36,7 +36,7 @@ Eleventh CPU job `639ed704-46f` completed successfully and evaluated four 64-ste
 
 ## Remaining
 
-The environment is packaged at `secondary_claims`: it supports the core stale-GRPO math claim, shows robustness across multiple Humanline sync cadences at the successful stale-refresh setting, and includes component ablations. Higher milestones would require reproducing additional paper sections such as instruction-following win-rate experiments.
+The current milestone is reset to `method_runs` under a stricter integrity reading: the submitted job must show that the token-level Humanline GRPO path, not only the complete-answer action analogue, supports the stale-data math claim. If that succeeds, update scores and restore `core_claim`; if it fails, tune the token-level setup before claiming higher milestones.
 
 ## Issues
 
@@ -64,7 +64,10 @@ The 32-step expansion showed that more frequent data refresh improves the reduce
 
 The sync-frequency sweep showed that the 64-step Humanline advantage is sensitive to update cadence but not isolated to a single setting: three of four tested cadences improved over the stale baseline, with `sync8` the strongest in this reduced benchmark.
 
+Continuation audit on 2026-05-27 found that the active `scripts/method.sh` path used `method.answer_grpo`, a complete-answer action policy. Although it preserves GRPO, Humanline syncing, and upstream policy/reference ratio clipping, it is not token-wise over generated completions as described in the paper. I added a `--pool-stale-batches` option to both token-level and action-level GRPO implementations so stale/off-policy math training can generate a block from an old policy and consume a distinct stale mini-batch each optimizer step, closer to the paper's 64x stale-sampling protocol. The next queued job runs the token-level path directly.
+
 ## Deviations from Paper
 
 - Paper used Qwen2.5-1.5B-Instruct and MATH500; this reproduction uses a compact structured complete-answer policy and generated arithmetic tasks to fit the available compute budget. The GRPO and humanline computational steps are preserved.
+- The structured complete-answer policy is now classified as a scaled analogue. The active milestone path is the token-level GRU language model in `method/humanline_grpo.py`, which computes completion-token log probabilities and applies Humanline clipping per token.
 - Paper used 64x stale sampling for math; the smoke script uses a 64-step stale refresh interval at reduced model/data scale.

@@ -225,14 +225,29 @@ def run(args: argparse.Namespace) -> RunMetrics:
     optimizer = torch.optim.AdamW(policy.parameters(), lr=args.rl_lr, weight_decay=1e-4)
 
     batch = None
+    batch_pool = None
     generated_examples = 0
     pending_reference_state = None
     for step in range(args.train_steps):
         if step % args.refresh_interval == 0 or batch is None:
             behavior.load_state_dict(policy.state_dict())
-            sampled = random.sample(train_examples, args.batch_size)
-            batch = sample_actions(behavior, sampled, device, args.group_size, args.temperature)
-            generated_examples += len(sampled) * args.group_size
+            if args.pool_stale_batches:
+                # Paper-style stale sampling for math: sample a block of data
+                # from the old policy, then consume one stale mini-batch per
+                # optimizer step until the next refresh.
+                remaining = min(args.refresh_interval, args.train_steps - step)
+                batch_pool = []
+                for _ in range(remaining):
+                    sampled = random.choices(train_examples, k=args.batch_size)
+                    batch_pool.append(sample_actions(behavior, sampled, device, args.group_size, args.temperature))
+                generated_examples += remaining * args.batch_size * args.group_size
+            else:
+                sampled = random.sample(train_examples, args.batch_size)
+                batch = sample_actions(behavior, sampled, device, args.group_size, args.temperature)
+                generated_examples += len(sampled) * args.group_size
+        if args.pool_stale_batches:
+            assert batch_pool is not None
+            batch = batch_pool[step % args.refresh_interval]
         use_humanline_sync = args.humanline and not args.disable_humanline_sync
         use_humanline_clipping = args.humanline and not args.disable_humanline_clipping
         if use_humanline_sync and (step + 1) % args.sync_k == 0:
@@ -285,6 +300,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--humanline", action="store_true")
     parser.add_argument("--disable-humanline-clipping", action="store_true")
     parser.add_argument("--disable-humanline-sync", action="store_true")
+    parser.add_argument("--pool-stale-batches", action="store_true")
     parser.add_argument("--sync-k", type=int, default=12)
     parser.add_argument("--refresh-interval", type=int, default=64)
     parser.add_argument("--train-steps", type=int, default=768)

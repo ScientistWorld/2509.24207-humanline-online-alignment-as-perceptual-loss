@@ -13,17 +13,48 @@ set -e
 
 cd /home/user
 
-export TRAIN_STEPS="${TRAIN_STEPS:-1024}"
-export SFT_STEPS="${SFT_STEPS:-20}"
-export REFRESH_INTERVAL="${REFRESH_INTERVAL:-64}"
-export SYNC_K="${SYNC_K:-12}"
-export BATCH_SIZE="${BATCH_SIZE:-64}"
-export GROUP_SIZE="${GROUP_SIZE:-16}"
-export HIDDEN_SIZE="${HIDDEN_SIZE:-64}"
-export TEMPERATURE="${TEMPERATURE:-1.0}"
-export RL_LR="${RL_LR:-3e-4}"
-export BETA_KL="${BETA_KL:-0.05}"
-export LOG_EPSILON_P="${LOG_EPSILON_P:--5.0}"
-export LOG_EPSILON_R="${LOG_EPSILON_R:-5.0}"
+OUT_DIR="${OUT_DIR:-checkpoints/token_humanline_grpo}"
+rm -rf "${OUT_DIR}"
+mkdir -p "${OUT_DIR}"
 
-bash scripts/reproduce.sh
+COMMON_ARGS=(
+  --pool-stale-batches
+  --train-steps "${TRAIN_STEPS:-256}"
+  --sft-steps "${SFT_STEPS:-1200}"
+  --train-size "${TRAIN_SIZE:-512}"
+  --eval-size "${EVAL_SIZE:-160}"
+  --batch-size "${BATCH_SIZE:-24}"
+  --group-size "${GROUP_SIZE:-6}"
+  --hidden-size "${HIDDEN_SIZE:-128}"
+  --max-new-tokens "${MAX_NEW_TOKENS:-20}"
+  --temperature "${TEMPERATURE:-0.8}"
+  --sft-lr "${SFT_LR:-2e-3}"
+  --rl-lr "${RL_LR:-5e-4}"
+  --beta-kl "${BETA_KL:-0.01}"
+  --log-epsilon-p "${LOG_EPSILON_P:--1.5}"
+  --log-epsilon-r "${LOG_EPSILON_R:-1.5}"
+  --min-value "${MIN_VALUE:-0}"
+  --max-value "${MAX_VALUE:-9}"
+  --output-dir "${OUT_DIR}"
+)
+
+python -m method.humanline_grpo \
+  --name stale_grpo_64x_offpolicy \
+  --refresh-interval 64 \
+  --sync-k "${SYNC_K:-12}" \
+  "${COMMON_ARGS[@]}"
+
+python -m method.humanline_grpo \
+  --name offline_humanline_grpo \
+  --humanline \
+  --refresh-interval 64 \
+  --sync-k "${SYNC_K:-12}" \
+  "${COMMON_ARGS[@]}"
+
+python -m method.humanline_grpo \
+  --name online_grpo_refresh1 \
+  --refresh-interval 1 \
+  --sync-k 1 \
+  "${COMMON_ARGS[@]}"
+
+bash scripts/evaluate.sh --runs-dir "${OUT_DIR}"
