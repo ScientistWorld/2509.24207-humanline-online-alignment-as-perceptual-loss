@@ -73,8 +73,11 @@ def generate_one(
     out: list[int] = []
     for _ in range(max_new_tokens):
         logits = model(ids)[:, -1, :] / max(temperature, 1e-6)
-        probs = F.softmax(logits, dim=-1)
-        next_id = int(torch.multinomial(probs, 1).item())
+        if temperature <= 0.05:
+            next_id = int(torch.argmax(logits, dim=-1).item())
+        else:
+            probs = F.softmax(logits, dim=-1)
+            next_id = int(torch.multinomial(probs, 1).item())
         if next_id == EOS:
             break
         out.append(next_id)
@@ -110,19 +113,37 @@ def supervised_warm_start(model: TinyGRUPolicy, examples, device: torch.device, 
 
 
 @torch.no_grad()
-def evaluate_policy(model: TinyGRUPolicy, examples, device: torch.device, max_new_tokens: int) -> tuple[float, float, float]:
-    rewards = []
-    correct = 0
-    formatted = 0
+def collect_predictions(model: TinyGRUPolicy, examples, device: torch.device, max_new_tokens: int) -> list[dict[str, str | int | float]]:
+    rows = []
     model.eval()
     for ex in examples:
         text = generate_one(model, ex.prompt, device, max_new_tokens, temperature=0.01)
         reward = reward_completion(text, ex.answer)
-        rewards.append(reward)
-        correct += int(reward >= 1.0)
-        formatted += int("<answer>" in text and "</answer>" in text)
+        rows.append(
+            {
+                "prompt": ex.prompt,
+                "answer": ex.answer,
+                "completion": text,
+                "reward": reward,
+            }
+        )
     model.train()
-    return correct / len(examples), sum(rewards) / len(rewards), formatted / len(examples)
+    return rows
+
+
+def score_prediction_rows(rows: list[dict[str, str | int | float]]) -> tuple[float, float, float]:
+    rewards = [float(row["reward"]) for row in rows]
+    correct = sum(int(float(row["reward"]) >= 1.0) for row in rows)
+    formatted = sum(int("<answer>" in str(row["completion"]) and "</answer>" in str(row["completion"])) for row in rows)
+    if not rows:
+        return 0.0, 0.0, 0.0
+    return correct / len(rows), sum(rewards) / len(rewards), formatted / len(rows)
+
+
+@torch.no_grad()
+def evaluate_policy(model: TinyGRUPolicy, examples, device: torch.device, max_new_tokens: int) -> tuple[float, float, float]:
+    rows = collect_predictions(model, examples, device, max_new_tokens)
+    return score_prediction_rows(rows)
 
 
 @torch.no_grad()
@@ -268,7 +289,9 @@ def run(args: argparse.Namespace) -> RunMetrics:
         if args.pool_stale_batches:
             assert batch_pool is not None
             batch = batch_pool[step % args.refresh_interval]
-        if args.humanline and (step + 1) % args.sync_k == 0:
+        use_humanline_sync = args.humanline and not args.disable_humanline_sync
+        use_humanline_clipping = args.humanline and not args.disable_humanline_clipping
+        if use_humanline_sync and (step + 1) % args.sync_k == 0:
             pending_reference_state = {k: v.detach().cpu().clone() for k, v in policy.state_dict().items()}
         grpo_update(
             policy,
@@ -278,7 +301,7 @@ def run(args: argparse.Namespace) -> RunMetrics:
             device,
             args.grpo_epsilon,
             args.beta_kl,
-            args.humanline,
+            use_humanline_clipping,
             args.log_epsilon_p,
             args.log_epsilon_r,
         )
@@ -286,15 +309,19 @@ def run(args: argparse.Namespace) -> RunMetrics:
             reference.load_state_dict(pending_reference_state)
             pending_reference_state = None
 
-    pass_at_1, mean_reward, format_rate = evaluate_policy(policy, eval_examples, device, args.max_new_tokens)
+    final_predictions = collect_predictions(policy, eval_examples, device, args.max_new_tokens)
+    pass_at_1, mean_reward, format_rate = score_prediction_rows(final_predictions)
     out_dir = Path(args.output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     torch.save(policy.state_dict(), out_dir / f"{args.name}.pt")
+    with (out_dir / f"{args.name}_predictions.jsonl").open("w") as f:
+        for row in final_predictions:
+            f.write(json.dumps(row) + "\n")
     metrics = RunMetrics(
         method=args.name,
         train_steps=args.train_steps,
         refresh_interval=args.refresh_interval,
-        humanline_sync_k=args.sync_k if args.humanline else 0,
+        humanline_sync_k=args.sync_k if use_humanline_sync else 0,
         pass_at_1=pass_at_1,
         mean_reward=mean_reward,
         format_rate=format_rate,
@@ -316,6 +343,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--seed", type=int, default=7)
     parser.add_argument("--cpu", action="store_true")
     parser.add_argument("--humanline", action="store_true")
+    parser.add_argument("--disable-humanline-clipping", action="store_true")
+    parser.add_argument("--disable-humanline-sync", action="store_true")
     parser.add_argument("--pool-stale-batches", action="store_true")
     parser.add_argument("--sync-k", type=int, default=12)
     parser.add_argument("--refresh-interval", type=int, default=64)

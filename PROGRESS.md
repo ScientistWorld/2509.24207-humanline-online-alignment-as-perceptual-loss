@@ -66,6 +66,8 @@ The sync-frequency sweep showed that the 64-step Humanline advantage is sensitiv
 
 Continuation audit on 2026-05-27 found that the active `scripts/method.sh` path used `method.answer_grpo`, a complete-answer action policy. Although it preserves GRPO, Humanline syncing, and upstream policy/reference ratio clipping, it is not token-wise over generated completions as described in the paper. I added a `--pool-stale-batches` option to both token-level and action-level GRPO implementations so stale/off-policy math training can generate a block from an old policy and consume a distinct stale mini-batch each optimizer step, closer to the paper's 64x stale-sampling protocol. The next queued job runs the token-level path directly.
 
+Follow-up audit fix on 2026-05-27 switched `scripts/method.sh`, `scripts/baseline.sh`, and `scripts/ablation.sh` to the token-level implementation. I also changed `eval/evaluate_math.py` so scores are recomputed from `*_predictions.jsonl` artifacts, not copied from method-owned run JSON. The next job will regenerate active scores from token-level predictions.
+
 ## Deviations from Paper
 
 - Paper used Qwen2.5-1.5B-Instruct and MATH500; this reproduction uses a compact structured complete-answer policy and generated arithmetic tasks to fit the available compute budget. The GRPO and humanline computational steps are preserved.

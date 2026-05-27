@@ -185,17 +185,8 @@ def grpo_update(
 
 
 @torch.no_grad()
-def evaluate_policy(policy: AnswerPolicy, examples: list[Example], device: torch.device) -> tuple[float, float, float]:
+def collect_predictions(policy: AnswerPolicy, examples: list[Example], device: torch.device) -> list[dict[str, str | int | float]]:
     operands = operand_tensor(examples, device)
-    actions = policy(operands).argmax(dim=-1).tolist()
-    rewards = [reward_completion(action_text(action), ex.answer) for action, ex in zip(actions, examples)]
-    correct = sum(int(action == ex.answer) for action, ex in zip(actions, examples))
-    return correct / len(examples), sum(rewards) / len(rewards), 1.0
-
-
-@torch.no_grad()
-def sample_predictions(policy: AnswerPolicy, examples: list[Example], device: torch.device, n: int = 8) -> list[dict[str, str | int | float]]:
-    operands = operand_tensor(examples[:n], device)
     actions = policy(operands).argmax(dim=-1).tolist()
     return [
         {
@@ -204,8 +195,27 @@ def sample_predictions(policy: AnswerPolicy, examples: list[Example], device: to
             "completion": action_text(action),
             "reward": reward_completion(action_text(action), ex.answer),
         }
-        for action, ex in zip(actions, examples[:n])
+        for action, ex in zip(actions, examples)
     ]
+
+
+def score_prediction_rows(rows: list[dict[str, str | int | float]]) -> tuple[float, float, float]:
+    rewards = [float(row["reward"]) for row in rows]
+    correct = sum(int(float(row["reward"]) >= 1.0) for row in rows)
+    formatted = sum(int("<answer>" in str(row["completion"]) and "</answer>" in str(row["completion"])) for row in rows)
+    if not rows:
+        return 0.0, 0.0, 0.0
+    return correct / len(rows), sum(rewards) / len(rewards), formatted / len(rows)
+
+
+@torch.no_grad()
+def evaluate_policy(policy: AnswerPolicy, examples: list[Example], device: torch.device) -> tuple[float, float, float]:
+    return score_prediction_rows(collect_predictions(policy, examples, device))
+
+
+@torch.no_grad()
+def sample_predictions(policy: AnswerPolicy, examples: list[Example], device: torch.device, n: int = 8) -> list[dict[str, str | int | float]]:
+    return collect_predictions(policy, examples[:n], device)
 
 
 def run(args: argparse.Namespace) -> RunMetrics:
@@ -268,10 +278,14 @@ def run(args: argparse.Namespace) -> RunMetrics:
             reference.load_state_dict(pending_reference_state)
             pending_reference_state = None
 
-    pass_at_1, mean_reward, format_rate = evaluate_policy(policy, eval_examples, device)
+    final_predictions = collect_predictions(policy, eval_examples, device)
+    pass_at_1, mean_reward, format_rate = score_prediction_rows(final_predictions)
     out_dir = Path(args.output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     torch.save(policy.state_dict(), out_dir / f"{args.name}.pt")
+    with (out_dir / f"{args.name}_predictions.jsonl").open("w") as f:
+        for row in final_predictions:
+            f.write(json.dumps(row) + "\n")
     metrics = RunMetrics(
         method=args.name,
         train_steps=args.train_steps,
