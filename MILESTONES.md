@@ -44,5 +44,10 @@
 - At `128` steps, offline humanline GRPO matched stale GRPO on `pass_at_1=0.11875` and slightly improved mean reward (`0.26071875` vs `0.26009375`) with the same `8192` generated examples.
 - The job failed only because the new 128-step method names were missing from `reference.json`; I added them so the reusable evaluator accepts the expansion.
 
+### [2026-05-27 03:36] - core_claim_plus
+- Eighth compute job reran the full reproduction and exited successfully.
+- `scripts/reproduce.sh` now produces validated 64-step and 128-step stale-refresh results, and `python validate.py --compare` passes.
+- Stopping at `core_claim_plus`; broader instruction-following and ablation results remain outside this scaled reproduction.
+
 ## Stop Justification
-- Not stopped.
+- Stopping with a validated `core_claim_plus` environment: the core stale-GRPO math claim is reproduced at 64-step refresh and expanded to a 128-step refresh setting.

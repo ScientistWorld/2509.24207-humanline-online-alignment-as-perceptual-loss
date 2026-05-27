@@ -20,9 +20,11 @@ Sixth CPU job completed successfully and reached `core_claim` on the scaled arit
 
 Seventh CPU job ran the 128-step stale-refresh expansion but exited with a validation error because the new method names were not yet in `reference.json`. The actual 128-step artifacts were produced: offline humanline GRPO matched stale GRPO on `pass_at_1=0.11875`, slightly improved mean reward (`0.26071875` vs `0.26009375`), and used the same `8192` generated examples.
 
+Eighth CPU job reran the full script after the reference update and exited successfully. `scripts/reproduce.sh` now regenerates the 64-step and 128-step settings and `python validate.py --compare` passes with all four methods in `scoring/scores.json`.
+
 ## Remaining
 
-Rerun the full script after adding 128-step entries to `reference.json` so the expansion validates cleanly end to end.
+Higher milestones would require reproducing additional paper sections such as instruction-following win-rate experiments or ablations of clipping vs syncing. The current environment is packaged and validated for the core stale-GRPO math claim plus one stale-refresh expansion.
 
 ## Issues
 
@@ -40,7 +42,9 @@ The sixth run showed that the scaled humanline computation works when the warm-s
 
 The seventh run exposed an evaluator packaging gap: `scores.json` may include expansion methods only if `reference.json` lists the same method names. I added reference entries for the 128-step stale baseline and humanline method.
 
+The final rerun confirmed that the evaluator, method scripts, baseline scripts, and end-to-end reproduction script are consistent.
+
 ## Deviations from Paper
 
-- Paper used Qwen2.5-1.5B-Instruct and MATH500; this reproduction uses a tiny GRU and generated arithmetic tasks to fit a first smoke run. The GRPO and humanline computational steps are preserved.
+- Paper used Qwen2.5-1.5B-Instruct and MATH500; this reproduction uses a compact structured complete-answer policy and generated arithmetic tasks to fit the available compute budget. The GRPO and humanline computational steps are preserved.
 - Paper used 64x stale sampling for math; the smoke script uses a 64-step stale refresh interval at reduced model/data scale.
