@@ -13,9 +13,9 @@ set -e
 
 cd /home/user
 
-export TRAIN_STEPS="${TRAIN_STEPS:-80}"
-export SFT_STEPS="${SFT_STEPS:-120}"
-export REFRESH_INTERVAL="${REFRESH_INTERVAL:-16}"
+export TRAIN_STEPS="${TRAIN_STEPS:-256}"
+export SFT_STEPS="${SFT_STEPS:-500}"
+export REFRESH_INTERVAL="${REFRESH_INTERVAL:-64}"
 export SYNC_K="${SYNC_K:-12}"
 
 bash scripts/reproduce.sh

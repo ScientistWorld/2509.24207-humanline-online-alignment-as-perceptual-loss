@@ -42,11 +42,20 @@ def target_text(answer: int) -> str:
 
 
 def reward_completion(text: str, answer: int) -> float:
-    """Formatting plus correctness reward, matching RLVR-style evaluation."""
+    """Formatting, numeric closeness, and correctness reward.
+
+    The paper's math setup combines format and accuracy rewards.  The scaled
+    character task uses an additional bounded closeness term so GRPO gets a
+    useful signal before exact answers are sampled frequently.
+    """
     match = ANSWER_RE.search(text)
-    fmt = 0.125 if match else 0.0
-    correct = 1.0 if match and int(match.group(1)) == answer else 0.0
-    return fmt + correct
+    if not match:
+        return 0.0
+    pred = int(match.group(1))
+    fmt = 0.1
+    closeness = max(0.0, 1.0 - abs(pred - answer) / 40.0) * 0.4
+    correct = 1.0 if pred == answer else 0.0
+    return fmt + closeness + correct
 
 
 def extract_answer(text: str) -> int | None:

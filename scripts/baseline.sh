@@ -19,9 +19,11 @@ cd /home/user
 
 python -m baseline.stale_grpo \
   --name stale_grpo_64x_offpolicy \
-  --refresh-interval "${REFRESH_INTERVAL:-16}" \
-  --train-steps "${TRAIN_STEPS:-160}" \
-  --sft-steps "${SFT_STEPS:-220}" \
+  --refresh-interval "${REFRESH_INTERVAL:-64}" \
+  --train-steps "${TRAIN_STEPS:-256}" \
+  --sft-steps "${SFT_STEPS:-500}" \
+  --min-value "${MIN_VALUE:-0}" \
+  --max-value "${MAX_VALUE:-19}" \
   --output-dir checkpoints/humanline_grpo
 
 bash scripts/evaluate.sh --runs-dir checkpoints/humanline_grpo

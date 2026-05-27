@@ -26,6 +26,7 @@ def main() -> None:
             "format_rate": run["format_rate"],
             "stale_refresh_interval": run["stale_refresh_interval"],
             "generated_examples": run["generated_examples"],
+            "initial_pass_at_1": run.get("initial_pass_at_1", 0.0),
         }
 
     if not results:

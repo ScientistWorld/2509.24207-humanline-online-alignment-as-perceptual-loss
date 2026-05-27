@@ -6,17 +6,17 @@ Implemented a scaled reproduction of the paper's verifiable-reward humanline GRP
 
 ## Results
 
-No compute-node results yet. A CPU smoke job is being submitted to run baseline stale GRPO and offline humanline GRPO, then write `scoring/scores.json`.
+First CPU smoke job completed successfully and wrote `scoring/scores.json`. Both stale GRPO and offline humanline GRPO reached `format_rate=1.0` but `pass_at_1=0.0`, so the implementation ran but did not yet support the core claim.
 
 ## Remaining
 
-Analyze the submitted job results. If the humanline run does not outperform or match the stale baseline, tune the scaled benchmark or training hyperparameters and resubmit.
+Run the revised dense-reward arithmetic setup with a 64-step stale refresh interval. If the humanline run still fails to improve exact answer accuracy, inspect saved samples and tune the reward/training scale again.
 
 ## Issues
 
-Full paper scale uses Qwen2.5-1.5B-Instruct on MATH500/Open-R1 and would require a larger GPU run. This first implementation targets the same algorithmic claim on a small synthetic verifiable task.
+The first scaled task used a sparse exact-match reward and produced no numeric correctness. I added a bounded numeric-closeness term to the reward so GRPO receives a useful signal before exact answers are sampled frequently.
 
 ## Deviations from Paper
 
 - Paper used Qwen2.5-1.5B-Instruct and MATH500; this reproduction uses a tiny GRU and generated arithmetic tasks to fit a first smoke run. The GRPO and humanline computational steps are preserved.
-- Paper used 64x stale sampling for math; the smoke script defaults to 16-step stale refresh to run quickly. The refresh interval is parameterized for later scaling.
+- Paper used 64x stale sampling for math; the revised smoke script now defaults to a 64-step stale refresh interval at reduced model/data scale.

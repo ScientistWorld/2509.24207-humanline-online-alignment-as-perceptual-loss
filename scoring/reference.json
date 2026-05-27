@@ -9,7 +9,8 @@
         "mean_reward": {"higher_is_better": true, "coefficient": 0.5},
         "format_rate": {"higher_is_better": true, "coefficient": 0.2},
         "stale_refresh_interval": {"higher_is_better": true, "coefficient": 0.0},
-        "generated_examples": {"higher_is_better": false, "coefficient": -0.1}
+        "generated_examples": {"higher_is_better": false, "coefficient": -0.1},
+        "initial_pass_at_1": {"higher_is_better": false, "coefficient": -0.1}
       },
       "results": {
         "stale_grpo_64x_offpolicy": {
@@ -18,7 +19,8 @@
           "mean_reward": 0.0,
           "format_rate": 0.0,
           "stale_refresh_interval": 64,
-          "generated_examples": 1
+          "generated_examples": 512,
+          "initial_pass_at_1": 0.0
         },
         "offline_humanline_grpo": {
           "type": "proposed",
@@ -26,7 +28,8 @@
           "mean_reward": 0.593,
           "format_rate": 1.0,
           "stale_refresh_interval": 64,
-          "generated_examples": 1
+          "generated_examples": 512,
+          "initial_pass_at_1": 0.0
         }
       }
     }

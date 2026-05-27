@@ -25,6 +25,9 @@ class RunMetrics:
     format_rate: float
     stale_refresh_interval: int
     generated_examples: int
+    initial_pass_at_1: float
+    initial_mean_reward: float
+    samples: list[dict[str, str | int | float]]
 
 
 def set_seed(seed: int) -> None:
@@ -108,6 +111,24 @@ def evaluate_policy(model: TinyGRUPolicy, examples, device: torch.device, max_ne
         formatted += int("<answer>" in text and "</answer>" in text)
     model.train()
     return correct / len(examples), sum(rewards) / len(rewards), formatted / len(examples)
+
+
+@torch.no_grad()
+def sample_predictions(model: TinyGRUPolicy, examples, device: torch.device, max_new_tokens: int, n: int = 8) -> list[dict[str, str | int | float]]:
+    model.eval()
+    rows = []
+    for ex in examples[:n]:
+        completion = generate_one(model, ex.prompt, device, max_new_tokens, temperature=0.01)
+        rows.append(
+            {
+                "prompt": ex.prompt,
+                "answer": ex.answer,
+                "completion": completion,
+                "reward": reward_completion(completion, ex.answer),
+            }
+        )
+    model.train()
+    return rows
 
 
 @torch.no_grad()
@@ -199,11 +220,12 @@ def grpo_update(
 def run(args: argparse.Namespace) -> RunMetrics:
     set_seed(args.seed)
     device = torch.device("cuda" if torch.cuda.is_available() and not args.cpu else "cpu")
-    train_examples = make_examples(args.train_size, args.seed)
-    eval_examples = make_examples(args.eval_size, args.seed + 10_000)
+    train_examples = make_examples(args.train_size, args.seed, args.min_value, args.max_value)
+    eval_examples = make_examples(args.eval_size, args.seed + 10_000, args.min_value, args.max_value)
 
     policy = TinyGRUPolicy(len(CHARS), args.hidden_size).to(device)
     supervised_warm_start(policy, train_examples, device, args.sft_steps, args.batch_size, args.sft_lr)
+    initial_pass_at_1, initial_mean_reward, _ = evaluate_policy(policy, eval_examples, device, args.max_new_tokens)
     reference = TinyGRUPolicy(len(CHARS), args.hidden_size).to(device)
     reference.load_state_dict(policy.state_dict())
     behavior = TinyGRUPolicy(len(CHARS), args.hidden_size).to(device)
@@ -251,6 +273,9 @@ def run(args: argparse.Namespace) -> RunMetrics:
         format_rate=format_rate,
         stale_refresh_interval=args.refresh_interval,
         generated_examples=generated_examples,
+        initial_pass_at_1=initial_pass_at_1,
+        initial_mean_reward=initial_mean_reward,
+        samples=sample_predictions(policy, eval_examples, device, args.max_new_tokens),
     )
     with (out_dir / f"{args.name}.json").open("w") as f:
         json.dump(asdict(metrics), f, indent=2)
@@ -265,12 +290,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--cpu", action="store_true")
     parser.add_argument("--humanline", action="store_true")
     parser.add_argument("--sync-k", type=int, default=12)
-    parser.add_argument("--refresh-interval", type=int, default=16)
-    parser.add_argument("--train-steps", type=int, default=160)
-    parser.add_argument("--sft-steps", type=int, default=220)
+    parser.add_argument("--refresh-interval", type=int, default=64)
+    parser.add_argument("--train-steps", type=int, default=256)
+    parser.add_argument("--sft-steps", type=int, default=500)
     parser.add_argument("--train-size", type=int, default=512)
     parser.add_argument("--eval-size", type=int, default=160)
-    parser.add_argument("--batch-size", type=int, default=16)
+    parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--group-size", type=int, default=4)
     parser.add_argument("--max-new-tokens", type=int, default=20)
     parser.add_argument("--hidden-size", type=int, default=128)
@@ -281,6 +306,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--beta-kl", type=float, default=0.01)
     parser.add_argument("--log-epsilon-p", type=float, default=-1.5)
     parser.add_argument("--log-epsilon-r", type=float, default=1.5)
+    parser.add_argument("--min-value", type=int, default=0)
+    parser.add_argument("--max-value", type=int, default=19)
     return parser.parse_args()
 
 
