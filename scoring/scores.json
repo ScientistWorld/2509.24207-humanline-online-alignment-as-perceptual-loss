@@ -34,12 +34,28 @@
           "generated_examples": 8192,
           "initial_pass_at_1": 0.06875
         },
+        "offline_humanline_grpo_32x": {
+          "pass_at_1": 0.21875,
+          "mean_reward": 0.3644062500000002,
+          "format_rate": 1.0,
+          "stale_refresh_interval": 32,
+          "generated_examples": 32768,
+          "initial_pass_at_1": 0.06875
+        },
         "stale_grpo_128x_offpolicy": {
           "pass_at_1": 0.11875,
           "mean_reward": 0.26034375000000004,
           "format_rate": 1.0,
           "stale_refresh_interval": 128,
           "generated_examples": 8192,
+          "initial_pass_at_1": 0.06875
+        },
+        "stale_grpo_32x_offpolicy": {
+          "pass_at_1": 0.2375,
+          "mean_reward": 0.3832500000000003,
+          "format_rate": 1.0,
+          "stale_refresh_interval": 32,
+          "generated_examples": 32768,
           "initial_pass_at_1": 0.06875
         },
         "stale_grpo_64x_offpolicy": {
