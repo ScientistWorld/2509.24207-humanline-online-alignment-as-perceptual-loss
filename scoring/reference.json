@@ -16,7 +16,7 @@
         "stale_grpo_64x_offpolicy": {
           "type": "baseline",
           "pass_at_1": 0.0,
-          "mean_reward": 0.0,
+          "mean_reward": 0.1,
           "format_rate": 0.0,
           "stale_refresh_interval": 64,
           "generated_examples": 3072,
@@ -25,7 +25,7 @@
         "offline_humanline_grpo": {
           "type": "proposed",
           "pass_at_1": 0.593,
-          "mean_reward": 0.593,
+          "mean_reward": 0.72,
           "format_rate": 1.0,
           "stale_refresh_interval": 64,
           "generated_examples": 3072,

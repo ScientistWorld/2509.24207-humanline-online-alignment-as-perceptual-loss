@@ -21,6 +21,10 @@ python -m method.answer_grpo \
   --group-size "${GROUP_SIZE:-4}" \
   --hidden-size "${HIDDEN_SIZE:-128}" \
   --temperature "${TEMPERATURE:-0.8}" \
+  --rl-lr "${RL_LR:-5e-4}" \
+  --beta-kl "${BETA_KL:-0.01}" \
+  --log-epsilon-p "${LOG_EPSILON_P:--1.5}" \
+  --log-epsilon-r "${LOG_EPSILON_R:-1.5}" \
   --min-value "${MIN_VALUE:-0}" \
   --max-value "${MAX_VALUE:-19}" \
   --output-dir checkpoints/humanline_grpo

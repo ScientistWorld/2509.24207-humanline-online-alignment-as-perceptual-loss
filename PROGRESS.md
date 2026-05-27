@@ -12,9 +12,11 @@ Second CPU job completed successfully after adding a dense numeric reward. Exact
 
 Third CPU job completed successfully after masking warm-start loss to answer tokens. It still did not support the core claim: stale GRPO reached `pass_at_1=0.0625`, while offline humanline GRPO reached `pass_at_1=0.05`; samples still collapsed to a constant `<answer>19</answer>` output.
 
+Fourth CPU job completed successfully with the structured answer policy. It removed constant-output collapse, but still did not support the core claim: the warm-start policy began at `pass_at_1=0.18125`, stale GRPO ended at `0.14375`, and offline humanline GRPO ended at `0.10`.
+
 ## Remaining
 
-Run the structured answer-policy GRPO implementation with the same stale-batch and humanline mechanics. If that run distinguishes stale GRPO from humanline GRPO, use it as the scaled core-claim reproduction; otherwise inspect whether clipping/sync settings or task scale need adjustment.
+Run the exact-dominant verifier reward with wider humanline log-ratio bounds for the structured answer-policy GRPO implementation. If this still degrades from the warm-start state, the next issue to inspect is whether stale-batch reuse needs an online comparison run or a smaller learning rate.
 
 ## Issues
 
@@ -23,6 +25,8 @@ The first scaled task used a sparse exact-match reward and produced no numeric c
 The second run showed that the model learned formatting but not enough prompt-conditioned arithmetic. I changed supervised warm start so cross-entropy is applied only to completion tokens, matching the RL/evaluation target and preventing prompt-copying tokens from dominating the loss.
 
 The third run confirmed that character-level generation, not the GRPO code path, was dominating the failure mode. I added a structured policy over complete formatted arithmetic answers so the next job tests the paper's online-alignment computation without sequence-format collapse.
+
+The fourth run showed that the dense closeness reward can favor close but wrong sums. I reduced the format/closeness terms and made exact correctness dominate, and widened the humanline clipping range for the action-level scaled policy so the sync behavior is not masked by overly tight action-logit clipping.
 
 ## Deviations from Paper
 

@@ -44,16 +44,16 @@ def target_text(answer: int) -> str:
 def reward_completion(text: str, answer: int) -> float:
     """Formatting, numeric closeness, and correctness reward.
 
-    The paper's math setup combines format and accuracy rewards.  The scaled
-    character task uses an additional bounded closeness term so GRPO gets a
-    useful signal before exact answers are sampled frequently.
+    The paper's math setup is driven by verifiable correctness.  The scaled
+    task keeps a small closeness term for exploration but makes exact answer
+    correctness dominate so near misses do not outscore learning the sum.
     """
     match = ANSWER_RE.search(text)
     if not match:
         return 0.0
     pred = int(match.group(1))
-    fmt = 0.1
-    closeness = max(0.0, 1.0 - abs(pred - answer) / 40.0) * 0.4
+    fmt = 0.05
+    closeness = max(0.0, 1.0 - abs(pred - answer) / 40.0) * 0.1
     correct = 1.0 if pred == answer else 0.0
     return fmt + closeness + correct
 

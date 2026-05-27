@@ -24,5 +24,10 @@
 - Stale GRPO reached `pass_at_1=0.0625`; offline humanline GRPO reached `pass_at_1=0.05`, so the core claim is still not met.
 - Added a structured complete-answer policy to preserve GRPO/humanline computation while removing character-generation collapse from the scaled reproduction.
 
+### [2026-05-27 03:21] - method_runs
+- Fourth compute job exited successfully with the structured answer policy.
+- Constant-format collapse was fixed, but both RL variants degraded from the warm-start policy; stale GRPO reached `pass_at_1=0.14375` and offline humanline GRPO reached `0.10`.
+- Revised the verifier reward to be exact-dominant and widened action-level humanline clipping for the next run.
+
 ## Stop Justification
 - Not stopped.

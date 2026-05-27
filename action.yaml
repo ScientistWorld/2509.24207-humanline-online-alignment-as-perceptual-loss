@@ -2,4 +2,4 @@ action: submit
 gpus: 0
 test: true
 milestone: method_runs
-notes: "Fourth CPU test: run structured complete-answer GRPO to test stale GRPO vs offline humanline GRPO without character-generation collapse."
+notes: "Fifth CPU test: rerun structured answer GRPO with exact-dominant verifier reward and wider action-level humanline clipping."

@@ -20,6 +20,8 @@ export SYNC_K="${SYNC_K:-12}"
 export GROUP_SIZE="${GROUP_SIZE:-8}"
 export HIDDEN_SIZE="${HIDDEN_SIZE:-64}"
 export TEMPERATURE="${TEMPERATURE:-1.0}"
+export LOG_EPSILON_P="${LOG_EPSILON_P:--5.0}"
+export LOG_EPSILON_R="${LOG_EPSILON_R:-5.0}"
 
 bash scripts/reproduce.sh
 python validate.py --compare
