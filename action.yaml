@@ -2,4 +2,4 @@ action: done
 gpus: 0
 test: false
 milestone: core_claim_plus
-notes: "Final verification passed; method-agnostic docs and scoring consistency fixed, validation passes."
+notes: "Final audit passed: validation succeeds, artifacts are scored from predictions, and the reduced Humanline GRPO gym is packaged at core_claim_plus."

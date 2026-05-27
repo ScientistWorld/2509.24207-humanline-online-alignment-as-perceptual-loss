@@ -39,5 +39,10 @@
 - The ablation did not support `secondary_claims`: syncing-only matched full Humanline (`0.61875`) and clipping-only was slightly higher (`0.625`), so this reduced benchmark does not reproduce the paper's component attribution.
 - The sync-cadence expansion did support an additional Humanline setting: `offline_humanline_grpo_64x_sync24` reached `pass_at_1=0.69375`, above online refresh (`0.59375`) and the 64-step stale baseline (`0.61875`) with the same generated-example budget.
 
+### [2026-05-27 07:54] - core_claim_plus
+- Re-audited the packaged environment after sub-agent review.
+- Confirmed `python validate.py --compare` passes, `eval/` and `data/` remain separated from `method/`, and active scores are recomputed from prediction JSONL artifacts.
+- Left unrelated root device-file and trajectory changes untouched.
+
 ## Stop Justification
 - Completed at milestone `core_claim_plus`.

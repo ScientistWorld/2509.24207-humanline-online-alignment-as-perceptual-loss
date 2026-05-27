@@ -44,6 +44,8 @@ CPU job `9f062ef2-f4d` completed successfully and reached `core_claim_plus`. The
 
 The current milestone is `core_claim_plus`. No further job is queued: the active token-level reproduction now includes the core stale-vs-online result, a successful sync-cadence expansion, the failed 128-step diagnostic, and the failed component ablation.
 
+Final audit on 2026-05-27 07:54 UTC confirmed `python validate.py --compare` passes and the reproduction remains packaged at `core_claim_plus`. The evaluator reads method artifacts rather than regenerating results, and train/test slice scoring is available via `scripts/run.sh`.
+
 ## Issues
 
 The first scaled task used a sparse exact-match reward and produced no numeric correctness. I added a bounded numeric-closeness term to the reward so GRPO receives a useful signal before exact answers are sampled frequently.
