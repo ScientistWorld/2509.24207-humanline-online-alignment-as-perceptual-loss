@@ -29,3 +29,15 @@ export LOG_EPSILON_R="${LOG_EPSILON_R:-5.0}"
 export RUN_ABLATIONS=1
 
 bash scripts/reproduce.sh
+
+BASELINE_NAME="stale_grpo_32x_offpolicy" \
+METHOD_NAME="offline_humanline_grpo_32x" \
+REFRESH_INTERVAL=32 \
+bash scripts/baseline.sh
+
+BASELINE_NAME="stale_grpo_32x_offpolicy" \
+METHOD_NAME="offline_humanline_grpo_32x" \
+REFRESH_INTERVAL=32 \
+bash scripts/method.sh
+
+bash scripts/evaluate.sh --runs-dir checkpoints/humanline_grpo

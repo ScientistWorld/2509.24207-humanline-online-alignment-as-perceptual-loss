@@ -16,7 +16,7 @@
         "stale_grpo_64x_offpolicy": {
           "type": "baseline",
           "pass_at_1": 0.15,
-          "mean_reward": 0.293078125,
+          "mean_reward": 0.293046875,
           "format_rate": 1.0,
           "stale_refresh_interval": 64,
           "generated_examples": 16384,
@@ -24,8 +24,26 @@
         },
         "offline_humanline_grpo": {
           "type": "proposed",
-          "pass_at_1": 0.175,
-          "mean_reward": 0.31846875,
+          "pass_at_1": 0.16875,
+          "mean_reward": 0.312265625,
+          "format_rate": 1.0,
+          "stale_refresh_interval": 64,
+          "generated_examples": 16384,
+          "initial_pass_at_1": 0.06875
+        },
+        "humanline_sync_only_grpo": {
+          "type": "proposed",
+          "pass_at_1": 0.16875,
+          "mean_reward": 0.312265625,
+          "format_rate": 1.0,
+          "stale_refresh_interval": 64,
+          "generated_examples": 16384,
+          "initial_pass_at_1": 0.06875
+        },
+        "humanline_clip_only_grpo": {
+          "type": "proposed",
+          "pass_at_1": 0.15,
+          "mean_reward": 0.29325,
           "format_rate": 1.0,
           "stale_refresh_interval": 64,
           "generated_examples": 16384,
@@ -34,7 +52,7 @@
         "stale_grpo_128x_offpolicy": {
           "type": "baseline",
           "pass_at_1": 0.11875,
-          "mean_reward": 0.26009375,
+          "mean_reward": 0.26034375,
           "format_rate": 1.0,
           "stale_refresh_interval": 128,
           "generated_examples": 8192,
@@ -42,8 +60,8 @@
         },
         "offline_humanline_grpo_128x": {
           "type": "proposed",
-          "pass_at_1": 0.11875,
-          "mean_reward": 0.26071875,
+          "pass_at_1": 0.10625,
+          "mean_reward": 0.24753125,
           "format_rate": 1.0,
           "stale_refresh_interval": 128,
           "generated_examples": 8192,

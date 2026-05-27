@@ -28,9 +28,11 @@ Final validation on 2026-05-27 03:41 UTC passed with `python validate.py --compa
 
 Continuation audit on 2026-05-27 03:43 UTC reset the active milestone to `core_claim`. The audit found the existing method is recognizable as scaled Humanline GRPO and the evaluator remains independent. I added ablation switches and `scripts/ablation.sh` so the next job can test the secondary claim that syncing accounts for most of the Humanline gain while clipping is neutral-to-positive.
 
+Ninth CPU job `1444d95f-1d6` completed successfully. The 64-step core setting still supports the claim: stale GRPO reached `pass_at_1=0.15`, while offline humanline GRPO reached `0.16875` with the same `16384` generated examples. The ablations reproduce the paper's component claim at scaled size: syncing-only matched full humanline (`pass_at_1=0.16875`), while clipping-only stayed at the stale baseline (`pass_at_1=0.15`, with slightly higher mean reward). The 128-step expansion did not support the core claim in this rerun (`0.10625` humanline vs `0.11875` stale), so I updated `reference.json` to match the actual artifacts and queued a 32-step expansion to recover additional-setting coverage.
+
 ## Remaining
 
-Higher milestones would require reproducing additional paper sections such as instruction-following win-rate experiments or ablations of clipping vs syncing. The current environment is packaged and validated for the core stale-GRPO math claim plus one stale-refresh expansion.
+Higher milestones would require reproducing additional paper sections such as instruction-following win-rate experiments. The current environment is packaged for the core stale-GRPO math claim and syncing/clipping ablations; a 32-step stale-refresh expansion is queued to re-establish additional-setting coverage after the 128-step setting failed to support the claim.
 
 ## Issues
 
@@ -51,6 +53,8 @@ The seventh run exposed an evaluator packaging gap: `scores.json` may include ex
 The final rerun confirmed that the evaluator, method scripts, baseline scripts, and end-to-end reproduction script are consistent.
 
 The final validation pass required reference targets to be on the same task scale as `scores.json`; otherwise the checker correctly treats the synthetic arithmetic scores as inconsistent with MATH500.
+
+The ablation rerun confirmed that the full method's benefit in this scaled setting is driven by reference syncing rather than clipping, matching the paper's qualitative Figure 5 claim.
 
 ## Deviations from Paper
 

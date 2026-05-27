@@ -5,4 +5,4 @@ action: submit
 gpus: 0
 test: false
 milestone: core_claim
-notes: "Run the existing scaled Humanline GRPO reproduction plus new syncing-only and clipping-only ablations to test the paper's secondary component claim."
+notes: "Run the validated reproduction plus ablations and add a 32-step stale-refresh expansion to restore additional-setting coverage after the 128-step expansion failed."

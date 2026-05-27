@@ -4,4 +4,4 @@
 
 Tests whether a post-training approach remains effective when generated feedback data is reused for multiple updates instead of being refreshed at every step. The experiment measures answer correctness, formatting reliability, and generated-data usage on a small verifiable arithmetic task.
 
-The default reproduction includes the paper-aligned 64-step stale refresh setting and a harder 128-step refresh expansion. Both settings compare the same generated-data budget within each refresh interval.
+The default reproduction includes the paper-aligned 64-step stale refresh setting, a harder 128-step refresh expansion, and component ablations that isolate reference syncing from upstream ratio clipping. The 64-step setting compares the same generated-data budget across stale GRPO, full humanline GRPO, syncing-only humanline GRPO, and clipping-only humanline GRPO.

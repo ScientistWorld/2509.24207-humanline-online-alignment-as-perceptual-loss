@@ -14,3 +14,5 @@ The paper reports that online GRPO and its stale-data humanline variant both rea
 ## Evaluation Protocol
 
 Run `scripts/reproduce.sh` to train the baseline and proposed variants, then run `scripts/evaluate.sh`. Evaluation reads JSON artifacts produced under `checkpoints/humanline_grpo/` and writes `scoring/scores.json`. The evaluator is method-agnostic and does not import from `method/`.
+
+Set `RUN_ABLATIONS=1` when running `scripts/reproduce.sh` to include syncing-only and clipping-only Humanline GRPO ablations for the component claim.
