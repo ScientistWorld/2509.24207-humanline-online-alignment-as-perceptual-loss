@@ -5,6 +5,7 @@
 Tests whether a model trained from stale generated groups can still improve verifiable arithmetic answer accuracy.
 - **Metric**: `pass_at_1` (higher is better)
 - **Run**: `bash scripts/reproduce.sh`, then inspect `scoring/scores.json`
+- **Comparator**: `online_refresh_grpo` refreshes generated groups every update; `offline_humanline_grpo` should remain close to this online comparator while using the 64-step stale refresh cadence.
 - **Expansion**: `scripts/reproduce.sh` also runs an optional 128-step stale refresh setting by default; disable with `RUN_EXTRA_REFRESH=0`.
 - **Sync sweep**: `scripts/reproduce.sh` runs 64-step Humanline sync-cadence variants by default; disable with `RUN_SYNC_SWEEP=0`.
 

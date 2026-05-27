@@ -24,5 +24,10 @@
 - Removed the dense numeric-closeness reward that made central wrong answers attractive, added balanced finite-grid warm-start data, and saved initial SFT predictions for diagnostics.
 - Replaced the weak character-GRU policy in the reduced benchmark with a prompt-conditioned structured token policy over answer-tag completions, then queued a shorter core stale GRPO vs Humanline GRPO run.
 
+### [2026-05-27 07:03] - method_runs
+- Completed structured token-level GRPO job `a15a0a07-953`: both 64-step stale GRPO and 64-step Humanline GRPO improved from `initial_pass_at_1=0.48125` to `pass_at_1=0.61875` with `format_rate=1.0`.
+- Kept the milestone at `method_runs` because the run did not yet include the online-refresh comparator needed for the paper's core stale-vs-online claim.
+- Added the online-refresh comparator and a 128-step stale-refresh expansion to the next job.
+
 ## Stop Justification
-- Not stopped. A corrected token-level Humanline GRPO job is queued to test whether the actual algorithm supports the core stale-data claim after fixing the constant-answer failure mode.
+- Not stopped. A structured token-level Humanline GRPO job is queued with online-refresh, 64-step stale, 64-step Humanline, and 128-step expansion runs.

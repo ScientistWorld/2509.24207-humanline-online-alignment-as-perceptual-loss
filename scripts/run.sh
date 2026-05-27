@@ -42,6 +42,12 @@ COMMON_ARGS=(
 )
 
 python -m method.humanline_grpo \
+  --name online_refresh_grpo \
+  --refresh-interval 1 \
+  --sync-k "${SYNC_K:-12}" \
+  "${COMMON_ARGS[@]}"
+
+python -m method.humanline_grpo \
   --name stale_grpo_64x_offpolicy \
   --refresh-interval 64 \
   --sync-k "${SYNC_K:-12}" \
@@ -51,6 +57,19 @@ python -m method.humanline_grpo \
   --name offline_humanline_grpo \
   --humanline \
   --refresh-interval 64 \
+  --sync-k "${SYNC_K:-12}" \
+  "${COMMON_ARGS[@]}"
+
+python -m method.humanline_grpo \
+  --name stale_grpo_128x_offpolicy \
+  --refresh-interval 128 \
+  --sync-k "${SYNC_K:-12}" \
+  "${COMMON_ARGS[@]}"
+
+python -m method.humanline_grpo \
+  --name offline_humanline_grpo_128x \
+  --humanline \
+  --refresh-interval 128 \
   --sync-k "${SYNC_K:-12}" \
   "${COMMON_ARGS[@]}"
 

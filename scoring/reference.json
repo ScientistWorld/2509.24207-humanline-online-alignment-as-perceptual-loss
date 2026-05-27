@@ -13,23 +13,32 @@
         "initial_pass_at_1": {"higher_is_better": false, "coefficient": -0.1}
       },
       "results": {
+        "online_refresh_grpo": {
+          "type": "baseline",
+          "pass_at_1": 0.61875,
+          "mean_reward": 0.66875,
+          "format_rate": 1.0,
+          "stale_refresh_interval": 1,
+          "generated_examples": 65536,
+          "initial_pass_at_1": 0.48125
+        },
         "stale_grpo_64x_offpolicy": {
           "type": "baseline",
-          "pass_at_1": 0.15,
-          "mean_reward": 0.293046875,
+          "pass_at_1": 0.61875,
+          "mean_reward": 0.66875,
           "format_rate": 1.0,
           "stale_refresh_interval": 64,
-          "generated_examples": 16384,
-          "initial_pass_at_1": 0.06875
+          "generated_examples": 65536,
+          "initial_pass_at_1": 0.48125
         },
         "offline_humanline_grpo": {
           "type": "proposed",
-          "pass_at_1": 0.16875,
-          "mean_reward": 0.312265625,
+          "pass_at_1": 0.61875,
+          "mean_reward": 0.66875,
           "format_rate": 1.0,
           "stale_refresh_interval": 64,
-          "generated_examples": 16384,
-          "initial_pass_at_1": 0.06875
+          "generated_examples": 65536,
+          "initial_pass_at_1": 0.48125
         },
         "humanline_sync_only_grpo": {
           "type": "proposed",

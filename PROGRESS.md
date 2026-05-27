@@ -34,9 +34,11 @@ Tenth CPU job `b4150f04-d9c` completed successfully and evaluated eight methods.
 
 Eleventh CPU job `639ed704-46f` completed successfully and evaluated four 64-step Humanline sync cadences. `sync8` reached `pass_at_1=0.175`, `sync16` reached `0.1625`, and `sync24` reached `0.1625`, all above the stale 64-step baseline of `0.15` with identical `16384` generated examples; `sync20` tied the baseline at `0.15`. This restores additional-setting coverage around the successful 64-step stale-data condition. I also updated `scripts/reproduce.sh` so the final end-to-end script regenerates the 64-step core run, 128-step diagnostic, 32-step diagnostic, ablations, and sync sweep by default.
 
+CPU job `a15a0a07-953` completed successfully on the active structured token policy. Both 64-step stale GRPO and 64-step Humanline GRPO improved from `initial_pass_at_1=0.48125` to `pass_at_1=0.61875` with `format_rate=1.0` and the same `65536` generated examples. This restores a real token-wise learning signal, but I am keeping the milestone at `method_runs` until the same reduced benchmark also includes an online-refresh comparator; the paper's central math claim is that stale Humanline remains close to online updates, not only that it improves over initialization.
+
 ## Remaining
 
-The current milestone is reset to `method_runs` under a stricter integrity reading: the submitted job must show that the token-level Humanline GRPO path, not only the complete-answer action analogue, supports the stale-data math claim. If that succeeds, update scores and restore `core_claim`; if it fails, tune the token-level setup before claiming higher milestones.
+The current milestone remains `method_runs`. The next queued job adds `online_refresh_grpo` and a 128-step stale-refresh expansion to the structured token-level run. If 64-step Humanline matches or nearly matches online refresh while using the same generated-example budget and a stale refresh cadence, update to `core_claim`; if the 128-step setting also works, update to `core_claim_plus`.
 
 ## Issues
 
@@ -73,6 +75,8 @@ Cancelled token-level job `0d66f8d9-450` after it produced a non-claim-supportin
 Cancelled token-level job `c5f1c50e-49a` after the harder `0..19` run showed a different failure mode: the SFT warm start began near chance (`initial_pass_at_1=0.025`), and both stale GRPO and Humanline GRPO ended at `pass_at_1=0.0375` by producing the same constant `<answer>18</answer>` completion. I removed the numeric-closeness reward, which rewarded central wrong answers, added balanced finite-grid warm-start data so SFT sees the full reduced arithmetic space before repeating examples, and made each run save initial SFT predictions for diagnosis.
 
 Cancelled token-level job `0a6d0194-2ad` after the balanced-data GRU run still produced a constant `<answer>11</answer>` policy with no SFT improvement. I replaced the reduced benchmark's weak character-GRU policy with a prompt-conditioned structured token policy over valid answer-tag completions. The Humanline computation remains token-wise: generated completions are scored through autoregressive answer-character log probabilities, the policy/reference log-ratio is clipped per token upstream of GRPO, and the reference is synced on the Humanline schedule. The next job runs only stale GRPO and full Humanline GRPO on this structured token policy to test the core stale-data claim within the CPU time limit.
+
+Completed job `a15a0a07-953` showed that the structured token policy can learn from the GRPO loop, but it only compared stale GRPO against Humanline. I added `online_refresh_grpo` to `scripts/run.sh` and `scripts/reproduce.sh`, updated the scoring target docs to make the online comparator explicit, and queued a combined 64-step core plus 128-step expansion job.
 
 ## Deviations from Paper
 

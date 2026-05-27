@@ -3,6 +3,6 @@
 # only after your turn ends. Sleeping blocks the entire pipeline.
 action: submit
 gpus: 0
-test: false
+test: true
 milestone: method_runs
-notes: "Run core stale GRPO vs Humanline GRPO with the structured token policy after the character GRU collapsed to constant answers."
+notes: "Run structured token-level online refresh, 64-step stale GRPO, 64-step Humanline GRPO, and 128-step expansion to test the core stale-vs-online claim."

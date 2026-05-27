@@ -21,6 +21,10 @@ cd /home/user
 rm -rf checkpoints/humanline_grpo
 mkdir -p checkpoints/humanline_grpo
 
+BASELINE_NAME="online_refresh_grpo" \
+REFRESH_INTERVAL=1 \
+bash scripts/baseline.sh
+
 export BASELINE_NAME="${BASELINE_NAME:-stale_grpo_64x_offpolicy}"
 export METHOD_NAME="${METHOD_NAME:-offline_humanline_grpo}"
 bash scripts/baseline.sh
