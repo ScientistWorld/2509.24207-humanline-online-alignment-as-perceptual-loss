@@ -1,5 +1,8 @@
-action: done
-gpus: 0
-test: true
-milestone: core_claim_plus
-notes: "Validated core_claim_plus after aligning reference.json with the reduced synthetic arithmetic benchmark; validate.py --compare passes."
+# IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
+# Do NOT sleep, poll, or wait for jobs. The system reads this file
+# only after your turn ends. Sleeping blocks the entire pipeline.
+action: pending
+gpus: 1
+test: false
+milestone: core_claim
+notes: ""
