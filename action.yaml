@@ -1,5 +1,5 @@
-action: submit
+action: done
 gpus: 0
 test: false
 milestone: core_claim_plus
-notes: "Retry train/test scoring after fixing evaluator wrappers to expose /home/user on PYTHONPATH."
+notes: "Prompt-hash train/test split; 10 methods scored on 10 metrics per slice; pass@1 train range 0.557-0.722 and test range 0.481-0.667; format/coverage saturation demoted to diagnostics."

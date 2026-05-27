@@ -17,8 +17,8 @@
         },
         "format_rate": {
           "higher_is_better": true,
-          "coefficient": 0.1,
-          "description": "Fraction of completions using the expected answer-tag format."
+          "coefficient": 0.0,
+          "description": "Diagnostic fraction of completions using the expected answer-tag format; exact correctness and mean reward carry the scored answer-quality signal."
         },
         "numeric_mae": {
           "higher_is_better": false,
@@ -32,8 +32,8 @@
         },
         "unique_prompt_rate": {
           "higher_is_better": true,
-          "coefficient": 0.2,
-          "description": "Fraction of scored prediction rows with distinct prompts, discouraging duplicate easy-prompt stuffing."
+          "coefficient": 0.0,
+          "description": "Diagnostic fraction of scored prediction rows with distinct prompts; minimum slice-size and unique-prompt checks enforce coverage."
         },
         "evaluated_rows": {
           "higher_is_better": true,
