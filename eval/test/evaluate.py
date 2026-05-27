@@ -1,16 +1,20 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 from pathlib import Path
 
-from data.synthetic_math import reward_completion
+from data.synthetic_math import extract_answer, reward_completion
 
 
 EXPERIMENT_NAME = "synthetic_math_stale_grpo"
 SLICE_NAME = "test"
-SLICE_REMAINDER = 1
+SLICE_BUCKET = 1
+SPLIT_SALT = "researchgym_synthetic_math_prompt_hash_v2"
+MIN_SLICE_ROWS = 32
+MIN_UNIQUE_PROMPTS = 16
 PROMPT_RE = re.compile(r"^\s*(-?\d+)\+(-?\d+)=\?\s*$")
 
 
@@ -24,6 +28,13 @@ def answer_from_prompt(prompt: str) -> int:
     if not match:
         raise ValueError(f"Cannot parse arithmetic prompt: {prompt!r}")
     return int(match.group(1)) + int(match.group(2))
+
+
+def operands_from_prompt(prompt: str) -> tuple[int, int]:
+    match = PROMPT_RE.match(prompt)
+    if not match:
+        raise ValueError(f"Cannot parse arithmetic prompt: {prompt!r}")
+    return int(match.group(1)), int(match.group(2))
 
 
 def load_predictions(path: Path) -> list[dict]:
@@ -50,10 +61,38 @@ def load_predictions(path: Path) -> list[dict]:
 
 
 def select_slice(rows: list[dict]) -> list[dict]:
-    selected = [row for idx, row in enumerate(rows) if idx % 2 == SLICE_REMAINDER]
+    selected = [row for row in rows if prompt_bucket(str(row["prompt"])) == SLICE_BUCKET]
     if not selected:
-        raise ValueError(f"{SLICE_NAME} slice has no rows after deterministic 50/50 split")
+        raise ValueError(f"{SLICE_NAME} slice has no rows after deterministic prompt-hash split")
+    if len(selected) < MIN_SLICE_ROWS:
+        raise ValueError(
+            f"{SLICE_NAME} slice has only {len(selected)} rows; expected at least {MIN_SLICE_ROWS}"
+        )
+    unique_prompts = {str(row["prompt"]) for row in selected}
+    if len(unique_prompts) < MIN_UNIQUE_PROMPTS:
+        raise ValueError(
+            f"{SLICE_NAME} slice has only {len(unique_prompts)} unique prompts; "
+            f"expected at least {MIN_UNIQUE_PROMPTS}"
+        )
     return selected
+
+
+def prompt_bucket(prompt: str) -> int:
+    digest = hashlib.sha256(f"{SPLIT_SALT}:{prompt}".encode("utf-8")).digest()
+    return digest[0] % 2
+
+
+def is_carry_prompt(prompt: str) -> bool:
+    a, b = operands_from_prompt(prompt)
+    return abs(a) % 10 + abs(b) % 10 >= 10
+
+
+def correctness(row: dict) -> bool:
+    return reward_completion(str(row["completion"]), answer_from_prompt(str(row["prompt"]))) >= 1.0
+
+
+def rate(values: list[bool]) -> float:
+    return sum(1 for value in values if value) / len(values) if values else 0.0
 
 
 def score_predictions(rows: list[dict]) -> dict[str, float]:
@@ -62,6 +101,16 @@ def score_predictions(rows: list[dict]) -> dict[str, float]:
         for row in rows
     ]
     correct = sum(1 for reward in rewards if reward >= 1.0)
+    parsed_answers = [extract_answer(str(row["completion"])) for row in rows]
+    absolute_errors = [
+        (
+            abs(parsed - answer_from_prompt(str(row["prompt"])))
+            if parsed is not None
+            else abs(answer_from_prompt(str(row["prompt"]))) + 1
+        )
+        for row, parsed in zip(rows, parsed_answers)
+    ]
+    carry_rows = [row for row in rows if is_carry_prompt(str(row["prompt"]))]
     formatted = sum(
         1
         for row in rows
@@ -71,6 +120,10 @@ def score_predictions(rows: list[dict]) -> dict[str, float]:
         "pass_at_1": correct / len(rows),
         "mean_reward": sum(rewards) / len(rewards),
         "format_rate": formatted / len(rows),
+        "numeric_mae": sum(absolute_errors) / len(absolute_errors),
+        "carry_pass_at_1": rate([correctness(row) for row in carry_rows]),
+        "unique_prompt_rate": len({str(row["prompt"]) for row in rows}) / len(rows),
+        "evaluated_rows": float(len(rows)),
     }
 
 
@@ -113,6 +166,10 @@ def score_run(run_path: Path, run: dict) -> tuple[str, dict[str, float]]:
         "pass_at_1": scored["pass_at_1"],
         "mean_reward": scored["mean_reward"],
         "format_rate": scored["format_rate"],
+        "numeric_mae": scored["numeric_mae"],
+        "carry_pass_at_1": scored["carry_pass_at_1"],
+        "unique_prompt_rate": scored["unique_prompt_rate"],
+        "evaluated_rows": scored["evaluated_rows"],
         "stale_refresh_interval": run["stale_refresh_interval"],
         "generated_examples": run["generated_examples"],
         "initial_pass_at_1": run.get("initial_pass_at_1", 0.0),
@@ -150,7 +207,7 @@ def main() -> None:
         "experiments": {
             EXPERIMENT_NAME: {
                 "slice": SLICE_NAME,
-                "split": "deterministic_odd_index_rows",
+                "split": "deterministic_prompt_hash_bucket_1",
                 "results": results,
             }
         }

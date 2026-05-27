@@ -5,12 +5,56 @@
       "weight": 1.0,
       "primary_metric": "pass_at_1",
       "metrics": {
-        "pass_at_1": {"higher_is_better": true, "coefficient": 1.0},
-        "mean_reward": {"higher_is_better": true, "coefficient": 0.5},
-        "format_rate": {"higher_is_better": true, "coefficient": 0.2},
-        "stale_refresh_interval": {"higher_is_better": true, "coefficient": 0.0},
-        "generated_examples": {"higher_is_better": false, "coefficient": -0.1},
-        "initial_pass_at_1": {"higher_is_better": false, "coefficient": -0.1}
+        "pass_at_1": {
+          "higher_is_better": true,
+          "coefficient": 1.0,
+          "description": "Exact answer accuracy on the scored arithmetic prompts."
+        },
+        "mean_reward": {
+          "higher_is_better": true,
+          "coefficient": 0.4,
+          "description": "Average verifiable reward combining exact correctness with the small format bonus."
+        },
+        "format_rate": {
+          "higher_is_better": true,
+          "coefficient": 0.1,
+          "description": "Fraction of completions using the expected answer-tag format."
+        },
+        "numeric_mae": {
+          "higher_is_better": false,
+          "coefficient": -0.25,
+          "description": "Mean absolute numeric error after parsing the tagged answer, penalizing near-miss and constant-answer shortcuts."
+        },
+        "carry_pass_at_1": {
+          "higher_is_better": true,
+          "coefficient": 0.35,
+          "description": "Exact answer accuracy restricted to prompts whose ones digits require carrying."
+        },
+        "unique_prompt_rate": {
+          "higher_is_better": true,
+          "coefficient": 0.2,
+          "description": "Fraction of scored prediction rows with distinct prompts, discouraging duplicate easy-prompt stuffing."
+        },
+        "evaluated_rows": {
+          "higher_is_better": true,
+          "coefficient": 0.0,
+          "description": "Diagnostic count of rows included in the slice after prompt-hash filtering."
+        },
+        "stale_refresh_interval": {
+          "higher_is_better": true,
+          "coefficient": 0.0,
+          "description": "Diagnostic stale-data reuse interval reported by the method artifact."
+        },
+        "generated_examples": {
+          "higher_is_better": false,
+          "coefficient": -0.1,
+          "description": "Generated training examples consumed, used as a resource constraint."
+        },
+        "initial_pass_at_1": {
+          "higher_is_better": false,
+          "coefficient": -0.1,
+          "description": "Initial model accuracy before post-training, discouraging gains from starting with a stronger model."
+        }
       },
       "results": {
         "online_refresh_grpo": {
