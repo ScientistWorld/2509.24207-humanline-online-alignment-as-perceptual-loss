@@ -40,4 +40,4 @@
 - The sync-cadence expansion did support an additional Humanline setting: `offline_humanline_grpo_64x_sync24` reached `pass_at_1=0.69375`, above online refresh (`0.59375`) and the 64-step stale baseline (`0.61875`) with the same generated-example budget.
 
 ## Stop Justification
-- Stopped at `core_claim_plus`. The core stale-vs-online claim and one additional sync-cadence setting are reproduced at reduced scale; the component ablation did not support promotion to `secondary_claims`.
+- Completed at milestone `core_claim_plus`.
