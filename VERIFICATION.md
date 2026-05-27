@@ -2,30 +2,28 @@
 
 ## Initial Assessment
 
-The workspace started at claimed milestone `core_claim_plus`. The reproduced method artifacts and progress log support that milestone: the standard run includes the core stale-feedback comparison plus additional schedule and ablation settings. The environment was mostly packaged, but several gym-facing documents leaked method details and the scored metric set was not fully emitted by the default evaluator.
+The workspace started at claimed milestone `core_claim_plus`. The reproduced method artifacts, scores, progress log, and validation output support that milestone: the standard run includes the core stale-feedback comparison plus additional refresh and diagnostic settings. The environment was already packaged and usable when this verification began.
 
 ## Issues Found
 
-- Critical: `reference.json` assigned nonzero coefficients to metrics that `scripts/evaluate.sh` did not write to `scores.json`, so future methods would not be scored on the full intended rubric.
-- Minor: method-agnostic and method-safe documents included implementation-specific names and details that would compromise from-scratch mode.
-- Minor: the local default checkpoint directory contained stale ignored artifacts without prediction JSONL files, so standalone evaluation with the default path was not usable until the reproduced artifacts were restored there.
+- Critical: None.
+- Minor: Some public scoring documents still used reproduction-process wording such as "component ablations from the reproduced method," which was unnecessarily method-facing for from-scratch mode.
+- Minor: The git worktree contains pre-existing system-artifact changes outside the reproduction package (`README.md`, `manifest.json`, and ignored trajectory files). They were left unchanged because they are not part of the gym implementation or scoring surface.
 
 ## Fixes Applied
 
-- Updated `eval/evaluate_math.py` so the standard evaluator reads method output files and computes all weighted metrics from predictions, including numeric error, carry-case accuracy, prompt coverage, evaluated row count, and initial accuracy when initial predictions are available.
-- Regenerated `scoring/scores.json`, `scoring/scores_train.json`, and `scoring/scores_test.json` from the reproduced artifacts.
-- Updated `scoring/reference.json` to contain the full calibrated reduced-benchmark metric set and an explicit note that these values are for the synthetic scaled benchmark rather than the paper's full mathematical-reasoning benchmark.
-- Cleaned method leakage from `briefing/evaluation.md`, `scoring/EXPERIMENTS.md`, `scoring/TARGETS.md`, `scoring/CONSTRAINTS.md`, `scoring/DIRECTION.md`, and comments in `data/synthetic_math.py`.
-- Restored the local default ignored checkpoint directory from the reproduced token-level artifacts so `scripts/evaluate.sh` works standalone with its default arguments.
+- Reworded `scoring/EXPERIMENTS.md`, `scoring/TARGETS.md`, and `scoring/CONSTRAINTS.md` so public guidance describes the benchmark goal, constraints, and diagnostics without exposing implementation-specific design choices.
+- Re-ran validation after the documentation edits.
 
 Validation run:
 
 ```text
 python validate.py --compare
 bash -n scripts/*.sh
+bash scripts/evaluate.sh --runs-dir checkpoints/humanline_grpo --output /tmp/final_verify_scores.json
 ```
 
-Both checks passed.
+All checks passed.
 
 ## Final Judgment
 
@@ -33,5 +31,5 @@ The workspace is ready to serve as a research gym. Improve-mode agents can run t
 
 - Milestone: core_claim_plus
 - Ready for gym use: yes
-- Confidence: high
+- Confidence: medium
 - Key limitation: reduced synthetic arithmetic benchmark instead of the full paper-scale math benchmark

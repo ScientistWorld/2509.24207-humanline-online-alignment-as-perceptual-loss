@@ -44,5 +44,10 @@
 - Confirmed `python validate.py --compare` passes, `eval/` and `data/` remain separated from `method/`, and active scores are recomputed from prediction JSONL artifacts.
 - Left unrelated root device-file and trajectory changes untouched.
 
+### [2026-05-27 07:58] - core_claim_plus
+- Completed final verification of the research-gym package.
+- Confirmed validation, shell syntax checks, and standalone evaluation all pass using existing reproduced artifacts.
+- Tightened public scoring documentation to keep from-scratch guidance method-agnostic.
+
 ## Stop Justification
 - Completed at milestone `core_claim_plus`.

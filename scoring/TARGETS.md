@@ -13,11 +13,11 @@ Tests whether a model trained from stale generated groups can still improve veri
 
 Tests whether quality is achieved without simply increasing the amount of generated training data.
 - **Metric**: `generated_examples` (lower is better when answer quality is comparable)
-- **Run**: `bash scripts/evaluate.sh --runs-dir checkpoints/humanline_grpo`
+- **Run**: `bash scripts/evaluate.sh --runs-dir <run-artifacts-dir>`
 
-## Ablation: synthetic_math_stale_grpo
+## Diagnostics: synthetic_math_stale_grpo
 
-Tests whether the reproduced method's component choices matter beyond the generic stale-data setup.
+Tests whether a claimed stale-feedback improvement is robust beyond one run configuration.
 - **Metric**: `pass_at_1` and `mean_reward`
 - **Run**: `RUN_ABLATIONS=1 bash scripts/reproduce.sh`
-- **Status**: included for scientific completeness; in the active reduced benchmark this ablation does not support the paper's component-attribution claim.
+- **Status**: included for scientific completeness; in the active reduced benchmark, these diagnostics are secondary to the main 64-update stale-feedback comparison.
