@@ -24,6 +24,8 @@ Eighth CPU job reran the full script after the reference update and exited succe
 
 Post-validation fix: the automated checker rejected the previous `reference.json` because it mixed the paper's MATH500 Pass@1 with this gym's scaled synthetic arithmetic experiment. I changed the reference entries to calibrated reduced-benchmark targets matching the scored task, while keeping the paper-scale MATH500 number documented in `briefing/evaluation.md`.
 
+Final validation on 2026-05-27 03:41 UTC passed with `python validate.py --compare`. The environment is packaged at `core_claim_plus`: the core 64-step stale setting supports the paper's math claim at reduced scale, and the 128-step stale-refresh setting provides additional coverage.
+
 ## Remaining
 
 Higher milestones would require reproducing additional paper sections such as instruction-following win-rate experiments or ablations of clipping vs syncing. The current environment is packaged and validated for the core stale-GRPO math claim plus one stale-refresh expansion.
