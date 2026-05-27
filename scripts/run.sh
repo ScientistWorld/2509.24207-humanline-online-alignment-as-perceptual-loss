@@ -1,101 +1,12 @@
 #!/bin/bash
-# Example job script submitted via the end-of-turn YAML block.
-#
-# This runs inside the compute container with:
-#   - Your workspace mounted at /home/user
-#   - GPU(s) available
-#   - No internet access
-#
-# Make sure all data, code, and dependencies are already in the
-# workspace or baked into the container before submitting.
+# Score the frozen final method artifacts on the visible train slice and the
+# held-out test slice. This job intentionally does not train or modify methods.
 
-set -e
+set -euo pipefail
 
 cd /home/user
 
-OUT_DIR="${OUT_DIR:-checkpoints/token_humanline_grpo}"
-rm -rf "${OUT_DIR}"
-mkdir -p "${OUT_DIR}"
+RUNS_DIR="${RUNS_DIR:-checkpoints/token_humanline_grpo}"
 
-COMMON_ARGS=(
-  --pool-stale-batches
-  --balanced-train
-  --policy-type "${POLICY_TYPE:-structured}"
-  --train-steps "${TRAIN_STEPS:-256}"
-  --sft-steps "${SFT_STEPS:-160}"
-  --train-size "${TRAIN_SIZE:-800}"
-  --eval-size "${EVAL_SIZE:-160}"
-  --batch-size "${BATCH_SIZE:-32}"
-  --group-size "${GROUP_SIZE:-8}"
-  --hidden-size "${HIDDEN_SIZE:-128}"
-  --max-new-tokens "${MAX_NEW_TOKENS:-24}"
-  --temperature "${TEMPERATURE:-0.8}"
-  --sft-lr "${SFT_LR:-2e-3}"
-  --rl-lr "${RL_LR:-5e-4}"
-  --beta-kl "${BETA_KL:-0.01}"
-  --log-epsilon-p "${LOG_EPSILON_P:--1.5}"
-  --log-epsilon-r "${LOG_EPSILON_R:-1.5}"
-  --min-value "${MIN_VALUE:-0}"
-  --max-value "${MAX_VALUE:-19}"
-  --log-every "${LOG_EVERY:-64}"
-  --output-dir "${OUT_DIR}"
-)
-
-python -m method.humanline_grpo \
-  --name online_refresh_grpo \
-  --refresh-interval 1 \
-  --sync-k "${SYNC_K:-12}" \
-  "${COMMON_ARGS[@]}"
-
-python -m method.humanline_grpo \
-  --name stale_grpo_64x_offpolicy \
-  --refresh-interval 64 \
-  --sync-k "${SYNC_K:-12}" \
-  "${COMMON_ARGS[@]}"
-
-python -m method.humanline_grpo \
-  --name offline_humanline_grpo \
-  --humanline \
-  --refresh-interval 64 \
-  --sync-k "${SYNC_K:-12}" \
-  "${COMMON_ARGS[@]}"
-
-python -m method.humanline_grpo \
-  --name stale_grpo_128x_offpolicy \
-  --refresh-interval 128 \
-  --sync-k "${SYNC_K:-12}" \
-  "${COMMON_ARGS[@]}"
-
-python -m method.humanline_grpo \
-  --name offline_humanline_grpo_128x \
-  --humanline \
-  --refresh-interval 128 \
-  --sync-k "${SYNC_K:-12}" \
-  "${COMMON_ARGS[@]}"
-
-python -m method.humanline_grpo \
-  --name humanline_sync_only_grpo \
-  --humanline \
-  --disable-humanline-clipping \
-  --refresh-interval 64 \
-  --sync-k "${SYNC_K:-12}" \
-  "${COMMON_ARGS[@]}"
-
-python -m method.humanline_grpo \
-  --name humanline_clip_only_grpo \
-  --humanline \
-  --disable-humanline-sync \
-  --refresh-interval 64 \
-  --sync-k "${SYNC_K:-12}" \
-  "${COMMON_ARGS[@]}"
-
-for sync_k in 8 16 24; do
-  python -m method.humanline_grpo \
-    --name "offline_humanline_grpo_64x_sync${sync_k}" \
-    --humanline \
-    --refresh-interval 64 \
-    --sync-k "${sync_k}" \
-    "${COMMON_ARGS[@]}"
-done
-
-bash scripts/evaluate.sh --runs-dir "${OUT_DIR}"
+bash scripts/evaluate_train.sh --runs-dir "${RUNS_DIR}" --output scoring/scores_train.json
+bash scripts/evaluate_test.sh --runs-dir "${RUNS_DIR}" --train-scores scoring/scores_train.json --output scoring/scores_test.json

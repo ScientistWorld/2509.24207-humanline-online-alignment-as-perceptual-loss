@@ -1,9 +1,5 @@
-# This iteration writes files only — do NOT submit compute jobs.
-# Once you set action to 'done', STOP immediately.
-# Do NOT sleep, poll, or wait. The system reads this file
-# only after your turn ends.
-action: done
+action: submit
 gpus: 0
 test: false
 milestone: core_claim_plus
-notes: "Improvements: prompt-hash train/test split, prompt coverage guards, numeric/carry/coverage metrics, reference metric descriptions. Notes: see DESIGN_NOTES.md for runtime concerns."
+notes: "Run evaluate_{train,test}.sh on frozen checkpoints/token_humanline_grpo artifacts; populate scoring/scores_{train,test}.json."
