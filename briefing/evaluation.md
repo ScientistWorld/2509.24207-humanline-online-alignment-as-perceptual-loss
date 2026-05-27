@@ -1,15 +1,16 @@
 # Evaluation
 
-How success is measured. Describe only the metrics, targets, and evaluation procedure — do NOT describe the paper's method or how they achieved these results. Think of this as a general evaluation protocal for other scientists trying to solve the same problem, where they should not see this paper's solution.
-
 ## Metrics
 
-<!-- What metrics are used? How are they computed? What does higher/lower mean? -->
+- `pass_at_1`: fraction of greedy completions whose parsed answer matches the ground-truth arithmetic answer. Higher is better.
+- `mean_reward`: average verifiable reward combining required answer-tag formatting and correctness. Higher is better.
+- `format_rate`: fraction of completions containing the expected answer tags. Higher is better.
+- `generated_examples`: number of sampled completions used during training. Lower is better when task quality is held fixed.
 
 ## Baselines and Targets
 
-<!-- What performance levels exist as reference points? Include the paper's reported numbers as targets, and any standard baselines. A scientist agent should know what "good" looks like. -->
+The paper reports that online GRPO and its stale-data humanline variant both reach MATH500 Pass@1 of 0.593 +/- 0.019 after 1600 steps, while the stale non-humanline run is significantly worse. This reproduction uses a small synthetic arithmetic benchmark to validate the same stale/off-policy verifiable-reward claim at compute-feasible scale.
 
 ## Evaluation Protocol
 
-<!-- How should evaluation be run? What data split, what conditions? Any important details about how to compare fairly (e.g., fixed seeds, specific test sets, averaging over runs). -->
+Run `scripts/reproduce.sh` to train the baseline and proposed variants, then run `scripts/evaluate.sh`. Evaluation reads JSON artifacts produced under `checkpoints/humanline_grpo/` and writes `scoring/scores.json`. The evaluator is method-agnostic and does not import from `method/`.

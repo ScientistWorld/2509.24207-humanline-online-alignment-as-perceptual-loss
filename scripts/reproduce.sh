@@ -18,7 +18,9 @@ set -e
 
 cd /home/user
 
-# TODO: implement full reproduction pipeline
-# e.g.:
-#   bash scripts/baseline.sh
-#   bash scripts/method.sh
+rm -rf checkpoints/humanline_grpo
+mkdir -p checkpoints/humanline_grpo
+
+bash scripts/baseline.sh
+bash scripts/method.sh
+bash scripts/evaluate.sh --runs-dir checkpoints/humanline_grpo

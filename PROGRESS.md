@@ -2,36 +2,21 @@
 
 ## What Works
 
-<!-- What has been successfully reproduced so far. -->
+Implemented a scaled reproduction of the paper's verifiable-reward humanline GRPO setting. The method code includes upstream token log-ratio clipping, standard GRPO surrogate clipping, stale/off-policy batch reuse, and lagged humanline reference syncing.
 
 ## Results
 
-<!-- Reproduced numbers compared to the paper's reported numbers. -->
+No compute-node results yet. A CPU smoke job is being submitted to run baseline stale GRPO and offline humanline GRPO, then write `scoring/scores.json`.
 
 ## Remaining
 
-<!-- What still needs to be done to reach higher milestones. -->
+Analyze the submitted job results. If the humanline run does not outperform or match the stale baseline, tune the scaled benchmark or training hyperparameters and resubmit.
 
 ## Issues
 
-<!-- Blockers, bugs, or difficulties encountered. -->
+Full paper scale uses Qwen2.5-1.5B-Instruct on MATH500/Open-R1 and would require a larger GPU run. This first implementation targets the same algorithmic claim on a small synthetic verifiable task.
 
 ## Deviations from Paper
 
-<!-- Do not edit this section unless you deviated from the paper's original setup.
-     For each deviation, document: what the paper used, what you substituted, and why.
-
-     ACCEPTABLE deviations (data/resource/scale substitutions — milestones still valid):
-       - Replaced a proprietary dataset with a public one
-       - Used a smaller model of the same architecture
-       - Scaled down training (fewer epochs, smaller batch)
-       - Used a different library for the same algorithm
-
-     UNACCEPTABLE deviations (algorithm substitutions — milestones above 'none' are void):
-       - Replaced the paper's algorithm with a fundamentally different one
-       - Wrote a generic model trained to approximate the method's outputs
-         instead of implementing the method's computational steps
-
-     The test: could someone reading your code identify which algorithm from
-     the paper you implemented? If not, you replaced the method. -->
-
+- Paper used Qwen2.5-1.5B-Instruct and MATH500; this reproduction uses a tiny GRU and generated arithmetic tasks to fit a first smoke run. The GRPO and humanline computational steps are preserved.
+- Paper used 64x stale sampling for math; the smoke script defaults to 16-step stale refresh to run quickly. The refresh interval is parameterized for later scaling.

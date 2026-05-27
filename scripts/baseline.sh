@@ -17,4 +17,11 @@ set -e
 
 cd /home/user
 
-# TODO: run baseline
+python -m baseline.stale_grpo \
+  --name stale_grpo_64x_offpolicy \
+  --refresh-interval "${REFRESH_INTERVAL:-16}" \
+  --train-steps "${TRAIN_STEPS:-160}" \
+  --sft-steps "${SFT_STEPS:-220}" \
+  --output-dir checkpoints/humanline_grpo
+
+bash scripts/evaluate.sh --runs-dir checkpoints/humanline_grpo
