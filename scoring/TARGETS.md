@@ -7,7 +7,7 @@ Tests whether a model trained from stale generated groups can still improve veri
 - **Run**: `bash scripts/reproduce.sh`, then inspect `scoring/scores.json`
 - **Comparator**: `online_refresh_grpo` refreshes generated groups every update; `offline_humanline_grpo` should remain close to this online comparator while using the 64-step stale refresh cadence.
 - **Expansion**: `scripts/reproduce.sh` also runs an optional 128-step stale refresh setting by default; disable with `RUN_EXTRA_REFRESH=0`.
-- **Sync sweep**: `scripts/reproduce.sh` runs 64-step Humanline sync-cadence variants by default; disable with `RUN_SYNC_SWEEP=0`.
+- **Sync sweep**: `scripts/reproduce.sh` runs 64-step Humanline sync-cadence variants by default; `offline_humanline_grpo_64x_sync24` is the successful additional-setting target. Disable with `RUN_SYNC_SWEEP=0`.
 
 ## Constraint: synthetic_math_stale_grpo
 
@@ -20,3 +20,4 @@ Tests whether quality is achieved without simply increasing the amount of genera
 Tests whether Humanline's gain is primarily attributable to reference syncing rather than clipping alone.
 - **Metric**: `pass_at_1` and `mean_reward`
 - **Run**: `RUN_ABLATIONS=1 bash scripts/reproduce.sh`
+- **Status**: included for scientific completeness; in the active reduced benchmark this ablation does not support the paper's component attribution.

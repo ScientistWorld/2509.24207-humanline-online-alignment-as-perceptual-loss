@@ -59,7 +59,7 @@ if [ "${RUN_ABLATIONS:-1}" = "1" ]; then
 fi
 
 if [ "${RUN_SYNC_SWEEP:-1}" = "1" ]; then
-  for sync_k in 8 16 20 24; do
+  for sync_k in 8 16 24; do
     METHOD_NAME="offline_humanline_grpo_64x_sync${sync_k}" \
     REFRESH_INTERVAL=64 \
     SYNC_K="${sync_k}" \

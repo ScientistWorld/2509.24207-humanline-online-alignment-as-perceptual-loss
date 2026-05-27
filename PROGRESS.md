@@ -38,9 +38,11 @@ CPU job `a15a0a07-953` completed successfully on the active structured token pol
 
 CPU job `9e3a4fbb-a50` completed successfully and reached `core_claim` in the active token-level setup. The online-refresh comparator reached `pass_at_1=0.59375`, while 64-step stale GRPO and 64-step Humanline GRPO both reached `0.61875` with the same `65536` generated examples and `format_rate=1.0`. The 128-step expansion is recorded as a diagnostic failure for Humanline: 128-step Humanline reached `0.51875`, below 128-step stale GRPO at `0.6125`, although it remained above the `0.48125` warm-start.
 
+CPU job `9f062ef2-f4d` completed successfully and reached `core_claim_plus`. The component ablation did not support `secondary_claims`: syncing-only matched full Humanline (`pass_at_1=0.61875`) and clipping-only was slightly higher (`0.625`). The sync-cadence sweep did provide additional-setting coverage: `offline_humanline_grpo_64x_sync24` reached `0.69375`, above online refresh (`0.59375`) and the 64-step stale baseline (`0.61875`) with the same `65536` generated examples.
+
 ## Remaining
 
-The current milestone is `core_claim`. The next queued job reruns the 64-step setting with syncing-only, clipping-only, and sync-cadence variants. If these support the paper's component claim that reference syncing is the main useful ingredient, update to `secondary_claims`; if not, keep the milestone at `core_claim` and wrap up with the failed ablation documented.
+The current milestone is `core_claim_plus`. No further job is queued: the active token-level reproduction now includes the core stale-vs-online result, a successful sync-cadence expansion, the failed 128-step diagnostic, and the failed component ablation.
 
 ## Issues
 
@@ -81,6 +83,8 @@ Cancelled token-level job `0a6d0194-2ad` after the balanced-data GRU run still p
 Completed job `a15a0a07-953` showed that the structured token policy can learn from the GRPO loop, but it only compared stale GRPO against Humanline. I added `online_refresh_grpo` to `scripts/run.sh` and `scripts/reproduce.sh`, updated the scoring target docs to make the online comparator explicit, and queued a combined 64-step core plus 128-step expansion job.
 
 Completed job `9e3a4fbb-a50` verified that 64-step Humanline stays at least as strong as online refresh in this reduced benchmark. I updated `reference.json` to match the active token-level artifacts, disabled the unverified 32-step expansion by default in `scripts/reproduce.sh`, and changed `scripts/run.sh` to run the 64-step ablations and sync sweep next.
+
+Completed job `9f062ef2-f4d` showed that the active reduced benchmark does not reproduce the paper's component attribution, but it does reproduce the core claim on an additional Humanline sync cadence. I updated `reference.json` with the ablation and sync-cadence artifacts, aligned `scripts/reproduce.sh` with the scored sync variants, and prepared the workspace for final `core_claim_plus` completion.
 
 ## Deviations from Paper
 

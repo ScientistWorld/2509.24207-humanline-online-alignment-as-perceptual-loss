@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: core_claim**
+**Current: core_claim_plus**
 
 ## Progress Log
 
@@ -34,5 +34,10 @@
 - The 128-step diagnostic did not support an additional-setting claim: 128-step Humanline reached `0.51875`, below 128-step stale GRPO at `0.6125`.
 - Queued a 64-step ablation and sync-cadence job to test whether any secondary Humanline component claims hold in the active token-level setup.
 
+### [2026-05-27 07:25] - core_claim_plus
+- Completed job `9f062ef2-f4d` with 64-step ablations and sync-cadence variants.
+- The ablation did not support `secondary_claims`: syncing-only matched full Humanline (`0.61875`) and clipping-only was slightly higher (`0.625`), so this reduced benchmark does not reproduce the paper's component attribution.
+- The sync-cadence expansion did support an additional Humanline setting: `offline_humanline_grpo_64x_sync24` reached `pass_at_1=0.69375`, above online refresh (`0.59375`) and the 64-step stale baseline (`0.61875`) with the same generated-example budget.
+
 ## Stop Justification
-- Not stopped. The core stale-vs-online claim is reproduced at reduced scale; a 64-step ablation/sync job is queued to test for secondary claims.
+- Stopped at `core_claim_plus`. The core stale-vs-online claim and one additional sync-cadence setting are reproduced at reduced scale; the component ablation did not support promotion to `secondary_claims`.
