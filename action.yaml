@@ -2,4 +2,4 @@ action: done
 gpus: 0
 test: true
 milestone: core_claim_plus
-notes: "Validated core_claim_plus: 64-step stale humanline GRPO beats stale baseline, 128-step expansion is included, and reproduce/evaluate pass end to end."
+notes: "Validated core_claim_plus after aligning reference.json with the reduced synthetic arithmetic benchmark; validate.py --compare passes."

@@ -9,7 +9,7 @@
 
 ## Baselines and Targets
 
-The paper reports that online GRPO and its stale-data humanline variant both reach MATH500 Pass@1 of 0.593 +/- 0.019 after 1600 steps, while the stale non-humanline run is significantly worse. This reproduction uses a small synthetic arithmetic benchmark to validate the same stale/off-policy verifiable-reward claim at compute-feasible scale.
+The paper reports that online GRPO and its stale-data humanline variant both reach MATH500 Pass@1 of 0.593 +/- 0.019 after 1600 steps, while the stale non-humanline run is significantly worse. This reproduction uses a small synthetic arithmetic benchmark to validate the same stale/off-policy verifiable-reward claim at compute-feasible scale. Because the scored task is not MATH500, `scoring/reference.json` records calibrated reference values for this reduced benchmark rather than the paper-scale MATH500 Pass@1.
 
 ## Evaluation Protocol
 

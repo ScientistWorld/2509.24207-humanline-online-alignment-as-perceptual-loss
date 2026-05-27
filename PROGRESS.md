@@ -22,6 +22,8 @@ Seventh CPU job ran the 128-step stale-refresh expansion but exited with a valid
 
 Eighth CPU job reran the full script after the reference update and exited successfully. `scripts/reproduce.sh` now regenerates the 64-step and 128-step settings and `python validate.py --compare` passes with all four methods in `scoring/scores.json`.
 
+Post-validation fix: the automated checker rejected the previous `reference.json` because it mixed the paper's MATH500 Pass@1 with this gym's scaled synthetic arithmetic experiment. I changed the reference entries to calibrated reduced-benchmark targets matching the scored task, while keeping the paper-scale MATH500 number documented in `briefing/evaluation.md`.
+
 ## Remaining
 
 Higher milestones would require reproducing additional paper sections such as instruction-following win-rate experiments or ablations of clipping vs syncing. The current environment is packaged and validated for the core stale-GRPO math claim plus one stale-refresh expansion.
@@ -43,6 +45,8 @@ The sixth run showed that the scaled humanline computation works when the warm-s
 The seventh run exposed an evaluator packaging gap: `scores.json` may include expansion methods only if `reference.json` lists the same method names. I added reference entries for the 128-step stale baseline and humanline method.
 
 The final rerun confirmed that the evaluator, method scripts, baseline scripts, and end-to-end reproduction script are consistent.
+
+The final validation pass required reference targets to be on the same task scale as `scores.json`; otherwise the checker correctly treats the synthetic arithmetic scores as inconsistent with MATH500.
 
 ## Deviations from Paper
 

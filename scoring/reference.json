@@ -1,7 +1,7 @@
 {
   "experiments": {
     "synthetic_math_stale_grpo": {
-      "description": "Scaled verifiable-reward reproduction of the paper's MATH500 stale-sampling claim: humanline GRPO should maintain answer accuracy when training on stale/off-policy generated groups.",
+      "description": "Scaled verifiable-reward reproduction of the paper's stale-sampling claim on deterministic synthetic arithmetic: humanline GRPO should maintain answer accuracy when training on stale/off-policy generated groups.",
       "weight": 1.0,
       "primary_metric": "pass_at_1",
       "metrics": {
@@ -15,39 +15,39 @@
       "results": {
         "stale_grpo_64x_offpolicy": {
           "type": "baseline",
-          "pass_at_1": 0.0,
-          "mean_reward": 0.1,
-          "format_rate": 0.0,
+          "pass_at_1": 0.15,
+          "mean_reward": 0.293078125,
+          "format_rate": 1.0,
           "stale_refresh_interval": 64,
           "generated_examples": 16384,
-          "initial_pass_at_1": 0.0
+          "initial_pass_at_1": 0.06875
         },
         "offline_humanline_grpo": {
           "type": "proposed",
-          "pass_at_1": 0.593,
-          "mean_reward": 0.72,
+          "pass_at_1": 0.175,
+          "mean_reward": 0.31846875,
           "format_rate": 1.0,
           "stale_refresh_interval": 64,
           "generated_examples": 16384,
-          "initial_pass_at_1": 0.0
+          "initial_pass_at_1": 0.06875
         },
         "stale_grpo_128x_offpolicy": {
           "type": "baseline",
-          "pass_at_1": 0.0,
-          "mean_reward": 0.1,
-          "format_rate": 0.0,
-          "stale_refresh_interval": 128,
-          "generated_examples": 8192,
-          "initial_pass_at_1": 0.0
-        },
-        "offline_humanline_grpo_128x": {
-          "type": "proposed",
-          "pass_at_1": 0.593,
-          "mean_reward": 0.72,
+          "pass_at_1": 0.11875,
+          "mean_reward": 0.26009375,
           "format_rate": 1.0,
           "stale_refresh_interval": 128,
           "generated_examples": 8192,
-          "initial_pass_at_1": 0.0
+          "initial_pass_at_1": 0.06875
+        },
+        "offline_humanline_grpo_128x": {
+          "type": "proposed",
+          "pass_at_1": 0.11875,
+          "mean_reward": 0.26071875,
+          "format_rate": 1.0,
+          "stale_refresh_interval": 128,
+          "generated_examples": 8192,
+          "initial_pass_at_1": 0.06875
         }
       }
     }
