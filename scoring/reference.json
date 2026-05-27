@@ -1,7 +1,7 @@
 {
   "experiments": {
     "synthetic_math_stale_grpo": {
-      "description": "Scaled verifiable-reward reproduction of the paper's stale-sampling claim on deterministic synthetic arithmetic: humanline GRPO should maintain answer accuracy when training on stale/off-policy generated groups.",
+      "description": "Scaled verifiable-reward benchmark for stale/off-policy generated feedback on deterministic synthetic arithmetic.",
       "weight": 1.0,
       "primary_metric": "pass_at_1",
       "metrics": {
@@ -62,6 +62,10 @@
           "pass_at_1": 0.59375,
           "mean_reward": 0.64375,
           "format_rate": 1.0,
+          "numeric_mae": 0.46875,
+          "carry_pass_at_1": 0.6714285714285714,
+          "unique_prompt_rate": 0.81875,
+          "evaluated_rows": 160.0,
           "stale_refresh_interval": 1,
           "generated_examples": 65536,
           "initial_pass_at_1": 0.48125
@@ -71,6 +75,10 @@
           "pass_at_1": 0.61875,
           "mean_reward": 0.66875,
           "format_rate": 1.0,
+          "numeric_mae": 0.4375,
+          "carry_pass_at_1": 0.6571428571428571,
+          "unique_prompt_rate": 0.81875,
+          "evaluated_rows": 160.0,
           "stale_refresh_interval": 64,
           "generated_examples": 65536,
           "initial_pass_at_1": 0.48125
@@ -80,6 +88,10 @@
           "pass_at_1": 0.61875,
           "mean_reward": 0.66875,
           "format_rate": 1.0,
+          "numeric_mae": 0.4875,
+          "carry_pass_at_1": 0.5857142857142857,
+          "unique_prompt_rate": 0.81875,
+          "evaluated_rows": 160.0,
           "stale_refresh_interval": 64,
           "generated_examples": 65536,
           "initial_pass_at_1": 0.48125
@@ -89,6 +101,10 @@
           "pass_at_1": 0.61875,
           "mean_reward": 0.66875,
           "format_rate": 1.0,
+          "numeric_mae": 0.4875,
+          "carry_pass_at_1": 0.5857142857142857,
+          "unique_prompt_rate": 0.81875,
+          "evaluated_rows": 160.0,
           "stale_refresh_interval": 64,
           "generated_examples": 65536,
           "initial_pass_at_1": 0.48125
@@ -98,6 +114,10 @@
           "pass_at_1": 0.625,
           "mean_reward": 0.675,
           "format_rate": 1.0,
+          "numeric_mae": 0.4375,
+          "carry_pass_at_1": 0.6714285714285714,
+          "unique_prompt_rate": 0.81875,
+          "evaluated_rows": 160.0,
           "stale_refresh_interval": 64,
           "generated_examples": 65536,
           "initial_pass_at_1": 0.48125
@@ -107,6 +127,10 @@
           "pass_at_1": 0.6125,
           "mean_reward": 0.6625,
           "format_rate": 1.0,
+          "numeric_mae": 0.45,
+          "carry_pass_at_1": 0.6428571428571429,
+          "unique_prompt_rate": 0.81875,
+          "evaluated_rows": 160.0,
           "stale_refresh_interval": 128,
           "generated_examples": 65536,
           "initial_pass_at_1": 0.48125
@@ -116,6 +140,10 @@
           "pass_at_1": 0.51875,
           "mean_reward": 0.56875,
           "format_rate": 1.0,
+          "numeric_mae": 0.59375,
+          "carry_pass_at_1": 0.5428571428571428,
+          "unique_prompt_rate": 0.81875,
+          "evaluated_rows": 160.0,
           "stale_refresh_interval": 128,
           "generated_examples": 65536,
           "initial_pass_at_1": 0.48125
@@ -125,6 +153,10 @@
           "pass_at_1": 0.5875,
           "mean_reward": 0.6375,
           "format_rate": 1.0,
+          "numeric_mae": 0.59375,
+          "carry_pass_at_1": 0.6,
+          "unique_prompt_rate": 0.81875,
+          "evaluated_rows": 160.0,
           "stale_refresh_interval": 64,
           "generated_examples": 65536,
           "initial_pass_at_1": 0.48125
@@ -134,6 +166,10 @@
           "pass_at_1": 0.6125,
           "mean_reward": 0.6625,
           "format_rate": 1.0,
+          "numeric_mae": 0.46875,
+          "carry_pass_at_1": 0.6285714285714286,
+          "unique_prompt_rate": 0.81875,
+          "evaluated_rows": 160.0,
           "stale_refresh_interval": 64,
           "generated_examples": 65536,
           "initial_pass_at_1": 0.48125
@@ -143,11 +179,16 @@
           "pass_at_1": 0.69375,
           "mean_reward": 0.74375,
           "format_rate": 1.0,
+          "numeric_mae": 0.375,
+          "carry_pass_at_1": 0.7714285714285715,
+          "unique_prompt_rate": 0.81875,
+          "evaluated_rows": 160.0,
           "stale_refresh_interval": 64,
           "generated_examples": 65536,
           "initial_pass_at_1": 0.48125
         }
-      }
+      },
+      "notes": "The paper reports MATH500 Pass@1 around 0.593 for online and stale-data Humanline GRPO after 1600 steps. This gym uses a reduced synthetic arithmetic task; reference values are calibrated from the reproduced reduced-benchmark artifacts, not copied from the full MATH500 result."
     }
   }
 }

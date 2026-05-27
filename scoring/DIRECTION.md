@@ -6,11 +6,11 @@ The benchmark asks how to keep post-training effective when model-generated feed
 
 ## Core Contribution
 
-Work must remain in the family of reference-model-based alignment objectives for generated text, especially methods that alter how policy/reference likelihood ratios affect learning.
+Work must remain focused on post-training generated-text models from verifiable feedback when the feedback data may be stale or off-policy.
 
 ## Approach Scope
 
-Changes may modify clipping, reference updating, advantage estimation, reward shaping, or scheduling, as long as training still uses generated completions with verifiable feedback and stale/off-policy reuse remains central.
+Changes may modify the learning objective, feedback weighting, reward shaping, data-refresh schedule, or training schedule, as long as training still uses generated completions with verifiable feedback and stale/off-policy reuse remains central.
 
 ## Out of Bounds
 

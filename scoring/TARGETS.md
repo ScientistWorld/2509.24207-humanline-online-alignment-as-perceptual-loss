@@ -5,9 +5,9 @@
 Tests whether a model trained from stale generated groups can still improve verifiable arithmetic answer accuracy.
 - **Metric**: `pass_at_1` (higher is better)
 - **Run**: `bash scripts/reproduce.sh`, then inspect `scoring/scores.json`
-- **Comparator**: `online_refresh_grpo` refreshes generated groups every update; `offline_humanline_grpo` should remain close to this online comparator while using the 64-step stale refresh cadence.
+- **Comparator**: the fresh-data baseline refreshes generated groups every update; the stale-data methods should remain close to that comparator while reusing generated groups for 64 updates.
 - **Expansion**: `scripts/reproduce.sh` also runs an optional 128-step stale refresh setting by default; disable with `RUN_EXTRA_REFRESH=0`.
-- **Sync sweep**: `scripts/reproduce.sh` runs 64-step Humanline sync-cadence variants by default; `offline_humanline_grpo_64x_sync24` is the successful additional-setting target. Disable with `RUN_SYNC_SWEEP=0`.
+- **Schedule sweep**: `scripts/reproduce.sh` runs 64-step schedule variants by default; at least one variant should improve over the default stale-data baseline. Disable with `RUN_SYNC_SWEEP=0`.
 
 ## Constraint: synthetic_math_stale_grpo
 
@@ -17,7 +17,7 @@ Tests whether quality is achieved without simply increasing the amount of genera
 
 ## Ablation: synthetic_math_stale_grpo
 
-Tests whether Humanline's gain is primarily attributable to reference syncing rather than clipping alone.
+Tests whether the reproduced method's component choices matter beyond the generic stale-data setup.
 - **Metric**: `pass_at_1` and `mean_reward`
 - **Run**: `RUN_ABLATIONS=1 bash scripts/reproduce.sh`
-- **Status**: included for scientific completeness; in the active reduced benchmark this ablation does not support the paper's component attribution.
+- **Status**: included for scientific completeness; in the active reduced benchmark this ablation does not support the paper's component-attribution claim.

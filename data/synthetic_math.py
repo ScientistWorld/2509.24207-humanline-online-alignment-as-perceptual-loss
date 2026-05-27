@@ -1,8 +1,7 @@
-"""Synthetic arithmetic task used as a small verifiable-reward substitute.
+"""Synthetic arithmetic task with programmatic correctness rewards.
 
-The paper evaluates mathematical reasoning with programmatic correctness
-rewards.  This module defines the problem data only; method code must not be
-imported here.
+This module defines the problem data only; method code must not be imported
+here.
 """
 
 from __future__ import annotations
@@ -41,9 +40,9 @@ def make_balanced_examples(n: int, seed: int, min_value: int = 10, max_value: in
     """Cycle over the full arithmetic grid before repeating examples.
 
     The reduced arithmetic benchmark has a finite prompt space.  Balanced
-    warm-start data prevents the policy from learning only the central answer
-    prior from a small random sample, while leaving evaluation on the same
-    problem distribution independent of the method implementation.
+    Balanced examples cover the finite prompt grid before repeating, while
+    leaving evaluation on the same problem distribution independent of the
+    method implementation.
     """
     rng = random.Random(seed)
     grid = [
@@ -66,9 +65,9 @@ def target_text(answer: int) -> str:
 def reward_completion(text: str, answer: int) -> float:
     """Formatting and exact-correctness reward.
 
-    The paper's math setup is driven by verifiable correctness.  The scaled
-    task gives a small format bonus but no numeric-nearness reward, avoiding
-    constant central answers that score well without solving the prompt.
+    The task gives a small format bonus but no numeric-nearness reward,
+    avoiding constant central answers that score well without solving the
+    prompt.
     """
     match = ANSWER_RE.search(text)
     if not match:

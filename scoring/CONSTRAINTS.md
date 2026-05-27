@@ -2,7 +2,7 @@
 
 ## Model
 
-Use the provided character-level GRU policy class or a model with no more trainable parameters than that class at the default hidden size. The benchmark is about stale/off-policy post-training behavior, not gains from a larger model.
+Use a compact trainable model with no more parameters than the default reproduction configuration. The benchmark is about stale/off-policy post-training behavior, not gains from a larger model.
 
 ## Data
 
@@ -14,7 +14,7 @@ Do not modify `eval/` or `scripts/evaluate.sh` when reporting comparable scores.
 
 ## Compliance Checklist
 
-- [ ] Model capacity is no larger than the default GRU policy.
+- [ ] Model capacity is no larger than the default reproduction model.
 - [ ] No external training data or pretrained model weights are used.
 - [ ] Evaluation code and test seed are unchanged.
 - [ ] `generated_examples` is reported from the actual run artifacts.

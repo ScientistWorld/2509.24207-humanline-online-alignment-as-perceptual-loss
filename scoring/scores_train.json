@@ -6,7 +6,7 @@
       "results": {
         "humanline_clip_only_grpo": {
           "pass_at_1": 0.5949367088607594,
-          "mean_reward": 0.6449367088607586,
+          "mean_reward": 0.6449367088607595,
           "format_rate": 1.0,
           "numeric_mae": 0.5063291139240507,
           "carry_pass_at_1": 0.6451612903225806,
@@ -18,7 +18,7 @@
         },
         "humanline_sync_only_grpo": {
           "pass_at_1": 0.5822784810126582,
-          "mean_reward": 0.6322784810126574,
+          "mean_reward": 0.6322784810126583,
           "format_rate": 1.0,
           "numeric_mae": 0.5063291139240507,
           "carry_pass_at_1": 0.5806451612903226,
@@ -30,7 +30,7 @@
         },
         "offline_humanline_grpo": {
           "pass_at_1": 0.5822784810126582,
-          "mean_reward": 0.6322784810126574,
+          "mean_reward": 0.6322784810126583,
           "format_rate": 1.0,
           "numeric_mae": 0.5063291139240507,
           "carry_pass_at_1": 0.5806451612903226,
@@ -42,7 +42,7 @@
         },
         "offline_humanline_grpo_128x": {
           "pass_at_1": 0.5569620253164557,
-          "mean_reward": 0.606962025316455,
+          "mean_reward": 0.6069620253164557,
           "format_rate": 1.0,
           "numeric_mae": 0.5443037974683544,
           "carry_pass_at_1": 0.5483870967741935,
@@ -54,7 +54,7 @@
         },
         "offline_humanline_grpo_64x_sync16": {
           "pass_at_1": 0.6075949367088608,
-          "mean_reward": 0.6575949367088599,
+          "mean_reward": 0.6575949367088608,
           "format_rate": 1.0,
           "numeric_mae": 0.46835443037974683,
           "carry_pass_at_1": 0.6451612903225806,
@@ -66,7 +66,7 @@
         },
         "offline_humanline_grpo_64x_sync24": {
           "pass_at_1": 0.7215189873417721,
-          "mean_reward": 0.7715189873417712,
+          "mean_reward": 0.7715189873417722,
           "format_rate": 1.0,
           "numeric_mae": 0.31645569620253167,
           "carry_pass_at_1": 0.8709677419354839,
@@ -78,7 +78,7 @@
         },
         "offline_humanline_grpo_64x_sync8": {
           "pass_at_1": 0.5822784810126582,
-          "mean_reward": 0.6322784810126574,
+          "mean_reward": 0.6322784810126583,
           "format_rate": 1.0,
           "numeric_mae": 0.5316455696202531,
           "carry_pass_at_1": 0.5806451612903226,
@@ -90,7 +90,7 @@
         },
         "online_refresh_grpo": {
           "pass_at_1": 0.569620253164557,
-          "mean_reward": 0.6196202531645562,
+          "mean_reward": 0.619620253164557,
           "format_rate": 1.0,
           "numeric_mae": 0.5189873417721519,
           "carry_pass_at_1": 0.6774193548387096,
@@ -102,7 +102,7 @@
         },
         "stale_grpo_128x_offpolicy": {
           "pass_at_1": 0.620253164556962,
-          "mean_reward": 0.670253164556961,
+          "mean_reward": 0.670253164556962,
           "format_rate": 1.0,
           "numeric_mae": 0.46835443037974683,
           "carry_pass_at_1": 0.6451612903225806,
@@ -114,7 +114,7 @@
         },
         "stale_grpo_64x_offpolicy": {
           "pass_at_1": 0.620253164556962,
-          "mean_reward": 0.670253164556961,
+          "mean_reward": 0.670253164556962,
           "format_rate": 1.0,
           "numeric_mae": 0.45569620253164556,
           "carry_pass_at_1": 0.6451612903225806,
