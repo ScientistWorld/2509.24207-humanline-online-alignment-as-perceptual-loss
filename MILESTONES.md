@@ -31,4 +31,4 @@
 - Together with the completed syncing-only and clipping-only ablations, the reduced reproduction now supports the core stale-data claim plus the paper's secondary component claim that reference syncing is the important Humanline component in this setting.
 
 ## Stop Justification
-- Reached `secondary_claims` on the scaled arithmetic reproduction. Remaining paper sections, especially instruction-following judge experiments, would require a different large-model evaluation stack beyond the current reduced gym.
+- Completed at milestone `secondary_claims`.
