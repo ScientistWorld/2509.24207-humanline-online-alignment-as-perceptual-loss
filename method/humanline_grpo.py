@@ -87,10 +87,22 @@ def supervised_warm_start(model: TinyGRUPolicy, examples, device: torch.device, 
     for _ in range(steps):
         batch = random.sample(examples, batch_size)
         seqs = [encode(ex.prompt + target_text(ex.answer), add_eos=True) for ex in batch]
+        prompt_lens = [len(encode(ex.prompt, add_eos=False)) for ex in batch]
         ids, _ = collate_sequences(seqs, device)
         logits = model(ids[:, :-1])
         labels = ids[:, 1:]
-        loss = F.cross_entropy(logits.reshape(-1, len(CHARS)), labels.reshape(-1), ignore_index=PAD)
+        loss_mask = torch.zeros_like(labels, dtype=torch.bool)
+        for i, (seq, prompt_len) in enumerate(zip(seqs, prompt_lens)):
+            start = max(prompt_len - 1, 0)
+            end = len(seq) - 1
+            loss_mask[i, start:end] = True
+        per_token_loss = F.cross_entropy(
+            logits.reshape(-1, len(CHARS)),
+            labels.reshape(-1),
+            ignore_index=PAD,
+            reduction="none",
+        ).view_as(labels)
+        loss = per_token_loss[loss_mask].mean()
         opt.zero_grad()
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)

@@ -13,10 +13,13 @@ set -e
 
 cd /home/user
 
-export TRAIN_STEPS="${TRAIN_STEPS:-256}"
-export SFT_STEPS="${SFT_STEPS:-500}"
+export TRAIN_STEPS="${TRAIN_STEPS:-384}"
+export SFT_STEPS="${SFT_STEPS:-900}"
 export REFRESH_INTERVAL="${REFRESH_INTERVAL:-64}"
 export SYNC_K="${SYNC_K:-12}"
+export GROUP_SIZE="${GROUP_SIZE:-6}"
+export HIDDEN_SIZE="${HIDDEN_SIZE:-160}"
+export TEMPERATURE="${TEMPERATURE:-1.0}"
 
 bash scripts/reproduce.sh
 python validate.py --compare

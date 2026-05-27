@@ -22,6 +22,10 @@ python -m baseline.stale_grpo \
   --refresh-interval "${REFRESH_INTERVAL:-64}" \
   --train-steps "${TRAIN_STEPS:-256}" \
   --sft-steps "${SFT_STEPS:-500}" \
+  --batch-size "${BATCH_SIZE:-32}" \
+  --group-size "${GROUP_SIZE:-4}" \
+  --hidden-size "${HIDDEN_SIZE:-128}" \
+  --temperature "${TEMPERATURE:-0.8}" \
   --min-value "${MIN_VALUE:-0}" \
   --max-value "${MAX_VALUE:-19}" \
   --output-dir checkpoints/humanline_grpo

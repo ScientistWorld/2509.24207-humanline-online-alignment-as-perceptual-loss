@@ -2,4 +2,4 @@ action: submit
 gpus: 0
 test: true
 milestone: method_runs
-notes: "Second CPU test: rerun scaled stale GRPO vs offline humanline GRPO with dense numeric reward, 64-step stale refresh, and longer warm start/RL schedule."
+notes: "Third CPU test: rerun scaled stale GRPO vs offline humanline GRPO after masking warm-start loss to answer tokens and slightly increasing model/group scale."
