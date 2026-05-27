@@ -50,4 +50,4 @@
 - Stopping at `core_claim_plus`; broader instruction-following and ablation results remain outside this scaled reproduction.
 
 ## Stop Justification
-- Stopping with a validated `core_claim_plus` environment: the core stale-GRPO math claim is reproduced at 64-step refresh and expanded to a 128-step refresh setting.
+- Completed at milestone `core_claim_plus`.
