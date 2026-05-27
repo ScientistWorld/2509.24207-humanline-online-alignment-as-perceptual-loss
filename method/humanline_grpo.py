@@ -11,7 +11,7 @@ import torch
 import torch.nn.functional as F
 
 from data.synthetic_math import CHARS, EOS, PAD, decode, encode, make_balanced_examples, make_examples, reward_completion, target_text
-from method.model import TinyGRUPolicy
+from method.model import StructuredAnswerTokenPolicy, TinyGRUPolicy
 
 
 @dataclass
@@ -47,6 +47,8 @@ def collate_sequences(seqs: list[list[int]], device: torch.device) -> tuple[torc
 
 
 def token_logps(model: TinyGRUPolicy, prefixes: list[str], completions: list[str], device: torch.device) -> tuple[torch.Tensor, torch.Tensor]:
+    if hasattr(model, "completion_logps"):
+        return model.completion_logps(prefixes, completions, device)
     seqs = [encode(p + c, add_eos=True) for p, c in zip(prefixes, completions)]
     prompt_lens = [len(encode(p, add_eos=False)) for p in prefixes]
     ids, _ = collate_sequences(seqs, device)
@@ -72,6 +74,8 @@ def generate_one(
     was_training = model.training
     model.eval()
     try:
+        if hasattr(model, "generate_completion"):
+            return model.generate_completion(prompt, device, temperature)
         ids = torch.tensor([encode(prompt, add_eos=False)], dtype=torch.long, device=device)
         out: list[int] = []
         for _ in range(max_new_tokens):
@@ -95,6 +99,13 @@ def supervised_warm_start(model: TinyGRUPolicy, examples, device: torch.device, 
     opt = torch.optim.AdamW(model.parameters(), lr=lr)
     for _ in range(steps):
         batch = random.sample(examples, batch_size)
+        if hasattr(model, "supervised_loss"):
+            loss = model.supervised_loss([ex.prompt for ex in batch], [ex.answer for ex in batch], device)
+            opt.zero_grad()
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            opt.step()
+            continue
         seqs = [encode(ex.prompt + target_text(ex.answer), add_eos=True) for ex in batch]
         prompt_lens = [len(encode(ex.prompt, add_eos=False)) for ex in batch]
         ids, _ = collate_sequences(seqs, device)
@@ -263,13 +274,22 @@ def run(args: argparse.Namespace) -> RunMetrics:
         train_examples = make_examples(args.train_size, args.seed, args.min_value, args.max_value)
     eval_examples = make_examples(args.eval_size, args.seed + 10_000, args.min_value, args.max_value)
 
-    policy = TinyGRUPolicy(len(CHARS), args.hidden_size).to(device)
+    if args.policy_type == "structured":
+        policy = StructuredAnswerTokenPolicy(args.max_value, args.hidden_size).to(device)
+    else:
+        policy = TinyGRUPolicy(len(CHARS), args.hidden_size).to(device)
     supervised_warm_start(policy, train_examples, device, args.sft_steps, args.batch_size, args.sft_lr)
     initial_predictions = collect_predictions(policy, eval_examples, device, args.max_new_tokens)
     initial_pass_at_1, initial_mean_reward, _ = score_prediction_rows(initial_predictions)
-    reference = TinyGRUPolicy(len(CHARS), args.hidden_size).to(device)
+    if args.policy_type == "structured":
+        reference = StructuredAnswerTokenPolicy(args.max_value, args.hidden_size).to(device)
+    else:
+        reference = TinyGRUPolicy(len(CHARS), args.hidden_size).to(device)
     reference.load_state_dict(policy.state_dict())
-    behavior = TinyGRUPolicy(len(CHARS), args.hidden_size).to(device)
+    if args.policy_type == "structured":
+        behavior = StructuredAnswerTokenPolicy(args.max_value, args.hidden_size).to(device)
+    else:
+        behavior = TinyGRUPolicy(len(CHARS), args.hidden_size).to(device)
     behavior.load_state_dict(policy.state_dict())
     optimizer = torch.optim.AdamW(policy.parameters(), lr=args.rl_lr, weight_decay=1e-4)
 
@@ -373,6 +393,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--disable-humanline-sync", action="store_true")
     parser.add_argument("--pool-stale-batches", action="store_true")
     parser.add_argument("--balanced-train", action="store_true")
+    parser.add_argument("--policy-type", choices=["gru", "structured"], default="gru")
     parser.add_argument("--sync-k", type=int, default=12)
     parser.add_argument("--refresh-interval", type=int, default=64)
     parser.add_argument("--train-steps", type=int, default=256)

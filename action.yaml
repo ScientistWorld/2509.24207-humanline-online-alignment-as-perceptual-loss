@@ -5,4 +5,4 @@ action: submit
 gpus: 0
 test: false
 milestone: method_runs
-notes: "Run a shorter corrected token-level stale GRPO vs Humanline GRPO comparison after removing central-answer reward shaping and adding balanced warm-start data."
+notes: "Run core stale GRPO vs Humanline GRPO with the structured token policy after the character GRU collapsed to constant answers."

@@ -22,7 +22,7 @@
 ### [2026-05-27 06:31] - method_runs
 - Cancelled the harder token-level run after both stale GRPO and Humanline GRPO collapsed to the same constant `<answer>18</answer>` output (`pass_at_1=0.0375`).
 - Removed the dense numeric-closeness reward that made central wrong answers attractive, added balanced finite-grid warm-start data, and saved initial SFT predictions for diagnostics.
-- Queued a shorter core token-level run on the `0..9` arithmetic range with exact-dominant rewards, stale GRPO, and Humanline GRPO only.
+- Replaced the weak character-GRU policy in the reduced benchmark with a prompt-conditioned structured token policy over answer-tag completions, then queued a shorter core stale GRPO vs Humanline GRPO run.
 
 ## Stop Justification
 - Not stopped. A corrected token-level Humanline GRPO job is queued to test whether the actual algorithm supports the core stale-data claim after fixing the constant-answer failure mode.

@@ -21,13 +21,14 @@ python -m baseline.stale_grpo \
   --name "${BASELINE_NAME:-stale_grpo_64x_offpolicy}" \
   --pool-stale-batches \
   --balanced-train \
+  --policy-type "${POLICY_TYPE:-structured}" \
   --refresh-interval "${REFRESH_INTERVAL:-64}" \
-  --train-steps "${TRAIN_STEPS:-128}" \
-  --sft-steps "${SFT_STEPS:-1000}" \
-  --train-size "${TRAIN_SIZE:-512}" \
+  --train-steps "${TRAIN_STEPS:-256}" \
+  --sft-steps "${SFT_STEPS:-160}" \
+  --train-size "${TRAIN_SIZE:-800}" \
   --eval-size "${EVAL_SIZE:-160}" \
-  --batch-size "${BATCH_SIZE:-16}" \
-  --group-size "${GROUP_SIZE:-6}" \
+  --batch-size "${BATCH_SIZE:-32}" \
+  --group-size "${GROUP_SIZE:-8}" \
   --hidden-size "${HIDDEN_SIZE:-128}" \
   --temperature "${TEMPERATURE:-0.8}" \
   --rl-lr "${RL_LR:-5e-4}" \
@@ -35,9 +36,9 @@ python -m baseline.stale_grpo \
   --log-epsilon-p "${LOG_EPSILON_P:--1.5}" \
   --log-epsilon-r "${LOG_EPSILON_R:-1.5}" \
   --min-value "${MIN_VALUE:-0}" \
-  --max-value "${MAX_VALUE:-9}" \
+  --max-value "${MAX_VALUE:-19}" \
   --max-new-tokens "${MAX_NEW_TOKENS:-24}" \
-  --log-every "${LOG_EVERY:-32}" \
+  --log-every "${LOG_EVERY:-64}" \
   --output-dir checkpoints/humanline_grpo
 
 bash scripts/evaluate.sh --runs-dir checkpoints/humanline_grpo

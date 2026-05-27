@@ -20,12 +20,13 @@ mkdir -p "${OUT_DIR}"
 COMMON_ARGS=(
   --pool-stale-batches
   --balanced-train
-  --train-steps "${TRAIN_STEPS:-128}"
-  --sft-steps "${SFT_STEPS:-1000}"
-  --train-size "${TRAIN_SIZE:-512}"
+  --policy-type "${POLICY_TYPE:-structured}"
+  --train-steps "${TRAIN_STEPS:-256}"
+  --sft-steps "${SFT_STEPS:-160}"
+  --train-size "${TRAIN_SIZE:-800}"
   --eval-size "${EVAL_SIZE:-160}"
-  --batch-size "${BATCH_SIZE:-16}"
-  --group-size "${GROUP_SIZE:-6}"
+  --batch-size "${BATCH_SIZE:-32}"
+  --group-size "${GROUP_SIZE:-8}"
   --hidden-size "${HIDDEN_SIZE:-128}"
   --max-new-tokens "${MAX_NEW_TOKENS:-24}"
   --temperature "${TEMPERATURE:-0.8}"
@@ -35,8 +36,8 @@ COMMON_ARGS=(
   --log-epsilon-p "${LOG_EPSILON_P:--1.5}"
   --log-epsilon-r "${LOG_EPSILON_R:-1.5}"
   --min-value "${MIN_VALUE:-0}"
-  --max-value "${MAX_VALUE:-9}"
-  --log-every "${LOG_EVERY:-32}"
+  --max-value "${MAX_VALUE:-19}"
+  --log-every "${LOG_EVERY:-64}"
   --output-dir "${OUT_DIR}"
 )
 
