@@ -42,6 +42,38 @@
           "generated_examples": 32768,
           "initial_pass_at_1": 0.06875
         },
+        "offline_humanline_grpo_64x_sync16": {
+          "pass_at_1": 0.1625,
+          "mean_reward": 0.30596875000000023,
+          "format_rate": 1.0,
+          "stale_refresh_interval": 64,
+          "generated_examples": 16384,
+          "initial_pass_at_1": 0.06875
+        },
+        "offline_humanline_grpo_64x_sync20": {
+          "pass_at_1": 0.15,
+          "mean_reward": 0.29317187500000014,
+          "format_rate": 1.0,
+          "stale_refresh_interval": 64,
+          "generated_examples": 16384,
+          "initial_pass_at_1": 0.06875
+        },
+        "offline_humanline_grpo_64x_sync24": {
+          "pass_at_1": 0.1625,
+          "mean_reward": 0.3061250000000001,
+          "format_rate": 1.0,
+          "stale_refresh_interval": 64,
+          "generated_examples": 16384,
+          "initial_pass_at_1": 0.06875
+        },
+        "offline_humanline_grpo_64x_sync8": {
+          "pass_at_1": 0.175,
+          "mean_reward": 0.3184843750000001,
+          "format_rate": 1.0,
+          "stale_refresh_interval": 64,
+          "generated_examples": 16384,
+          "initial_pass_at_1": 0.06875
+        },
         "stale_grpo_128x_offpolicy": {
           "pass_at_1": 0.11875,
           "mean_reward": 0.26034375000000004,
