@@ -57,15 +57,6 @@ def run_shortcut(name: str) -> None:
         meta["humanline_sync_k"] = 0
         meta["generated_examples"] = 0
         meta["initial_pass_at_1"] = sum(r["answer"] == 18 for r in rows) / len(rows)
-    elif name == "warmstart_only_shortcut":
-        # Keep genuinely learned predictions from the already-perfect SFT
-        # model, with no stale-feedback post-training at all.
-        source = Path("redteam/better_warmstart/artifacts")
-        meta = json.loads((source / f"{KEY}.json").read_text())
-        rows = read_rows(source / f"{KEY}_initial_predictions.jsonl")
-        meta["train_steps"] = 0
-        meta["humanline_sync_k"] = 0
-        meta["generated_examples"] = 0
     elif name == "constant_task_shortcut":
         # Choose the evaluation set to make a constant decoder look perfect.
         # Whitespace creates enough distinct prompt strings without increasing
