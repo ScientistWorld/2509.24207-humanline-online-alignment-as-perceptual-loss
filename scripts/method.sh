@@ -1,39 +1,26 @@
 #!/bin/bash
-# Run the paper's proposed method.
+# Run the paper's method (humanline GRPO) at both fixed operating points.
 #
-# This script trains/runs the paper's method using code in method/.
+#   stale64: completions are sampled from a frozen policy snapshot every 64
+#            optimizer updates (8 sampling rounds, 131,072 completions).
+#   offline: one sampling round from the starting policy, 512 updates.
 #
-# Usage:
-#   bash scripts/method.sh
+# Writes checkpoints/<experiment>/<name>/{policy.pt,run.json,train_log.jsonl}.
+# Usage: bash scripts/method.sh        (env vars override hyperparameters)
 
 set -e
-
 cd /home/user
 
-python -m method.humanline_grpo \
-  --name "${METHOD_NAME:-offline_humanline_grpo}" \
-  --humanline \
-  --pool-stale-batches \
-  --balanced-train \
-  --policy-type "${POLICY_TYPE:-structured}" \
-  --refresh-interval "${REFRESH_INTERVAL:-64}" \
-  --sync-k "${SYNC_K:-12}" \
-  --train-steps "${TRAIN_STEPS:-256}" \
-  --sft-steps "${SFT_STEPS:-160}" \
-  --train-size "${TRAIN_SIZE:-800}" \
-  --eval-size "${EVAL_SIZE:-160}" \
-  --batch-size "${BATCH_SIZE:-32}" \
-  --group-size "${GROUP_SIZE:-8}" \
-  --hidden-size "${HIDDEN_SIZE:-128}" \
-  --temperature "${TEMPERATURE:-0.8}" \
-  --rl-lr "${RL_LR:-5e-4}" \
-  --beta-kl "${BETA_KL:-0.01}" \
-  --log-epsilon-p "${LOG_EPSILON_P:--1.5}" \
-  --log-epsilon-r "${LOG_EPSILON_R:-1.5}" \
-  --min-value "${MIN_VALUE:-0}" \
-  --max-value "${MAX_VALUE:-19}" \
-  --max-new-tokens "${MAX_NEW_TOKENS:-24}" \
-  --log-every "${LOG_EVERY:-64}" \
-  --output-dir checkpoints/humanline_grpo
+NAME="${METHOD_NAME:-humanline_grpo}"
+SEED="${SEED:-7}"
+LR="${LR:-3e-4}"
+SYNC_K="${SYNC_K:-12}"
+OUT="${OUTPUT_ROOT:-checkpoints}"
 
-bash scripts/evaluate.sh --runs-dir checkpoints/humanline_grpo
+python -m method.humanline_grpo --name "${NAME}" --experiment stale64 --output-root "${OUT}" \
+  --humanline --sync-k "${SYNC_K}" --refresh-interval 64 --train-steps 512 \
+  --seed "${SEED}" --lr "${LR}" ${EXTRA_ARGS:-}
+
+python -m method.humanline_grpo --name "${NAME}" --experiment offline --output-root "${OUT}" \
+  --humanline --sync-k "${SYNC_K}" --refresh-interval 512 --train-steps 512 \
+  --seed "${SEED}" --lr "${LR}" ${EXTRA_ARGS:-}

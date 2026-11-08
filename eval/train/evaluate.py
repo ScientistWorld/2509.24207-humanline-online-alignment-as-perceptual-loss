@@ -1,196 +1,282 @@
+"""Visible (train-slice) evaluator for the stale-feedback post-training gym.
+
+For every ``run.json`` found under ``--runs-root`` (default ``checkpoints/``)
+this evaluator loads the run's ``policy.pt`` into its own copy of the fixed
+policy architecture, runs greedy decoding itself on the visible validation
+prompts held in this directory, and scores exact-match accuracy.  It applies
+the same operating-point gates as the held-out test.  Nothing the method
+wrote is trusted as a score: run.json is read only for the experiment name,
+the method name, and the declared operating point, which can only fail a run.
+
+Self-contained on purpose: no imports from data/, method/ or eval/test/.
+"""
+
 from __future__ import annotations
 
 import argparse
 import hashlib
 import json
+import math
 import re
+import sys
 from pathlib import Path
 
-from data.synthetic_math import extract_answer, reward_completion
+import torch
+import torch.nn.functional as F
+from torch import nn
+
+SLICE = "train"
+HERE = Path(__file__).resolve().parent
+WORKSPACE = HERE.parent.parent
+PROMPTS_FILE = HERE / "val_prompts.json"
+BASE_HASH_FILE = HERE / "base_policy.sha256"
+BASE_POLICY = WORKSPACE / "data" / "base_policy.pt"
+DEFAULT_OUTPUT = WORKSPACE / "scoring" / "scores_train.json"
+BASE_ROW = "base_policy"
+
+# Fixed operating points.  Budgets are per run.
+EXPERIMENTS = {
+    # sampling at most every 64 optimizer updates (64x less often than online)
+    "stale64": {"max_generated": 131072, "max_updates": 512, "max_rounds": 8, "min_refresh": 64},
+    # one sampling round drawn from the starting policy, then no new samples
+    "offline": {"max_generated": 131072, "max_updates": 512, "max_rounds": 1, "min_refresh": 1},
+}
+HARD_MIN_CARRIES = 2
+METHOD_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.\-]{0,79}$")
+
+# ---------------------------------------------------------------- task ----
+VOCAB_SIZE = 13
+PLUS, EQUALS, BOS = 10, 11, 12
+PROMPT_LEN = 9
+ANSWER_DIGITS = 4
 
 
-EXPERIMENT_NAME = "synthetic_math_stale_grpo"
-SLICE_NAME = "train"
-SLICE_BUCKET = 0
-SPLIT_SALT = "researchgym_synthetic_math_prompt_hash_v2"
-MIN_SLICE_ROWS = 32
-MIN_UNIQUE_PROMPTS = 16
-PROMPT_RE = re.compile(r"^\s*(-?\d+)\+(-?\d+)=\?\s*$")
+def encode_prompt(a: int, b: int) -> list[int]:
+    return [BOS] + [int(c) for c in f"{a:03d}"] + [PLUS] + [int(c) for c in f"{b:03d}"] + [EQUALS]
 
 
-def load_run(path: Path) -> dict:
-    with path.open() as f:
-        return json.load(f)
+def encode_answer(a: int, b: int) -> list[int]:
+    return [int(c) for c in f"{a + b:04d}"]
 
 
-def answer_from_prompt(prompt: str) -> int:
-    match = PROMPT_RE.match(prompt)
-    if not match:
-        raise ValueError(f"Cannot parse arithmetic prompt: {prompt!r}")
-    return int(match.group(1)) + int(match.group(2))
+def carries(a: int, b: int) -> int:
+    carry = count = 0
+    for _ in range(3):
+        carry = 1 if a % 10 + b % 10 + carry >= 10 else 0
+        count += carry
+        a //= 10
+        b //= 10
+    return count
 
 
-def operands_from_prompt(prompt: str) -> tuple[int, int]:
-    match = PROMPT_RE.match(prompt)
-    if not match:
-        raise ValueError(f"Cannot parse arithmetic prompt: {prompt!r}")
-    return int(match.group(1)), int(match.group(2))
+# ---------------------------------------------------------- architecture ----
+class _Block(nn.Module):
+    def __init__(self, d_model: int, n_heads: int, d_ff: int):
+        super().__init__()
+        self.n_heads = n_heads
+        self.ln1 = nn.LayerNorm(d_model)
+        self.qkv = nn.Linear(d_model, 3 * d_model)
+        self.proj = nn.Linear(d_model, d_model)
+        self.ln2 = nn.LayerNorm(d_model)
+        self.fc1 = nn.Linear(d_model, d_ff)
+        self.fc2 = nn.Linear(d_ff, d_model)
+
+    def forward(self, x: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+        bsz, seq, dim = x.shape
+        h = self.ln1(x)
+        q, k, v = self.qkv(h).split(dim, dim=-1)
+        dh = dim // self.n_heads
+        q = q.view(bsz, seq, self.n_heads, dh).transpose(1, 2)
+        k = k.view(bsz, seq, self.n_heads, dh).transpose(1, 2)
+        v = v.view(bsz, seq, self.n_heads, dh).transpose(1, 2)
+        att = (q @ k.transpose(-2, -1)) / math.sqrt(dh)
+        att = att.masked_fill(~mask[:seq, :seq], float("-inf"))
+        att = torch.softmax(att, dim=-1)
+        y = (att @ v).transpose(1, 2).reshape(bsz, seq, dim)
+        x = x + self.proj(y)
+        return x + self.fc2(F.gelu(self.fc1(self.ln2(x))))
 
 
-def load_predictions(path: Path) -> list[dict]:
-    rows = []
-    with path.open() as f:
-        for line_no, line in enumerate(f, start=1):
-            line = line.strip()
-            if not line:
-                continue
-            row = json.loads(line)
-            missing = {"prompt", "answer", "completion"} - set(row)
-            if missing:
-                raise ValueError(f"{path}:{line_no} missing required fields: {sorted(missing)}")
-            prompt_answer = answer_from_prompt(str(row["prompt"]))
-            recorded_answer = int(row["answer"])
-            if recorded_answer != prompt_answer:
-                raise ValueError(
-                    f"{path}:{line_no} answer {recorded_answer} does not match prompt-derived answer {prompt_answer}"
-                )
-            rows.append(row)
-    if not rows:
-        raise ValueError(f"{path} contains no prediction rows")
-    return rows
+class _Policy(nn.Module):
+    def __init__(self, vocab_size=VOCAB_SIZE, max_len=16, d_model=128, n_layers=3, n_heads=4, d_ff=512):
+        super().__init__()
+        self.tok = nn.Embedding(vocab_size, d_model)
+        self.pos = nn.Embedding(max_len, d_model)
+        self.blocks = nn.ModuleList([_Block(d_model, n_heads, d_ff) for _ in range(n_layers)])
+        self.ln_f = nn.LayerNorm(d_model)
+        self.head = nn.Linear(d_model, vocab_size)
+        self.register_buffer("causal_mask", torch.tril(torch.ones(max_len, max_len, dtype=torch.bool)), persistent=False)
+
+    def forward(self, ids: torch.Tensor) -> torch.Tensor:
+        x = self.tok(ids) + self.pos(torch.arange(ids.shape[1]))[None]
+        for block in self.blocks:
+            x = block(x, self.causal_mask)
+        return self.head(self.ln_f(x))
 
 
-def select_slice(rows: list[dict]) -> list[dict]:
-    selected = [row for row in rows if prompt_bucket(str(row["prompt"])) == SLICE_BUCKET]
-    if not selected:
-        raise ValueError(f"{SLICE_NAME} slice has no rows after deterministic prompt-hash split")
-    if len(selected) < MIN_SLICE_ROWS:
-        raise ValueError(
-            f"{SLICE_NAME} slice has only {len(selected)} rows; expected at least {MIN_SLICE_ROWS}"
-        )
-    unique_prompts = {str(row["prompt"]) for row in selected}
-    if len(unique_prompts) < MIN_UNIQUE_PROMPTS:
-        raise ValueError(
-            f"{SLICE_NAME} slice has only {len(unique_prompts)} unique prompts; "
-            f"expected at least {MIN_UNIQUE_PROMPTS}"
-        )
-    return selected
+def load_checkpoint(path: Path) -> _Policy:
+    state = torch.load(path, map_location="cpu", weights_only=True)
+    if not isinstance(state, dict) or not all(isinstance(v, torch.Tensor) for v in state.values()):
+        raise ValueError("policy.pt is not a plain state_dict of tensors")
+    model = _Policy()
+    expected = model.state_dict()
+    if set(state) != set(expected):
+        raise ValueError(f"state_dict keys differ from the fixed architecture ({len(state)} vs {len(expected)})")
+    for key, value in state.items():
+        if tuple(value.shape) != tuple(expected[key].shape):
+            raise ValueError(f"{key}: shape {tuple(value.shape)} != {tuple(expected[key].shape)}")
+        if not value.is_floating_point() or not bool(torch.isfinite(value).all()):
+            raise ValueError(f"{key}: non-floating or non-finite values")
+    model.load_state_dict({k: v.to(torch.float32) for k, v in state.items()}, strict=True)
+    return model.eval()
 
 
-def prompt_bucket(prompt: str) -> int:
-    digest = hashlib.sha256(f"{SPLIT_SALT}:{prompt}".encode("utf-8")).digest()
-    return digest[0] % 2
+@torch.no_grad()
+def greedy_correct(model: _Policy, prompts: torch.Tensor, answers: torch.Tensor, chunk: int = 1000) -> torch.Tensor:
+    out = []
+    for i in range(0, len(prompts), chunk):
+        ids = prompts[i : i + chunk]
+        for _ in range(ANSWER_DIGITS):
+            nxt = model(ids)[:, -1, :].argmax(dim=-1, keepdim=True)
+            ids = torch.cat([ids, nxt], dim=1)
+        out.append((ids[:, PROMPT_LEN:] == answers[i : i + chunk]).all(dim=1))
+    return torch.cat(out)
 
 
-def is_carry_prompt(prompt: str) -> bool:
-    a, b = operands_from_prompt(prompt)
-    return abs(a) % 10 + abs(b) % 10 >= 10
+# ------------------------------------------------------------- gating ----
+def _int_field(meta: dict, key: str, minimum: int) -> int:
+    value = meta.get(key)
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ValueError(f"run.json field {key!r} must be an integer, got {value!r}")
+    if value < minimum:
+        raise ValueError(f"run.json field {key!r}={value} is impossible (minimum {minimum})")
+    return value
 
 
-def correctness(row: dict) -> bool:
-    return reward_completion(str(row["completion"]), answer_from_prompt(str(row["prompt"]))) >= 1.0
+def operating_point_violation(meta: dict, experiment: str) -> str | None:
+    spec = EXPERIMENTS[experiment]
+    generated = _int_field(meta, "generated_completions", 0)
+    updates = _int_field(meta, "optimizer_updates", 0)
+    rounds = _int_field(meta, "sampling_rounds", 0)
+    refresh = _int_field(meta, "refresh_interval", 1)
+    if generated > spec["max_generated"]:
+        return f"generated_completions {generated} > budget {spec['max_generated']}"
+    if updates > spec["max_updates"]:
+        return f"optimizer_updates {updates} > budget {spec['max_updates']}"
+    if rounds > spec["max_rounds"]:
+        return f"sampling_rounds {rounds} > {spec['max_rounds']}"
+    if spec["max_rounds"] > 1:
+        if refresh < spec["min_refresh"]:
+            return f"refresh_interval {refresh} < {spec['min_refresh']}"
+        if updates > 0 and rounds > math.ceil(updates / refresh):
+            return f"sampling_rounds {rounds} inconsistent with {updates} updates at refresh {refresh}"
+    if generated > 0 and rounds == 0:
+        return "generated completions without any sampling round"
+    return None
 
 
-def rate(values: list[bool]) -> float:
-    return sum(1 for value in values if value) / len(values) if values else 0.0
+# ---------------------------------------------------------------- main ----
+def load_prompts():
+    pairs = json.loads(PROMPTS_FILE.read_text())
+    prompts = torch.tensor([encode_prompt(a, b) for a, b in pairs], dtype=torch.long)
+    answers = torch.tensor([encode_answer(a, b) for a, b in pairs], dtype=torch.long)
+    hard = torch.tensor([carries(a, b) >= HARD_MIN_CARRIES for a, b in pairs], dtype=torch.bool)
+    return prompts, answers, hard
 
 
-def score_predictions(rows: list[dict]) -> dict[str, float]:
-    rewards = [
-        reward_completion(str(row["completion"]), answer_from_prompt(str(row["prompt"])))
-        for row in rows
-    ]
-    correct = sum(1 for reward in rewards if reward >= 1.0)
-    parsed_answers = [extract_answer(str(row["completion"])) for row in rows]
-    absolute_errors = [
-        (
-            abs(parsed - answer_from_prompt(str(row["prompt"])))
-            if parsed is not None
-            else abs(answer_from_prompt(str(row["prompt"]))) + 1
-        )
-        for row, parsed in zip(rows, parsed_answers)
-    ]
-    carry_rows = [row for row in rows if is_carry_prompt(str(row["prompt"]))]
-    formatted = sum(
-        1
-        for row in rows
-        if "<answer>" in str(row["completion"]) and "</answer>" in str(row["completion"])
-    )
+def metrics_from(correct: torch.Tensor, hard: torch.Tensor, ok: bool) -> dict[str, float]:
+    acc = float(correct.float().mean())
+    hard_acc = float(correct[hard].float().mean())
     return {
-        "pass_at_1": correct / len(rows),
-        "mean_reward": sum(rewards) / len(rewards),
-        "format_rate": formatted / len(rows),
-        "numeric_mae": sum(absolute_errors) / len(absolute_errors),
-        "carry_pass_at_1": rate([correctness(row) for row in carry_rows]),
-        "unique_prompt_rate": len({str(row["prompt"]) for row in rows}) / len(rows),
-        "evaluated_rows": float(len(rows)),
+        "pass_at_1": acc if ok else 0.0,
+        "hard_pass_at_1": hard_acc if ok else 0.0,
+        "unconstrained_pass_at_1": acc,
+        "operating_point_ok": 1.0 if ok else 0.0,
     }
 
 
-def prediction_path_for_run(run_path: Path, run: dict) -> Path:
-    candidates = [
-        run_path.with_name(f"{run_path.stem}_predictions.jsonl"),
-        run_path.with_name(f"{run['method']}_predictions.jsonl"),
-    ]
-    for candidate in candidates:
-        if candidate.exists():
-            return candidate
-    searched = ", ".join(str(candidate) for candidate in candidates)
-    raise FileNotFoundError(f"No predictions JSONL found for {run_path}; searched {searched}")
-
-
-def score_run(run_path: Path) -> tuple[str, dict[str, float]]:
-    run = load_run(run_path)
-    method = str(run["method"])
-    pred_path = prediction_path_for_run(run_path, run)
-    rows = select_slice(load_predictions(pred_path))
-    scored = score_predictions(rows)
-    return method, {
-        "pass_at_1": scored["pass_at_1"],
-        "mean_reward": scored["mean_reward"],
-        "format_rate": scored["format_rate"],
-        "numeric_mae": scored["numeric_mae"],
-        "carry_pass_at_1": scored["carry_pass_at_1"],
-        "unique_prompt_rate": scored["unique_prompt_rate"],
-        "evaluated_rows": scored["evaluated_rows"],
-        "stale_refresh_interval": run["stale_refresh_interval"],
-        "generated_examples": run["generated_examples"],
-        "initial_pass_at_1": run.get("initial_pass_at_1", 0.0),
-    }
+FAILED = {"pass_at_1": 0.0, "hard_pass_at_1": 0.0, "unconstrained_pass_at_1": 0.0, "operating_point_ok": 0.0}
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--runs-dir", default="checkpoints/humanline_grpo")
-    parser.add_argument("--output", default="scoring/scores_train.json")
+    parser.add_argument("--runs-root", default=str(WORKSPACE / "checkpoints"))
+    parser.add_argument("--output", default=str(DEFAULT_OUTPUT))
+    parser.add_argument("--dump-correct", default="", help="optional directory for per-prompt correctness vectors")
     args = parser.parse_args()
 
-    runs_dir = Path(args.runs_dir)
-    results: dict[str, dict[str, float]] = {}
-    for path in sorted(runs_dir.glob("*.json")):
-        method, metrics = score_run(path)
-        if method in results:
-            raise ValueError(f"Duplicate method key {method!r} from {path}")
-        results[method] = metrics
+    torch.set_grad_enabled(False)
+    prompts, answers, hard = load_prompts()
+    results: dict[str, dict[str, dict[str, float]]] = {name: {} for name in EXPERIMENTS}
+    status: dict[str, str] = {}
+    dump_dir = Path(args.dump_correct) if args.dump_correct else None
+    if dump_dir:
+        dump_dir.mkdir(parents=True, exist_ok=True)
 
-    if not results:
-        raise SystemExit(f"No run JSON files found in {runs_dir}")
+    def record(experiment: str, method: str, row: dict, correct: torch.Tensor | None, note: str) -> None:
+        key = method
+        n = 2
+        while key in results[experiment]:
+            key = f"{method}__dup{n}"
+            n += 1
+        results[experiment][key] = row
+        status[f"{experiment}/{key}"] = note
+        if dump_dir is not None and correct is not None:
+            (dump_dir / f"{experiment}__{key}.json").write_text(json.dumps(correct.int().tolist()))
+
+    base_correct = None
+    if BASE_HASH_FILE.is_file() and BASE_POLICY.is_file():
+        pinned = BASE_HASH_FILE.read_text().strip()
+        if hashlib.sha256(BASE_POLICY.read_bytes()).hexdigest() == pinned:
+            base_correct = greedy_correct(load_checkpoint(BASE_POLICY), prompts, answers)
+        else:
+            status["_base_policy"] = "data/base_policy.pt does not match the pinned hash; base row omitted"
+    for experiment in EXPERIMENTS:
+        if base_correct is not None:
+            record(experiment, BASE_ROW, metrics_from(base_correct, hard, True), base_correct,
+                   "ok (evaluator-owned starting policy)")
+
+    runs_root = Path(args.runs_root)
+    run_files = sorted(runs_root.rglob("run.json")) if runs_root.is_dir() else []
+    for run_file in run_files:
+        try:
+            meta = json.loads(run_file.read_text())
+            experiment = meta.get("experiment")
+            method = meta.get("method")
+        except Exception as exc:  # unreadable run.json: nothing to attribute it to
+            status[str(run_file)] = f"skipped: unreadable run.json ({exc})"
+            continue
+        if experiment not in EXPERIMENTS or not isinstance(method, str) or not METHOD_RE.match(method):
+            status[str(run_file)] = f"skipped: unknown experiment {experiment!r} or invalid method name {method!r}"
+            continue
+        if method == BASE_ROW:
+            method = f"{method}_submitted"
+        try:
+            violation = operating_point_violation(meta, experiment)
+        except ValueError as exc:
+            record(experiment, method, dict(FAILED), None, f"failed: {exc}")
+            continue
+        try:
+            model = load_checkpoint(run_file.parent / "policy.pt")
+            correct = greedy_correct(model, prompts, answers)
+        except Exception as exc:
+            record(experiment, method, dict(FAILED), None, f"failed: cannot evaluate policy.pt ({exc})")
+            continue
+        note = "ok" if violation is None else f"failed operating point: {violation}"
+        record(experiment, method, metrics_from(correct, hard, violation is None), correct, note)
 
     scores = {
         "experiments": {
-            EXPERIMENT_NAME: {
-                "slice": SLICE_NAME,
-                "split": "deterministic_prompt_hash_bucket_0",
-                "results": results,
-            }
-        }
+            name: {"slice": SLICE, "evaluated_prompts": int(len(prompts)), "results": rows}
+            for name, rows in results.items()
+        },
+        "_status": status,
     }
     out = Path(args.output)
     out.parent.mkdir(parents=True, exist_ok=True)
-    with out.open("w") as f:
-        json.dump(scores, f, indent=2)
+    out.write_text(json.dumps(scores, indent=2) + "\n")
     print(json.dumps(scores, indent=2))
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

@@ -1,14 +1,8 @@
 #!/bin/bash
-# Regenerate the scaled reproduction artifacts, then score them on the visible
-# train slice and the held-out test slice.
-
+# Hardening job (iteration 11): smoke test, base-policy build, pre-registered
+# LR sweep, reference runs into checkpoints/, extra seeds, variants, shortcut
+# submissions, and visible + hidden evaluation.  Resumable.
 set -euo pipefail
-
 cd /home/user
-
-RUNS_DIR="${RUNS_DIR:-checkpoints/humanline_grpo}"
-
-bash scripts/reproduce.sh
-
-bash scripts/evaluate_train.sh --runs-dir "${RUNS_DIR}" --output scoring/scores_train.json
-bash scripts/evaluate_test.sh --runs-dir "${RUNS_DIR}" --train-scores scoring/scores_train.json --output scoring/scores_test.json
+export PYTHONPATH=/home/user
+python -m redteam.hardening.pipeline

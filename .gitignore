@@ -232,3 +232,9 @@ tmp/
 protocol.md
 *.egg-info
 core.[0-9]*
+
+# Hardened gym: the fixed starting policy is a committed gym asset (small).
+!data/base_policy.pt
+# Hardening harness run artifacts (weights, logs) are regenerable by the job.
+redteam/hardening/runs/
+redteam/hardening/shortcuts_runs/**/*.pt

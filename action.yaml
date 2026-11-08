@@ -1,8 +1,8 @@
 # Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends.
-action: pending
-gpus: 0
+action: submit
+gpus: 1
 test: false
 milestone: core_claim_plus
-notes: ""
+notes: "Hardening job: smoke test, fixed base-policy build, pre-registered LR sweep, reference/baseline/ablation runs (stale64 + offline), 5 seeds, variants, shortcut submissions, visible + hidden evaluation"
