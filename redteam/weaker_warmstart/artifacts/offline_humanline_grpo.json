@@ -1,0 +1,63 @@
+{
+  "method": "offline_humanline_grpo",
+  "train_steps": 256,
+  "refresh_interval": 64,
+  "humanline_sync_k": 12,
+  "pass_at_1": 0.16875,
+  "mean_reward": 0.21875000000000022,
+  "format_rate": 1.0,
+  "stale_refresh_interval": 64,
+  "generated_examples": 65536,
+  "initial_pass_at_1": 0.13125,
+  "initial_mean_reward": 0.1812500000000005,
+  "samples": [
+    {
+      "prompt": "8+9=?",
+      "answer": 17,
+      "completion": " <answer>14</answer>",
+      "reward": 0.05
+    },
+    {
+      "prompt": "4+17=?",
+      "answer": 21,
+      "completion": " <answer>19</answer>",
+      "reward": 0.05
+    },
+    {
+      "prompt": "5+10=?",
+      "answer": 15,
+      "completion": " <answer>12</answer>",
+      "reward": 0.05
+    },
+    {
+      "prompt": "12+9=?",
+      "answer": 21,
+      "completion": " <answer>19</answer>",
+      "reward": 0.05
+    },
+    {
+      "prompt": "14+5=?",
+      "answer": 19,
+      "completion": " <answer>17</answer>",
+      "reward": 0.05
+    },
+    {
+      "prompt": "6+17=?",
+      "answer": 23,
+      "completion": " <answer>19</answer>",
+      "reward": 0.05
+    },
+    {
+      "prompt": "7+3=?",
+      "answer": 10,
+      "completion": " <answer>8</answer>",
+      "reward": 0.05
+    },
+    {
+      "prompt": "2+3=?",
+      "answer": 5,
+      "completion": " <answer>8</answer>",
+      "reward": 0.05
+    }
+  ]
+}

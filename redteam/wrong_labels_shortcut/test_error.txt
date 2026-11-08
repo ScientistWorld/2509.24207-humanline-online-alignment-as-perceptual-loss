@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/home/user/eval/test/evaluate.py", line 223, in <module>
+    main()
+  File "/home/user/eval/test/evaluate.py", line 194, in main
+    method, metrics = score_run(path, run)
+                      ^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/eval/test/evaluate.py", line 163, in score_run
+    rows = select_slice(load_predictions(pred_path))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/eval/test/evaluate.py", line 54, in load_predictions
+    raise ValueError(
+ValueError: checkpoints/humanline_grpo/offline_humanline_grpo_predictions.jsonl:1 answer 18 does not match prompt-derived answer 17

@@ -1,0 +1,5 @@
+{
+  "test_exit_code": 1,
+  "elapsed_seconds": 0.51,
+  "test_error": "ValueError: checkpoints/humanline_grpo/offline_humanline_grpo_predictions.jsonl:1 answer 18 does not match prompt-derived answer 17"
+}

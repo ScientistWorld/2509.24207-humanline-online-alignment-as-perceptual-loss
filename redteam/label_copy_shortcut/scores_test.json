@@ -1,0 +1,130 @@
+{
+  "experiments": {
+    "synthetic_math_stale_grpo": {
+      "slice": "test",
+      "split": "deterministic_prompt_hash_bucket_1",
+      "results": {
+        "humanline_clip_only_grpo": {
+          "pass_at_1": 0.654320987654321,
+          "mean_reward": 0.7043209876543199,
+          "format_rate": 1.0,
+          "numeric_mae": 0.37037037037037035,
+          "carry_pass_at_1": 0.6923076923076923,
+          "unique_prompt_rate": 0.8518518518518519,
+          "evaluated_rows": 81.0,
+          "stale_refresh_interval": 64,
+          "generated_examples": 65536,
+          "initial_pass_at_1": 0.48125
+        },
+        "humanline_sync_only_grpo": {
+          "pass_at_1": 0.654320987654321,
+          "mean_reward": 0.7043209876543199,
+          "format_rate": 1.0,
+          "numeric_mae": 0.4691358024691358,
+          "carry_pass_at_1": 0.5897435897435898,
+          "unique_prompt_rate": 0.8518518518518519,
+          "evaluated_rows": 81.0,
+          "stale_refresh_interval": 64,
+          "generated_examples": 65536,
+          "initial_pass_at_1": 0.48125
+        },
+        "offline_humanline_grpo": {
+          "pass_at_1": 1.0,
+          "mean_reward": 1.0499999999999985,
+          "format_rate": 1.0,
+          "numeric_mae": 0.0,
+          "carry_pass_at_1": 1.0,
+          "unique_prompt_rate": 0.8518518518518519,
+          "evaluated_rows": 81.0,
+          "stale_refresh_interval": 64,
+          "generated_examples": 65536,
+          "initial_pass_at_1": 0.48125
+        },
+        "offline_humanline_grpo_128x": {
+          "pass_at_1": 0.48148148148148145,
+          "mean_reward": 0.531481481481481,
+          "format_rate": 1.0,
+          "numeric_mae": 0.6419753086419753,
+          "carry_pass_at_1": 0.5384615384615384,
+          "unique_prompt_rate": 0.8518518518518519,
+          "evaluated_rows": 81.0,
+          "stale_refresh_interval": 128,
+          "generated_examples": 65536,
+          "initial_pass_at_1": 0.48125
+        },
+        "offline_humanline_grpo_64x_sync16": {
+          "pass_at_1": 0.6172839506172839,
+          "mean_reward": 0.6672839506172831,
+          "format_rate": 1.0,
+          "numeric_mae": 0.4691358024691358,
+          "carry_pass_at_1": 0.6153846153846154,
+          "unique_prompt_rate": 0.8518518518518519,
+          "evaluated_rows": 81.0,
+          "stale_refresh_interval": 64,
+          "generated_examples": 65536,
+          "initial_pass_at_1": 0.48125
+        },
+        "offline_humanline_grpo_64x_sync24": {
+          "pass_at_1": 0.6666666666666666,
+          "mean_reward": 0.7166666666666658,
+          "format_rate": 1.0,
+          "numeric_mae": 0.43209876543209874,
+          "carry_pass_at_1": 0.6923076923076923,
+          "unique_prompt_rate": 0.8518518518518519,
+          "evaluated_rows": 81.0,
+          "stale_refresh_interval": 64,
+          "generated_examples": 65536,
+          "initial_pass_at_1": 0.48125
+        },
+        "offline_humanline_grpo_64x_sync8": {
+          "pass_at_1": 0.5925925925925926,
+          "mean_reward": 0.6425925925925917,
+          "format_rate": 1.0,
+          "numeric_mae": 0.654320987654321,
+          "carry_pass_at_1": 0.6153846153846154,
+          "unique_prompt_rate": 0.8518518518518519,
+          "evaluated_rows": 81.0,
+          "stale_refresh_interval": 64,
+          "generated_examples": 65536,
+          "initial_pass_at_1": 0.48125
+        },
+        "online_refresh_grpo": {
+          "pass_at_1": 0.6172839506172839,
+          "mean_reward": 0.6672839506172831,
+          "format_rate": 1.0,
+          "numeric_mae": 0.41975308641975306,
+          "carry_pass_at_1": 0.6666666666666666,
+          "unique_prompt_rate": 0.8518518518518519,
+          "evaluated_rows": 81.0,
+          "stale_refresh_interval": 1,
+          "generated_examples": 65536,
+          "initial_pass_at_1": 0.48125
+        },
+        "stale_grpo_128x_offpolicy": {
+          "pass_at_1": 0.6049382716049383,
+          "mean_reward": 0.6549382716049373,
+          "format_rate": 1.0,
+          "numeric_mae": 0.43209876543209874,
+          "carry_pass_at_1": 0.6410256410256411,
+          "unique_prompt_rate": 0.8518518518518519,
+          "evaluated_rows": 81.0,
+          "stale_refresh_interval": 128,
+          "generated_examples": 65536,
+          "initial_pass_at_1": 0.48125
+        },
+        "stale_grpo_64x_offpolicy": {
+          "pass_at_1": 0.6172839506172839,
+          "mean_reward": 0.6672839506172831,
+          "format_rate": 1.0,
+          "numeric_mae": 0.41975308641975306,
+          "carry_pass_at_1": 0.6666666666666666,
+          "unique_prompt_rate": 0.8518518518518519,
+          "evaluated_rows": 81.0,
+          "stale_refresh_interval": 64,
+          "generated_examples": 65536,
+          "initial_pass_at_1": 0.48125
+        }
+      }
+    }
+  }
+}

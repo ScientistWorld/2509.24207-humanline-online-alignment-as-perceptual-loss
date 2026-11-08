@@ -1,0 +1,26 @@
+{
+  "test_exit_code": 0,
+  "elapsed_seconds": 0.524,
+  "metrics": {
+    "pass_at_1": 1.0,
+    "mean_reward": 1.0499999999999985,
+    "format_rate": 1.0,
+    "numeric_mae": 0.0,
+    "carry_pass_at_1": 1.0,
+    "unique_prompt_rate": 0.8518518518518519,
+    "evaluated_rows": 81.0,
+    "stale_refresh_interval": 64,
+    "generated_examples": 65536,
+    "initial_pass_at_1": 0.48125
+  },
+  "rank_delta": 0.7448243114909774,
+  "rank_contributions": {
+    "pass_at_1": 0.345679012345679,
+    "mean_reward": 0.13827160493827098,
+    "numeric_mae": 0.11728395061728394,
+    "carry_pass_at_1": 0.14358974358974358,
+    "generated_examples": -0.0,
+    "initial_pass_at_1": -0.0
+  },
+  "aggregate_rank_delta": 0.7448243114909742
+}

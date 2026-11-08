@@ -1,0 +1,19 @@
+{
+  "experiment": "synthetic_math_stale_grpo",
+  "weight": 1.0,
+  "coefficients": {
+    "pass_at_1": 1.0,
+    "mean_reward": 0.4,
+    "format_rate": 0.0,
+    "numeric_mae": -0.25,
+    "carry_pass_at_1": 0.35,
+    "unique_prompt_rate": 0.0,
+    "evaluated_rows": 0.0,
+    "stale_refresh_interval": 0.0,
+    "generated_examples": -0.1,
+    "initial_pass_at_1": -0.1
+  },
+  "reference": "original scoring/scores_test.json",
+  "reference_rank": 0.0,
+  "formula": "weight * sum(coefficient[m] * (attempt[m] - reference[m]))"
+}

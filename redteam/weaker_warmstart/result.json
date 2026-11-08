@@ -1,0 +1,27 @@
+{
+  "case": "weaker_warmstart",
+  "config": {
+    "kind": "training",
+    "args": [
+      "--sft-steps",
+      "16"
+    ],
+    "purpose": "Tenfold less warm-start training; unchanged post-training and generated budget."
+  },
+  "test_command": "bash scripts/evaluate_test.sh",
+  "test_arguments": [],
+  "persistent_files_only": true,
+  "evaluator_hashes_before": {
+    "scripts/evaluate_test.sh": "ab5280f473dd8f09de0a2ae8e66b590a75330a65b50e97791899877486b9fe58",
+    "eval/evaluate_math.py": "04a1c719c2f8546fb16d88bbbf9b60e0f0143d49b71dd6767a35b02cb88e5fdf",
+    "eval/test/__init__.py": "c5b0a5def06e548fcb45618c98169e8b4caf788537cb4bc8296b1efac90ce344",
+    "eval/test/evaluate.py": "af8283a1e00500208cdcf71cbec7e884dd5479b7b1c03885eeaa5835da561667",
+    "eval/train/__init__.py": "7dbb371574fe229d5f2ce5aa65ff8c7769d73c6cdea41a86fcd57d51545d1a5c",
+    "eval/train/evaluate.py": "149eab180fb19c9dc2240e81c4d2ad7a3b9c80bab8db177ff51c30127ca157d1"
+  },
+  "method_exit_code": 0,
+  "train_exit_code": 0,
+  "test_exit_code": 0,
+  "evaluator_unchanged": true,
+  "elapsed_seconds": 52.386
+}
