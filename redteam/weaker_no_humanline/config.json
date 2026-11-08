@@ -1,0 +1,6 @@
+{
+  "kind": "training",
+  "args": [],
+  "remove_humanline": true,
+  "purpose": "Remove the proposed idea; same stale regime, model and sampling budget."
+}

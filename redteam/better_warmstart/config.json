@@ -1,0 +1,8 @@
+{
+  "kind": "training",
+  "args": [
+    "--sft-steps",
+    "480"
+  ],
+  "purpose": "More supervised warm-start training with the same model, data and full stale-feedback pipeline."
+}

@@ -1,0 +1,8 @@
+{
+  "kind": "training",
+  "args": [
+    "--seed",
+    "8"
+  ],
+  "purpose": "Training seed rerun on fixed seed-7 evaluation prompts."
+}

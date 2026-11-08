@@ -1,0 +1,8 @@
+{
+  "kind": "training",
+  "args": [
+    "--train-steps",
+    "512"
+  ],
+  "purpose": "Double post-training updates and generated completions; all other settings fixed."
+}

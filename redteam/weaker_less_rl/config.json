@@ -1,0 +1,8 @@
+{
+  "kind": "training",
+  "args": [
+    "--train-steps",
+    "1"
+  ],
+  "purpose": "One post-training update; genuinely weaker training and fewer generated examples."
+}

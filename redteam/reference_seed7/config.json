@@ -1,0 +1,8 @@
+{
+  "kind": "training",
+  "args": [
+    "--seed",
+    "7"
+  ],
+  "purpose": "Reference rerun; original procedure and default seed."
+}

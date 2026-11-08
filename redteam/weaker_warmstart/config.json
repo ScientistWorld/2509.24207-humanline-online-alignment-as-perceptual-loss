@@ -1,0 +1,8 @@
+{
+  "kind": "training",
+  "args": [
+    "--sft-steps",
+    "16"
+  ],
+  "purpose": "Tenfold less warm-start training; unchanged post-training and generated budget."
+}
