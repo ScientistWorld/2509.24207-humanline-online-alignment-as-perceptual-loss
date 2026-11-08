@@ -1,0 +1,16 @@
+{
+  "training_seeds": [
+    7,
+    8,
+    9
+  ],
+  "evaluation_seed": 10007,
+  "fixed_hidden_rows": 81,
+  "fixed_hidden_unique_prompts": 69,
+  "rank_min": -0.11290776353276392,
+  "rank_max": -4.440892098500626e-16,
+  "rank_spread": 0.11290776353276348,
+  "accuracy_min": 0.5802469135802469,
+  "accuracy_max": 0.654320987654321,
+  "accuracy_spread": 0.07407407407407407
+}

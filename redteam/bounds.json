@@ -1,0 +1,87 @@
+{
+  "nonzero_coefficient_metrics": {
+    "pass_at_1": {
+      "coefficient": 1.0,
+      "bound_type": "upper",
+      "bound": 1.0
+    },
+    "mean_reward": {
+      "coefficient": 0.4,
+      "bound_type": "upper",
+      "bound": 1.05
+    },
+    "numeric_mae": {
+      "coefficient": -0.25,
+      "bound_type": "lower",
+      "bound": 0.0
+    },
+    "carry_pass_at_1": {
+      "coefficient": 0.35,
+      "bound_type": "upper",
+      "bound": 1.0
+    },
+    "generated_examples": {
+      "coefficient": -0.1,
+      "bound_type": "lower",
+      "bound": 0.0
+    },
+    "initial_pass_at_1": {
+      "coefficient": -0.1,
+      "bound_type": "lower",
+      "bound": 0.0
+    }
+  },
+  "at_bound": [],
+  "zero_coefficient_saturated_diagnostics": [
+    {
+      "method": "humanline_clip_only_grpo",
+      "metric": "format_rate",
+      "value": 1.0
+    },
+    {
+      "method": "humanline_sync_only_grpo",
+      "metric": "format_rate",
+      "value": 1.0
+    },
+    {
+      "method": "offline_humanline_grpo",
+      "metric": "format_rate",
+      "value": 1.0
+    },
+    {
+      "method": "offline_humanline_grpo_128x",
+      "metric": "format_rate",
+      "value": 1.0
+    },
+    {
+      "method": "offline_humanline_grpo_64x_sync16",
+      "metric": "format_rate",
+      "value": 1.0
+    },
+    {
+      "method": "offline_humanline_grpo_64x_sync24",
+      "metric": "format_rate",
+      "value": 1.0
+    },
+    {
+      "method": "offline_humanline_grpo_64x_sync8",
+      "metric": "format_rate",
+      "value": 1.0
+    },
+    {
+      "method": "online_refresh_grpo",
+      "metric": "format_rate",
+      "value": 1.0
+    },
+    {
+      "method": "stale_grpo_128x_offpolicy",
+      "metric": "format_rate",
+      "value": 1.0
+    },
+    {
+      "method": "stale_grpo_64x_offpolicy",
+      "metric": "format_rate",
+      "value": 1.0
+    }
+  ]
+}

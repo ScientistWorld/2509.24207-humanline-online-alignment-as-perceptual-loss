@@ -1,4 +1,2 @@
-action: submit
-gpus: 0
-test: false
-notes: "Audit follow-up: 2048-step original stale-feedback method, truthful constant policy with zero training, and actual supervised-only shortcut; reuse all saved prior cases."
+action: done
+notes: "Audit complete: quality ordering fails; eight paying shortcuts reproduced across 22 cases."

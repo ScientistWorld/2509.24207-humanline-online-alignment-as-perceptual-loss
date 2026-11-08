@@ -24,8 +24,15 @@ Each evaluator invocation has its own Python process; no monkey patches,
 background processes, import-path changes, or environment modifications carry
 into hidden evaluation. Only files written by each attempt reach evaluation.
 Evaluator source hashes are recorded and checked in each `result.json`.
+The 22 cases were bundled in two CPU job containers. Each evaluation has a fresh
+child interpreter; there was not a separate container launch for each case.
 
 `_workspace_backup/` is ignored harness state. The harness restores run
 artifacts, the task definition, and original scores between cases and after
 the bundle. No changes to evaluator sources are made. See `../REDTEAM.md` for
-the audit findings once the submitted job completes.
+the completed audit findings, including eight paying shortcuts and the inverted
+quality ordering caused by the raw generated-example coefficient.
+
+`python3 redteam/verify_evidence.py` performs only lightweight syntax, recorded
+rank, hash, and restoration checks. Its final output is saved in
+`verification.json`. It does not run training or either evaluator.

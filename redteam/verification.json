@@ -1,0 +1,25 @@
+{
+  "cases": 22,
+  "hidden_test_successes": 21,
+  "expected_rejections": [
+    "wrong_labels_shortcut"
+  ],
+  "unrankable_null_cases": [
+    "null_cost_shortcut"
+  ],
+  "paying_shortcuts": [
+    "cherry_pick_shortcut",
+    "constant_negative_cost_shortcut",
+    "constant_task_shortcut",
+    "constant_zero_training_shortcut",
+    "label_copy_shortcut",
+    "metadata_zero_shortcut",
+    "reward_artifact_shortcut",
+    "warmstart_only_shortcut"
+  ],
+  "ranks_independently_recalculated": true,
+  "all_evaluator_source_hashes_match": true,
+  "original_reference_snapshot_matches_git": true,
+  "original_gym_directories_restored": true,
+  "python_and_shell_syntax_valid": true
+}

@@ -1,0 +1,59 @@
+[hive] This stdout log is managed by Hive.
+[hive] job_id: 38369126
+[hive] host: node
+[hive] node_id: 35f9663ffaddbaaa726e0844c44a16bdd06f0e796fb6f7dc9861e0b2
+[hive] user: nexus/user (remote)
+[hive] resource: gpu-cpu-test
+[hive] gpus: 0
+[hive] cpus: 1
+[hive] workdir: /home/user
+[hive] timeout_sec: 21600
+[hive] started_at: 2026-11-07 20:43:45 EST
+[hive] command: apptainer exec --containall --cleanenv --env HF_HOME=/home/user/shared/hf_cache --env TRANSFORMERS_CACHE=/home/user/shared/hf_cache --env HF_DATASETS_CACHE=/home/user/shared/hf_cache/datasets --env TORCH_HOME=/home/user/shared/hf_cache/torch --bind /home/user/scratch/AgentWorkspaces/workspaces/2509.24207:/home/user --overlay /home/user/scratch/AgentWorkspaces/workspaces/2509.24207/environment/overlay.img:ro --bind /home/user/scratch/AgentWorkspaces/shared/datasets:/home/user/shared/datasets:ro --bind /home/user/scratch/AgentWorkspaces/shared/models:/home/user/shared/models:ro --bind /home/user/scratch/AgentWorkspaces/shared/hf_cache:/home/user/shared/hf_cache /home/user/scratch/AgentWorkspaces/workspaces/2509.24207/environment/container.sif bash -c 'cd /home/user && bash /home/user/scripts/run.sh'
+Saved result exists: reference_seed7
+Saved result exists: reference_seed8
+Saved result exists: reference_seed9
+Saved result exists: better_more_rl
+Running better_more_rl_2048
+{"case": "better_more_rl_2048", "config": {"kind": "training", "args": ["--train-steps", "2048"], "purpose": "Eightfold post-training at the same starting model and stale regime; establish a task-quality gain above seed noise."}, "test_command": "bash scripts/evaluate_test.sh", "test_arguments": [], "persistent_files_only": true, "method_exit_code": 0, "train_exit_code": 0, "test_exit_code": 0, "evaluator_unchanged": true, "elapsed_seconds": 406.905}
+Saved result exists: better_warmstart
+Saved result exists: weaker_less_rl
+Saved result exists: weaker_warmstart
+Saved result exists: weaker_no_humanline
+Saved result exists: label_copy_shortcut
+Saved result exists: metadata_zero_shortcut
+Saved result exists: constant_negative_cost_shortcut
+Running constant_zero_training_shortcut
+{"case": "constant_zero_training_shortcut", "config": {"kind": "shortcut", "name": "constant_zero_training_shortcut", "cache": "reference_seed7", "purpose": "Constant answer with truthful zero generated training completions; isolate rank-weight imbalance."}, "test_command": "bash scripts/evaluate_test.sh", "test_arguments": [], "persistent_files_only": true, "method_exit_code": 0, "train_exit_code": 0, "test_exit_code": 0, "evaluator_unchanged": true, "elapsed_seconds": 1.037}
+Running warmstart_only_shortcut
+{"case": "warmstart_only_shortcut", "config": {"kind": "shortcut", "name": "warmstart_only_shortcut", "cache": "reference_seed7", "purpose": "Only supervised warm-start predictions; no stale-feedback learning."}, "test_command": "bash scripts/evaluate_test.sh", "test_arguments": [], "persistent_files_only": true, "method_exit_code": 0, "train_exit_code": 0, "test_exit_code": 0, "evaluator_unchanged": true, "elapsed_seconds": 15.867}
+Saved result exists: constant_task_shortcut
+Saved result exists: cherry_pick_shortcut
+Saved result exists: reward_artifact_shortcut
+Saved result exists: forged_scores_shortcut
+Saved result exists: empty_output_shortcut
+Saved result exists: copied_input_shortcut
+Saved result exists: wrong_labels_shortcut
+Saved result exists: null_cost_shortcut
+better_more_rl rank= -6553.561680911681 accuracy= 0.6666666666666666 MAE= 0.4567901234567901
+better_more_rl_2048 rank= -45874.49591642925 accuracy= 0.9753086419753086 MAE= 0.024691358024691357
+better_warmstart rank= 0.6929493114909774 accuracy= 1.0 MAE= 0.0
+cherry_pick_shortcut rank= 0.7448243114909774 accuracy= 1.0 MAE= 0.0
+constant_negative_cost_shortcut rank= 106651.00899869422 accuracy= 0.012345679012345678 MAE= 6.604938271604938
+constant_task_shortcut rank= 0.7448243114909809 accuracy= 1.0 MAE= 0.0
+constant_zero_training_shortcut rank= 6551.005248694208 accuracy= 0.012345679012345678 MAE= 6.604938271604938
+copied_input_shortcut rank= -6.278262108262108 accuracy= 0.0 MAE= 21.012345679012345
+empty_output_shortcut rank= -6.278262108262108 accuracy= 0.0 MAE= 21.012345679012345
+forged_scores_shortcut rank= -2.6391263057929724 accuracy= 0.012345679012345678 MAE= 6.604938271604938
+label_copy_shortcut rank= 0.7448243114909774 accuracy= 1.0 MAE= 0.0
+metadata_zero_shortcut rank= 6553.648125000001 accuracy= 0.654320987654321 MAE= 0.4691358024691358
+null_cost_shortcut rank= unsupported operand type(s) for -: 'NoneType' and 'int' accuracy= 0.654320987654321 MAE= 0.4691358024691358
+reference_seed7 rank= -4.440892098500626e-16 accuracy= 0.654320987654321 MAE= 0.4691358024691358
+reference_seed8 rank= -0.06146901709401749 accuracy= 0.6296296296296297 MAE= 0.41975308641975306
+reference_seed9 rank= -0.11290776353276392 accuracy= 0.5802469135802469 MAE= 0.5802469135802469
+reward_artifact_shortcut rank= 0.6275403608736936 accuracy= 1.0 MAE= 0.4691358024691358
+warmstart_only_shortcut rank= 6554.292949311492 accuracy= 1.0 MAE= 0.0
+weaker_less_rl rank= 6527.685660018993 accuracy= 0.48148148148148145 MAE= 0.5432098765432098
+weaker_no_humanline rank= -0.012583095916429698 accuracy= 0.6172839506172839 MAE= 0.41975308641975306
+weaker_warmstart rank= -1.259349477682811 accuracy= 0.1728395061728395 MAE= 2.1604938271604937
+wrong_labels_shortcut rank= FAIL accuracy= None MAE= None

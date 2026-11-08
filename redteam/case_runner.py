@@ -1,7 +1,7 @@
 """Install one file-only attempt and invoke both stock evaluators, no args.
 
 Backups and the official reference scores are harness-only. Shortcut producers
-cannot inspect them; they consume only the newly trained seed-7 output.
+do not read them; they consume only the newly trained seed-7 output.
 """
 from __future__ import annotations
 
@@ -19,6 +19,8 @@ AUDIT = ROOT / "redteam"
 BACKUP = AUDIT / "_workspace_backup"
 RUNS = ROOT / "checkpoints/humanline_grpo"
 MAIN = "offline_humanline_grpo"
+MAIN_ARTIFACTS = [MAIN + suffix for suffix in
+                  [".json", ".pt", "_initial_predictions.jsonl", "_predictions.jsonl"]]
 SAVED = ["data/synthetic_math.py", "scoring/scores_train.json",
          "scoring/scores_test.json", "scoring/scores.json"]
 
@@ -56,8 +58,10 @@ def install_reference_cache() -> None:
     cache = AUDIT / "reference_seed7/artifacts"
     if not (cache / f"{MAIN}.json").exists():
         raise RuntimeError("Run reference_seed7/run.sh first (cache must be genuinely trained)")
-    for source in cache.glob(f"{MAIN}*"):
-        shutil.copy2(source, RUNS / source.name)
+    for filename in MAIN_ARTIFACTS:
+        source = cache / filename
+        if source.exists():
+            shutil.copy2(source, RUNS / filename)
 
 
 def main() -> None:
@@ -81,8 +85,10 @@ def main() -> None:
             raise RuntimeError((folder / "method.log").read_text()[-4000:])
         artifacts = folder / "artifacts"
         artifacts.mkdir(exist_ok=True)
-        for source in RUNS.glob(f"{MAIN}*"):
-            shutil.copy2(source, artifacts / source.name)
+        for filename in MAIN_ARTIFACTS:
+            source = RUNS / filename
+            if source.exists():
+                shutil.copy2(source, artifacts / filename)
         train_code = command(["bash", "scripts/evaluate_train.sh"], folder / "train.log")
         result["train_exit_code"] = train_code
         if train_code == 0:
