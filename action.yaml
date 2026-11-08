@@ -1,4 +1,4 @@
 action: submit
 gpus: 0
 test: false
-notes: "Audit: 3 fixed-test reference seeds, stronger/weaker training variants, and 11 file-only shortcut checks; all hidden-test calls use no arguments."
+notes: "Audit follow-up: 2048-step original stale-feedback method, truthful constant policy with zero training, and actual supervised-only shortcut; reuse all saved prior cases."

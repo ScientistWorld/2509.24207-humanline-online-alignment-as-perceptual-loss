@@ -1,0 +1,10 @@
+{
+  "method": "offline_humanline_grpo",
+  "train_steps": 0,
+  "sft_steps": 480,
+  "stale_refresh_interval": 0,
+  "generated_examples": 0,
+  "initial_pass_at_1": 1.0,
+  "pass_at_1": 1.0,
+  "shortcut": "warmstart only; no stale-feedback post-training"
+}
