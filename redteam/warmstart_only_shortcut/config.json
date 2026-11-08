@@ -1,0 +1,6 @@
+{
+  "kind": "shortcut",
+  "name": "warmstart_only_shortcut",
+  "cache": "reference_seed7",
+  "purpose": "Only supervised warm-start predictions; no stale-feedback learning."
+}

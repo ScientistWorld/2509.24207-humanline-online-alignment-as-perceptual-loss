@@ -1,0 +1,6 @@
+{
+  "kind": "shortcut",
+  "name": "constant_zero_training_shortcut",
+  "cache": "reference_seed7",
+  "purpose": "Constant answer with truthful zero generated training completions; isolate rank-weight imbalance."
+}

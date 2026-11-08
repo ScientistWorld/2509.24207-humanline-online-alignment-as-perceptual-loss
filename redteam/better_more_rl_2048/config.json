@@ -1,0 +1,8 @@
+{
+  "kind": "training",
+  "args": [
+    "--train-steps",
+    "2048"
+  ],
+  "purpose": "Eightfold post-training at the same starting model and stale regime; establish a task-quality gain above seed noise."
+}
