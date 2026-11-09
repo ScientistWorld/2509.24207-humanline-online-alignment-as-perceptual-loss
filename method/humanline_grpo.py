@@ -143,6 +143,8 @@ def run(args: argparse.Namespace) -> dict:
     use_clip = args.humanline and not args.disable_humanline_clipping
     batch = args.prompts_per_step * args.group_size
 
+    group_rng = random.Random(args.seed + 1)
+    round_groups: list[int] = []
     sampling_rounds = 0
     generated = 0
     pool_data: dict[str, torch.Tensor] | None = None
@@ -161,6 +163,19 @@ def run(args: argparse.Namespace) -> dict:
             generated += len(problems) * args.group_size
             round_start = step
             round_rewards.append(float(pool_data["rewards"].mean()))
+            if args.informative_groups:
+                # Optional variant (DAPO-style dynamic sampling without new generation): fill each
+                # update with groups whose rewards differ, re-drawn from this round's pool.
+                grouped = pool_data["rewards"].view(-1, args.group_size)
+                informative = torch.nonzero(grouped.max(dim=1).values > grouped.min(dim=1).values).flatten().tolist()
+                informative = informative or list(range(grouped.shape[0]))
+                need = steps_this_round * args.prompts_per_step
+                round_groups = []
+                while len(round_groups) < need:
+                    block = informative[:]
+                    group_rng.shuffle(block)
+                    round_groups.extend(block)
+                round_groups = round_groups[:need]
             print(
                 json.dumps({"event": "sample_round", "method": args.name, "step": step, "round": sampling_rounds,
                             "sampled_reward": round_rewards[-1], "generated": generated}),
@@ -169,6 +184,10 @@ def run(args: argparse.Namespace) -> dict:
         assert pool_data is not None
         offset = (step - round_start) * batch
         sl = slice(offset, offset + batch)
+        if args.informative_groups:
+            g0 = (step - round_start) * args.prompts_per_step
+            groups = torch.tensor(round_groups[g0 : g0 + args.prompts_per_step], device=device)
+            sl = (groups[:, None] * args.group_size + torch.arange(args.group_size, device=device)[None]).flatten()
         loss, stats = grpo_loss(
             policy, reference, pool_data["prompts"][sl], pool_data["completions"][sl],
             pool_data["advantages"][sl], args, use_clip,
@@ -240,6 +259,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--beta-kl", type=float, default=0.01)
     parser.add_argument("--gen-chunk", type=int, default=8192)
     parser.add_argument("--log-every", type=int, default=64)
+    parser.add_argument("--informative-groups", action="store_true",
+                        help="variant: draw each update's groups from the round's non-constant-reward groups")
     parser.add_argument("--threads", type=int, default=0)
     parser.add_argument("--cpu", action="store_true")
     return parser.parse_args(argv)

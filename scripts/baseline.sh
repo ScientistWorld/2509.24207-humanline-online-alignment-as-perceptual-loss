@@ -9,22 +9,26 @@
 #                both operating points, so the evaluators score it as failed and
 #                report its accuracy only as `unconstrained_pass_at_1`.
 #
+# Learning rates were selected per method on the visible validation slice:
+#   stale_grpo 1e-4, offline_grpo 1e-4, online_grpo 3e-4.
 # Usage: bash scripts/baseline.sh
 
 set -e
 cd /home/user
 
 SEED="${SEED:-7}"
-LR="${LR:-3e-4}"
+LR_STALE="${LR_STALE:-1e-4}"
+LR_OFFLINE="${LR_OFFLINE:-1e-4}"
+LR_ONLINE="${LR_ONLINE:-3e-4}"
 OUT="${OUTPUT_ROOT:-checkpoints}"
 
 python -m baseline.stale_grpo --name stale_grpo --experiment stale64 --output-root "${OUT}" \
-  --refresh-interval 64 --train-steps 512 --seed "${SEED}" --lr "${LR}"
+  --refresh-interval 64 --train-steps 512 --seed "${SEED}" --lr "${LR_STALE}"
 
 python -m baseline.stale_grpo --name offline_grpo --experiment offline --output-root "${OUT}" \
-  --refresh-interval 512 --train-steps 512 --grpo-epsilon 0.5 --seed "${SEED}" --lr "${LR}"
+  --refresh-interval 512 --train-steps 512 --grpo-epsilon 0.5 --seed "${SEED}" --lr "${LR_OFFLINE}"
 
 for EXP in stale64 offline; do
   python -m baseline.stale_grpo --name online_grpo --experiment "${EXP}" --output-root "${OUT}" \
-    --refresh-interval 1 --train-steps 512 --seed "${SEED}" --lr "${LR}"
+    --refresh-interval 1 --train-steps 512 --seed "${SEED}" --lr "${LR_ONLINE}"
 done

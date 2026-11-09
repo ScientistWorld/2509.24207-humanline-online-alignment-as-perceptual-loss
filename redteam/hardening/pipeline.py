@@ -371,6 +371,29 @@ def phase_long(selection: dict) -> None:
     train_many(jobs, allow_fail=True)
 
 
+
+def phase_candidates2(selection: dict) -> None:
+    """Job 4: informative-group (dynamic-sampling) variants from the existing stale pool, 3 seeds."""
+    module, hl = spec_args("humanline_grpo", "stale64")
+    bmod, st = spec_args("stale_grpo", "stale64")
+    _, hl_off = spec_args("humanline_grpo", "offline")
+    hs = sel_args(selection, "stale64", "humanline_grpo")
+    ho = sel_args(selection, "offline", "humanline_grpo")
+    ss = sel_args(selection, "stale64", "stale_grpo")
+    flag = ["--informative-groups"]
+    cands = {
+        ("stale64", "humanline_informative"): (module, hl + hs + flag),
+        ("stale64", "humanline_informative_temp1"): (module, hl + hs + flag + ["--temperature", "1.0"]),
+        ("stale64", "stale_informative"): (bmod, st + ss + flag),
+        ("offline", "humanline_informative"): (module, hl_off + ho + flag),
+    }
+    jobs = []
+    for seed in CANDIDATE_SEEDS:
+        for (exp, name), (mod, args) in cands.items():
+            jobs.append((RUNS / "candidates2" / f"seed{seed}" / exp / name, name, exp, mod, args + ["--seed", seed]))
+    train_many(jobs, allow_fail=True)
+
+
 def phase_shortcuts() -> None:
     from redteam.hardening.shortcuts import CASES
 
@@ -410,7 +433,7 @@ def phase_evaluate() -> None:
              "sweep_offline": RUNS / "sweep" / "offline"}
     for seed_dir in sorted((RUNS / "seeds").glob("seed*")):
         roots[f"seeds_{seed_dir.name}"] = seed_dir
-    for group in ("candidates", "long"):
+    for group in ("candidates", "long", "candidates2"):
         for seed_dir in sorted((RUNS / group).glob("seed*")):
             roots[f"{group}_{seed_dir.name}"] = seed_dir
     for name, root in roots.items():
@@ -420,19 +443,27 @@ def phase_evaluate() -> None:
 
 
 def main() -> None:
-    log(f"cuda={CUDA} cpus={CPUS} workers={WORKERS} threads/run={THREADS}")
+    phases = sys.argv[1].split(",") if len(sys.argv) > 1 else ["all"]
+    log(f"cuda={CUDA} cpus={CPUS} workers={WORKERS} threads/run={THREADS} phases={phases}")
     for d in (RUNS, SHORT, RESULTS, TMP):
         d.mkdir(parents=True, exist_ok=True)
-    phase_smoke()
-    phase_base()
-    selection = phase_sweep()
-    phase_reference(selection)
-    phase_seeds(selection)
-    phase_variants(selection)
-    phase_candidates(selection)
-    phase_long(selection)
-    phase_evaluate()
-    phase_shortcuts()
+    if phases == ["all"]:
+        phase_smoke()
+        phase_base()
+        selection = phase_sweep()
+        phase_reference(selection)
+        phase_seeds(selection)
+        phase_variants(selection)
+        phase_candidates(selection)
+        phase_long(selection)
+        phase_candidates2(selection)
+        phase_evaluate()
+        phase_shortcuts()
+    else:
+        selection = json.loads((RESULTS / "selection.json").read_text())["selected"]
+        for name in phases:
+            fn = globals()[f"phase_{name}"]
+            fn(selection) if name.startswith(("candidates", "seeds", "variants", "long", "reference")) else fn()
     subprocess.run([PY, "-m", "redteam.hardening.analyze"], check=True, env=ENV, cwd=ROOT)
     log("pipeline complete")
 

@@ -133,7 +133,7 @@ def main() -> None:
     summary["sweep"] = sweep
 
     # candidates (3 seeds) and the long-horizon diagnostic: mean test accuracy per config
-    for group in ("candidates", "long"):
+    for group in ("candidates", "long", "candidates2"):
         table = {}
         for seed in (7, 8, 9):
             for slice_name in ("test", "train"):

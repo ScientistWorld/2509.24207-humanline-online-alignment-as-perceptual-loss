@@ -5,4 +5,4 @@ action: submit
 gpus: 1
 test: false
 milestone: core_claim_plus
-notes: "Hardening job 3: offline k-grid extension (same selection rule), 3-seed honest-alternative candidates for the headroom check, 2048-update long-horizon diagnostic (paper-like 32 rounds), re-evaluation"
+notes: "Hardening job 4 (final): regenerate reference set from final scripts (determinism check), informative-group candidates (3 seeds) for headroom, re-evaluation, shortcuts, analysis"
