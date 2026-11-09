@@ -1,0 +1,9 @@
+{
+  "method": "negative_cost",
+  "experiment": "stale64",
+  "refresh_interval": 64,
+  "sampling_rounds": 8,
+  "generated_completions": -1000000,
+  "optimizer_updates": 512,
+  "initial_pass_at_1": -1000
+}

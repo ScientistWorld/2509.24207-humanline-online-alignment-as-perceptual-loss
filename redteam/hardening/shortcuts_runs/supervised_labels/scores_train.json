@@ -1,0 +1,39 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "supervised_labels": {
+          "pass_at_1": 0.9929999709129333,
+          "hard_pass_at_1": 0.9904862642288208,
+          "unconstrained_pass_at_1": 0.9929999709129333,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy)",
+    "offline/base_policy": "ok (evaluator-owned starting policy)",
+    "stale64/supervised_labels": "ok"
+  }
+}

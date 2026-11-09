@@ -1,130 +1,102 @@
 {
   "experiments": {
-    "synthetic_math_stale_grpo": {
+    "stale64": {
       "slice": "test",
-      "split": "deterministic_prompt_hash_bucket_1",
+      "evaluated_prompts": 4000,
       "results": {
-        "humanline_clip_only_grpo": {
-          "pass_at_1": 0.654320987654321,
-          "mean_reward": 0.704320987654321,
-          "format_rate": 1.0,
-          "numeric_mae": 0.37037037037037035,
-          "carry_pass_at_1": 0.6923076923076923,
-          "unique_prompt_rate": 0.8518518518518519,
-          "evaluated_rows": 81.0,
-          "stale_refresh_interval": 64,
-          "generated_examples": 65536,
-          "initial_pass_at_1": 0.48125
+        "base_policy": {
+          "pass_at_1": 0.3577499985694885,
+          "hard_pass_at_1": 0.354144811630249,
+          "unconstrained_pass_at_1": 0.3577499985694885,
+          "operating_point_ok": 1.0
         },
-        "humanline_sync_only_grpo": {
-          "pass_at_1": 0.654320987654321,
-          "mean_reward": 0.704320987654321,
-          "format_rate": 1.0,
-          "numeric_mae": 0.4691358024691358,
-          "carry_pass_at_1": 0.5897435897435898,
-          "unique_prompt_rate": 0.8518518518518519,
-          "evaluated_rows": 81.0,
-          "stale_refresh_interval": 64,
-          "generated_examples": 65536,
-          "initial_pass_at_1": 0.48125
+        "humanline_clip_only": {
+          "pass_at_1": 0.5847499966621399,
+          "hard_pass_at_1": 0.5855194330215454,
+          "unconstrained_pass_at_1": 0.5847499966621399,
+          "operating_point_ok": 1.0
         },
-        "offline_humanline_grpo": {
-          "pass_at_1": 0.654320987654321,
-          "mean_reward": 0.704320987654321,
-          "format_rate": 1.0,
-          "numeric_mae": 0.4691358024691358,
-          "carry_pass_at_1": 0.5897435897435898,
-          "unique_prompt_rate": 0.8518518518518519,
-          "evaluated_rows": 81.0,
-          "stale_refresh_interval": 64,
-          "generated_examples": 65536,
-          "initial_pass_at_1": 0.48125
+        "humanline_grpo": {
+          "pass_at_1": 0.3659999966621399,
+          "hard_pass_at_1": 0.37513116002082825,
+          "unconstrained_pass_at_1": 0.3659999966621399,
+          "operating_point_ok": 1.0
         },
-        "offline_humanline_grpo_128x": {
-          "pass_at_1": 0.48148148148148145,
-          "mean_reward": 0.5314814814814816,
-          "format_rate": 1.0,
-          "numeric_mae": 0.6419753086419753,
-          "carry_pass_at_1": 0.5384615384615384,
-          "unique_prompt_rate": 0.8518518518518519,
-          "evaluated_rows": 81.0,
-          "stale_refresh_interval": 128,
-          "generated_examples": 65536,
-          "initial_pass_at_1": 0.48125
+        "humanline_sync_only": {
+          "pass_at_1": 0.2134999930858612,
+          "hard_pass_at_1": 0.20094437897205353,
+          "unconstrained_pass_at_1": 0.2134999930858612,
+          "operating_point_ok": 1.0
         },
-        "offline_humanline_grpo_64x_sync16": {
-          "pass_at_1": 0.6172839506172839,
-          "mean_reward": 0.667283950617284,
-          "format_rate": 1.0,
-          "numeric_mae": 0.4691358024691358,
-          "carry_pass_at_1": 0.6153846153846154,
-          "unique_prompt_rate": 0.8518518518518519,
-          "evaluated_rows": 81.0,
-          "stale_refresh_interval": 64,
-          "generated_examples": 65536,
-          "initial_pass_at_1": 0.48125
+        "online_grpo": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.7667499780654907,
+          "operating_point_ok": 0.0
         },
-        "offline_humanline_grpo_64x_sync24": {
-          "pass_at_1": 0.6666666666666666,
-          "mean_reward": 0.7166666666666667,
-          "format_rate": 1.0,
-          "numeric_mae": 0.43209876543209874,
-          "carry_pass_at_1": 0.6923076923076923,
-          "unique_prompt_rate": 0.8518518518518519,
-          "evaluated_rows": 81.0,
-          "stale_refresh_interval": 64,
-          "generated_examples": 65536,
-          "initial_pass_at_1": 0.48125
+        "stale_grpo": {
+          "pass_at_1": 0.518750011920929,
+          "hard_pass_at_1": 0.5440713763237,
+          "unconstrained_pass_at_1": 0.518750011920929,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "test",
+      "evaluated_prompts": 4000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.3577499985694885,
+          "hard_pass_at_1": 0.354144811630249,
+          "unconstrained_pass_at_1": 0.3577499985694885,
+          "operating_point_ok": 1.0
         },
-        "offline_humanline_grpo_64x_sync8": {
-          "pass_at_1": 0.5925925925925926,
-          "mean_reward": 0.6425925925925926,
-          "format_rate": 1.0,
-          "numeric_mae": 0.654320987654321,
-          "carry_pass_at_1": 0.6153846153846154,
-          "unique_prompt_rate": 0.8518518518518519,
-          "evaluated_rows": 81.0,
-          "stale_refresh_interval": 64,
-          "generated_examples": 65536,
-          "initial_pass_at_1": 0.48125
+        "humanline_clip_only": {
+          "pass_at_1": 0.44075000286102295,
+          "hard_pass_at_1": 0.4485834240913391,
+          "unconstrained_pass_at_1": 0.44075000286102295,
+          "operating_point_ok": 1.0
         },
-        "online_refresh_grpo": {
-          "pass_at_1": 0.6172839506172839,
-          "mean_reward": 0.667283950617284,
-          "format_rate": 1.0,
-          "numeric_mae": 0.41975308641975306,
-          "carry_pass_at_1": 0.6666666666666666,
-          "unique_prompt_rate": 0.8518518518518519,
-          "evaluated_rows": 81.0,
-          "stale_refresh_interval": 1,
-          "generated_examples": 65536,
-          "initial_pass_at_1": 0.48125
+        "humanline_grpo": {
+          "pass_at_1": 0.01850000023841858,
+          "hard_pass_at_1": 0.015215110033750534,
+          "unconstrained_pass_at_1": 0.01850000023841858,
+          "operating_point_ok": 1.0
         },
-        "stale_grpo_128x_offpolicy": {
-          "pass_at_1": 0.6049382716049383,
-          "mean_reward": 0.6549382716049383,
-          "format_rate": 1.0,
-          "numeric_mae": 0.43209876543209874,
-          "carry_pass_at_1": 0.6410256410256411,
-          "unique_prompt_rate": 0.8518518518518519,
-          "evaluated_rows": 81.0,
-          "stale_refresh_interval": 128,
-          "generated_examples": 65536,
-          "initial_pass_at_1": 0.48125
+        "humanline_sync_only": {
+          "pass_at_1": 0.0022499999031424522,
+          "hard_pass_at_1": 0.0005246589425951242,
+          "unconstrained_pass_at_1": 0.0022499999031424522,
+          "operating_point_ok": 1.0
         },
-        "stale_grpo_64x_offpolicy": {
-          "pass_at_1": 0.6172839506172839,
-          "mean_reward": 0.667283950617284,
-          "format_rate": 1.0,
-          "numeric_mae": 0.41975308641975306,
-          "carry_pass_at_1": 0.6666666666666666,
-          "unique_prompt_rate": 0.8518518518518519,
-          "evaluated_rows": 81.0,
-          "stale_refresh_interval": 64,
-          "generated_examples": 65536,
-          "initial_pass_at_1": 0.48125
+        "offline_grpo": {
+          "pass_at_1": 0.44699999690055847,
+          "hard_pass_at_1": 0.41500523686408997,
+          "unconstrained_pass_at_1": 0.44699999690055847,
+          "operating_point_ok": 1.0
+        },
+        "online_grpo": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.7667499780654907,
+          "operating_point_ok": 0.0
         }
       }
     }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy)",
+    "offline/base_policy": "ok (evaluator-owned starting policy)",
+    "offline/humanline_clip_only": "ok",
+    "offline/humanline_grpo": "ok",
+    "offline/humanline_sync_only": "ok",
+    "offline/offline_grpo": "ok",
+    "offline/online_grpo": "failed operating point: sampling_rounds 512 > 1",
+    "stale64/humanline_clip_only": "ok",
+    "stale64/humanline_grpo": "ok",
+    "stale64/humanline_sync_only": "ok",
+    "stale64/online_grpo": "failed operating point: sampling_rounds 512 > 8",
+    "stale64/stale_grpo": "ok"
   }
 }

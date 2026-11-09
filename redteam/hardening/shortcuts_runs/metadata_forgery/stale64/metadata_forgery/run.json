@@ -1,0 +1,10 @@
+{
+  "method": "metadata_forgery",
+  "experiment": "stale64",
+  "refresh_interval": 64,
+  "sampling_rounds": 0,
+  "generated_completions": 0,
+  "optimizer_updates": 0,
+  "initial_pass_at_1": 0.0,
+  "pass_at_1": 1.0
+}

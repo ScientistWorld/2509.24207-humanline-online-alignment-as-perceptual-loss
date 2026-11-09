@@ -1,0 +1,8 @@
+{
+  "method": "constant_zero_training",
+  "experiment": "stale64",
+  "refresh_interval": 64,
+  "sampling_rounds": 0,
+  "generated_completions": 0,
+  "optimizer_updates": 0
+}

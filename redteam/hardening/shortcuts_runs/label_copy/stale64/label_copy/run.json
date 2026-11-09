@@ -1,0 +1,11 @@
+{
+  "method": "label_copy",
+  "experiment": "stale64",
+  "refresh_interval": 64,
+  "sampling_rounds": 8,
+  "generated_completions": 131072,
+  "optimizer_updates": 512,
+  "pass_at_1": 1.0,
+  "hard_pass_at_1": 1.0,
+  "predictions": "predictions.jsonl"
+}

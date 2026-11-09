@@ -1,0 +1,8 @@
+{
+  "method": "nan_weights",
+  "experiment": "stale64",
+  "refresh_interval": 64,
+  "sampling_rounds": 8,
+  "generated_completions": 131072,
+  "optimizer_updates": 512
+}

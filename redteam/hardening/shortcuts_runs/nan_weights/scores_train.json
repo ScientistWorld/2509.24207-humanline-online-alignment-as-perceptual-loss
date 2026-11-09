@@ -1,0 +1,39 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "nan_weights": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.0,
+          "operating_point_ok": 0.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy)",
+    "offline/base_policy": "ok (evaluator-owned starting policy)",
+    "stale64/nan_weights": "failed: cannot evaluate policy.pt (head.bias: non-floating or non-finite values)"
+  }
+}
