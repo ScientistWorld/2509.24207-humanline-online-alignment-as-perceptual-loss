@@ -132,6 +132,30 @@ def main() -> None:
                       for m, r in te.items() if m in tr}
     summary["sweep"] = sweep
 
+    # candidates (3 seeds) and the long-horizon diagnostic: mean test accuracy per config
+    for group in ("candidates", "long"):
+        table = {}
+        for seed in (7, 8, 9):
+            for slice_name in ("test", "train"):
+                sc = load(RESULTS / f"{group}_seed{seed}_{slice_name}.json")
+                for exp in WEIGHTS:
+                    for m, r in rows(sc, exp).items():
+                        if m == "base_policy":
+                            continue
+                        t = table.setdefault(f"{exp}/{m}", {"test": [], "train": [], "rank_change_seed7": None})
+                        t[slice_name].append(r["unconstrained_pass_at_1"])
+                        if slice_name == "test" and seed == 7:
+                            t["rank_change_seed7"] = rank_change(r, ref_rows[exp], exp)
+                            v = correct_vec(f"{group}_seed7", exp, m)
+                            ref_vec = correct_vec("reference", exp, REF)
+                            if v is not None and ref_vec is not None:
+                                t["paired_seed7"] = paired(ref_vec, v)
+        for t in table.values():
+            for sl in ("test", "train"):
+                if t[sl]:
+                    t[f"{sl}_mean"] = float(np.mean(t[sl]))
+        summary[group] = table
+
     # shortcuts
     shortcuts = {}
     for case_dir in sorted(p for p in SHORT.iterdir() if p.is_dir()) if SHORT.exists() else []:

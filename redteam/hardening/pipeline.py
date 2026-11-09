@@ -36,6 +36,7 @@ PY = sys.executable
 
 LRS = ["1e-5", "3e-5", "1e-4", "3e-4"]
 KS = ["12", "24", "48"]
+KS_OFFLINE_EXTRA = ["96", "192"]  # job 3: offline optimum sat at the k=48 grid edge
 EXTRA_SEEDS = [8, 9, 10, 11]
 ENV = {**os.environ, "PYTHONPATH": str(ROOT), "CUBLAS_WORKSPACE_CONFIG": ":4096:8"}
 
@@ -72,13 +73,25 @@ def spec_args(spec: str, experiment: str) -> tuple[str, list[str]]:
 
 
 def train(run_dir: Path, name: str, experiment: str, module: str, args: list[str], allow_fail: bool = False) -> Path:
-    if (run_dir / "run.json").exists() and (run_dir / "policy.pt").exists():
-        return run_dir
-    if allow_fail and (run_dir / "FAILED").exists():
-        return run_dir
-    run_dir.mkdir(parents=True, exist_ok=True)
     cmd = [PY, "-m", module, "--name", name, "--experiment", experiment, "--run-dir", str(run_dir),
            "--threads", str(THREADS), *args]
+    signature = json.dumps([module, name, experiment, *args])
+    sig_file = run_dir / "cmd.json"
+    cached = sig_file.exists() and sig_file.read_text() == signature
+    legacy = not sig_file.exists() and (run_dir / "run.json").exists()
+    if legacy:
+        meta = json.loads((run_dir / "run.json").read_text())
+        cfg = meta.get("config", {})
+        want = parse_flags(args)
+        cached = all(str(cfg.get(k)) == v for k, v in want.items()) and cfg.get("humanline") == ("--humanline" in args)
+    if cached and (run_dir / "run.json").exists() and (run_dir / "policy.pt").exists():
+        sig_file.write_text(signature)
+        return run_dir
+    if cached and allow_fail and (run_dir / "FAILED").exists():
+        return run_dir
+    shutil.rmtree(run_dir, ignore_errors=True)
+    run_dir.mkdir(parents=True, exist_ok=True)
+    sig_file.write_text(signature)
     t0 = time.time()
     with (run_dir / "stdout.log").open("w") as out:
         proc = subprocess.run(cmd, stdout=out, stderr=subprocess.STDOUT, env=ENV, cwd=ROOT)
@@ -91,6 +104,28 @@ def train(run_dir: Path, name: str, experiment: str, module: str, args: list[str
         return run_dir
     log(f"trained {run_dir.relative_to(ROOT)} in {time.time() - t0:.0f}s")
     return run_dir
+
+
+def parse_flags(args: list[str]) -> dict[str, str]:
+    """--lr 1e-4 --sync-k 48 ... -> {"lr": "0.0001", "sync_k": "48"} (values normalised like argparse)."""
+    out = {}
+    i = 0
+    while i < len(args):
+        if args[i].startswith("--") and i + 1 < len(args) and not args[i + 1].startswith("--"):
+            key = args[i][2:].replace("-", "_")
+            val = args[i + 1]
+            try:
+                val = str(int(val))
+            except ValueError:
+                try:
+                    val = str(float(val))
+                except ValueError:
+                    pass
+            out[key] = val
+            i += 2
+        else:
+            i += 1
+    return out
 
 
 def train_many(jobs: list[tuple], allow_fail: bool = False) -> None:
@@ -179,6 +214,8 @@ def sweep_specs() -> list[tuple[str, str, str, str | None]]:
         out += [("stale64", "online_grpo", lr, None), ("stale64", "stale_grpo", lr, None), ("offline", "offline_grpo", lr, None)]
         for k in KS:
             out += [("stale64", "humanline_grpo", lr, k), ("offline", "humanline_grpo", lr, k)]
+        if lr in ("3e-5", "1e-4"):
+            out += [("offline", "humanline_grpo", lr, k) for k in KS_OFFLINE_EXTRA]
     return out
 
 
@@ -204,7 +241,8 @@ def phase_sweep() -> dict:
         selection[f"{exp}/{method}"] = {"lr": best[1], "k": best[2], "validation_pass_at_1": best[0]}
     (RESULTS / "selection.json").write_text(json.dumps({
         "rule": "per (experiment, method): argmax seed-7 visible-validation pass@1 over the grid; ties -> smaller lr, smaller k",
-        "grid": {"lr": LRS, "k_humanline": KS}, "validation": val, "selected": selection}, indent=2) + "\n")
+        "grid": {"lr": LRS, "k_humanline": KS, "k_humanline_offline_extra(lr 3e-5,1e-4)": KS_OFFLINE_EXTRA},
+        "validation": val, "selected": selection}, indent=2) + "\n")
     log(f"selection {json.dumps(selection)}")
     return selection
 
@@ -216,7 +254,13 @@ def sel_args(selection: dict, exp: str, method: str) -> list[str]:
 
 def copy_run(src: Path, dst: Path, method: str, experiment: str, note: str) -> None:
     if (dst / "policy.pt").exists():
-        return
+        meta = json.loads((dst / "run.json").read_text())
+        if meta.get("source") == str(src) or (meta.get("source") is None and src.name.endswith(
+                meta.get("note", "").split("(")[-1].rstrip(")"))):
+            if meta.get("source") is None:
+                meta["source"] = str(src)
+                (dst / "run.json").write_text(json.dumps(meta, indent=2) + "\n")
+            return
     shutil.rmtree(dst, ignore_errors=True)
     shutil.copytree(src, dst)
     meta = json.loads((dst / "run.json").read_text())
@@ -224,6 +268,7 @@ def copy_run(src: Path, dst: Path, method: str, experiment: str, note: str) -> N
     meta["experiment"] = experiment
     meta["config"].update({"run_dir": str(dst), "name": method, "experiment": experiment})
     meta["note"] = note
+    meta["source"] = str(src)
     (dst / "run.json").write_text(json.dumps(meta, indent=2) + "\n")
 
 
@@ -276,6 +321,56 @@ def phase_variants(selection: dict) -> None:
     train_many(jobs, allow_fail=True)
 
 
+CANDIDATE_SEEDS = ["7", "8", "9"]
+LONG_STEPS = "2048"
+
+
+def phase_candidates(selection: dict) -> None:
+    """Honest alternatives inside the operating points (headroom check), 3 seeds each."""
+    module, hl = spec_args("humanline_grpo", "stale64")
+    bmod, st = spec_args("stale_grpo", "stale64")
+    _, hl_off = spec_args("humanline_grpo", "offline")
+    hs = sel_args(selection, "stale64", "humanline_grpo")
+    ho = sel_args(selection, "offline", "humanline_grpo")
+    ss = sel_args(selection, "stale64", "stale_grpo")
+    lr_h = selection["stale64/humanline_grpo"]["lr"]
+    k_h = selection["stale64/humanline_grpo"]["k"]
+    cands = {
+        ("stale64", "humanline_eps03"): (module, hl + hs + ["--grpo-epsilon", "0.3"]),
+        ("stale64", "humanline_temp1"): (module, hl + hs + ["--temperature", "1.0"]),
+        ("stale64", "humanline_group16"): (module, hl + hs + ["--group-size", "16", "--prompts-per-step", "16"]),
+        ("stale64", "humanline_nokl"): (module, hl + hs + ["--beta-kl", "0"]),
+        ("stale64", "humanline_lr2x"): (module, hl + ["--lr", f"{float(lr_h) * 2:g}", "--sync-k", k_h]),
+        ("stale64", "stale_eps03"): (bmod, st + ss + ["--grpo-epsilon", "0.3"]),
+        ("offline", "humanline_eps05"): (module, hl_off + ho + ["--grpo-epsilon", "0.5"]),
+        ("offline", "humanline_temp1"): (module, hl_off + ho + ["--temperature", "1.0"]),
+        ("offline", "humanline_group16"): (module, hl_off + ho + ["--group-size", "16", "--prompts-per-step", "16"]),
+    }
+    jobs = []
+    for seed in CANDIDATE_SEEDS:
+        for (exp, name), (mod, args) in cands.items():
+            jobs.append((RUNS / "candidates" / f"seed{seed}" / exp / name, name, exp, mod, args + ["--seed", seed]))
+    train_many(jobs, allow_fail=True)
+
+
+def phase_long(selection: dict) -> None:
+    """Diagnostic closer to the paper's horizon: 2048 updates = 32 sampling rounds of 64 (budget 4x)."""
+    module, hl = spec_args("humanline_grpo", "stale64")
+    jobs = []
+    for seed in CANDIDATE_SEEDS:
+        specs = {
+            "online_grpo": spec_args("online_grpo", "stale64")[1] + sel_args(selection, "stale64", "online_grpo"),
+            "stale_grpo": spec_args("stale_grpo", "stale64")[1] + sel_args(selection, "stale64", "stale_grpo"),
+        }
+        for k in KS:
+            specs[f"humanline_k{k}"] = hl + ["--lr", selection["stale64/humanline_grpo"]["lr"], "--sync-k", k]
+        for name, args in specs.items():
+            mod = "baseline.stale_grpo" if name in ("online_grpo", "stale_grpo") else module
+            jobs.append((RUNS / "long" / f"seed{seed}" / "stale64" / name, name, "stale64", mod,
+                         args + ["--train-steps", LONG_STEPS, "--seed", seed, "--log-every", "256"]))
+    train_many(jobs, allow_fail=True)
+
+
 def phase_shortcuts() -> None:
     from redteam.hardening.shortcuts import CASES
 
@@ -315,6 +410,9 @@ def phase_evaluate() -> None:
              "sweep_offline": RUNS / "sweep" / "offline"}
     for seed_dir in sorted((RUNS / "seeds").glob("seed*")):
         roots[f"seeds_{seed_dir.name}"] = seed_dir
+    for group in ("candidates", "long"):
+        for seed_dir in sorted((RUNS / group).glob("seed*")):
+            roots[f"{group}_{seed_dir.name}"] = seed_dir
     for name, root in roots.items():
         evaluate("train", root, RESULTS / f"{name}_train.json")
         evaluate("test", root, RESULTS / f"{name}_test.json", TMP / "correct" / name)
@@ -331,6 +429,8 @@ def main() -> None:
     phase_reference(selection)
     phase_seeds(selection)
     phase_variants(selection)
+    phase_candidates(selection)
+    phase_long(selection)
     phase_evaluate()
     phase_shortcuts()
     subprocess.run([PY, "-m", "redteam.hardening.analyze"], check=True, env=ENV, cwd=ROOT)

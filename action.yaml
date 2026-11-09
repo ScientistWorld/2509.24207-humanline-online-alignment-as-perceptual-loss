@@ -5,4 +5,4 @@ action: submit
 gpus: 1
 test: false
 milestone: core_claim_plus
-notes: "Hardening job 2: per-method LR (and humanline k) selection on the visible slice (paper Table 3 protocol), reference set, 5 seeds, variants, shortcuts, visible + hidden evaluation"
+notes: "Hardening job 3: offline k-grid extension (same selection rule), 3-seed honest-alternative candidates for the headroom check, 2048-update long-horizon diagnostic (paper-like 32 rounds), re-evaluation"
