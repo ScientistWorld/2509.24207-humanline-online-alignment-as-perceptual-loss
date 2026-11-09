@@ -81,8 +81,8 @@ def main() -> None:
         if step % args.check_every == 0:
             acc = greedy_accuracy(model, check_prompts, check_answers)
             if step % (args.check_every * 50) == 0:
-                print(json.dumps({"event": "base_sft", "step": step, "loss": float(loss), "check_acc": acc}), flush=True)
-            history.append({"step": step, "loss": float(loss), "check_acc": acc})
+                print(json.dumps({"event": "base_sft", "step": step, "loss": float(loss.detach()), "check_acc": acc}), flush=True)
+            history.append({"step": step, "loss": float(loss.detach()), "check_acc": acc})
             if acc >= args.target:
                 break
 

@@ -77,7 +77,7 @@ def seed_table(slice_name: str) -> dict:
 def main() -> None:
     test = load(ROOT / "scoring" / "scores_test.json")
     train = load(ROOT / "scoring" / "scores_train.json")
-    summary: dict = {"lr_choice": load(RESULTS / "lr_choice.json"), "reference_rows": {}, "train_test": {}}
+    summary: dict = {"selection": load(RESULTS / "selection.json"), "reference_rows": {}, "train_test": {}}
     ref_rows = {exp: rows(test, exp)[REF] for exp in WEIGHTS}
     summary["reference_rows"] = {exp: rows(test, exp) for exp in WEIGHTS}
     for exp in WEIGHTS:
@@ -101,16 +101,21 @@ def main() -> None:
             v = correct_vec("reference", exp, m)
             if v is not None:
                 comparisons[f"reference_set/{exp}/{m}"] = paired(ref_vec, v)
-        var = load(RESULTS / "variants_test.json")
-        for m, r in rows(var, exp).items():
-            v = correct_vec("variants", exp, m)
-            entry = {"row": r, "rank_change": rank_change(r, ref_rows[exp], exp)}
-            if v is not None:
-                entry.update(paired(ref_vec, v))
-            comparisons[f"variants/{exp}/{m}"] = entry
+        for root in ("variants", f"sweep_{exp}"):
+            var = load(RESULTS / f"{root}_test.json")
+            for m, r in rows(var, exp).items():
+                if m == "base_policy":
+                    continue
+                v = correct_vec(root, exp, m)
+                entry = {"row": r, "rank_change": rank_change(r, ref_rows[exp], exp)}
+                if v is not None:
+                    entry.update(paired(ref_vec, v))
+                comparisons[f"{root}/{exp}/{m}"] = entry
         for seed in SEEDS[1:]:
             sc = load(RESULTS / f"seeds_seed{seed}_test.json")
             for m, r in rows(sc, exp).items():
+                if m == "base_policy":
+                    continue
                 v = correct_vec(f"seeds_seed{seed}", exp, m)
                 entry = {"row": r, "rank_change": rank_change(r, ref_rows[exp], exp)}
                 if v is not None:
@@ -118,12 +123,14 @@ def main() -> None:
                 comparisons[f"seed{seed}/{exp}/{m}"] = entry
     summary["paired_vs_reference"] = comparisons
 
-    # LR sweep rows on test (diagnostic only)
+    # sweep rows (diagnostic only): visible-validation and test accuracy per config
     sweep = {}
-    for lr in ("1e-4", "3e-4", "1e-3"):
-        sc = load(RESULTS / f"sweep_lr{lr}_test.json")
-        sweep[lr] = {m: r["unconstrained_pass_at_1"] for m, r in rows(sc, "stale64").items()}
-    summary["sweep_test_unconstrained"] = sweep
+    for exp in WEIGHTS:
+        tr = rows(load(RESULTS / f"sweep_{exp}_train.json"), exp)
+        te = rows(load(RESULTS / f"sweep_{exp}_test.json"), exp)
+        sweep[exp] = {m: {"train": tr[m]["unconstrained_pass_at_1"], "test": r["unconstrained_pass_at_1"]}
+                      for m, r in te.items() if m in tr}
+    summary["sweep"] = sweep
 
     # shortcuts
     shortcuts = {}
@@ -147,7 +154,7 @@ def main() -> None:
 
     out = RESULTS / "summary.json"
     out.write_text(json.dumps(summary, indent=2) + "\n")
-    print(json.dumps({k: summary[k] for k in ("lr_choice", "seed_spread_test", "shortcuts")}, indent=2))
+    print(json.dumps({k: summary[k] for k in ("selection", "seed_spread_test", "shortcuts")}, indent=2))
     for k, v in comparisons.items():
         print(k, {kk: v[kk] for kk in ("diff", "ci95", "rank_change") if kk in v})
 

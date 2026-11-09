@@ -3,12 +3,13 @@
 Phases (each resumable; finished runs are skipped):
   0 smoke     tiny end-to-end run of every code path; fails fast on bugs
   1 base      build data/base_policy.pt and pin its hash in eval/{train,test}
-  2 sweep     pre-registered learning-rate choice: online/stale/humanline GRPO,
-              seed 7, stale64, LR grid; LR* = argmax of the *online* baseline's
-              visible-validation accuracy (ties -> smaller LR)
-  3 reference reference set at LR* into checkpoints/ (scored by default)
-  4 seeds     extra training seeds at LR*
-  5 variants  better / weaker candidates at LR*, plus an over-budget run
+  2 sweep     pre-registered per-method selection (paper Table 3 protocol: the
+              learning rate is tuned per variant, humanline also tunes k):
+              seed 7, LR grid x k grid; each (experiment, method) keeps the
+              config with the best visible-validation pass@1
+  3 reference selected seed-7 runs + humanline ablations into checkpoints/
+  4 seeds     extra training seeds at each method's selected config
+  5 variants  low-k, one-round and over-budget humanline runs
   6 shortcuts shortcut submissions through the hidden-test evaluator
   7 evaluate  visible + hidden evaluation of every root, then analysis
 """
@@ -33,7 +34,8 @@ TMP = ROOT / "tmp" / "hardening"
 CKPT = ROOT / "checkpoints"
 PY = sys.executable
 
-LRS = ["1e-4", "3e-4", "1e-3"]
+LRS = ["1e-5", "3e-5", "1e-4", "3e-4"]
+KS = ["12", "24", "48"]
 EXTRA_SEEDS = [8, 9, 10, 11]
 ENV = {**os.environ, "PYTHONPATH": str(ROOT), "CUBLAS_WORKSPACE_CONFIG": ":4096:8"}
 
@@ -166,89 +168,110 @@ def phase_base() -> None:
     log(f"base policy sha256={sha[:12]} steps={meta['sft_steps']} check_acc={meta['check_accuracy']:.3f}")
 
 
-def phase_sweep() -> str:
-    jobs = []
+def cfg_name(lr: str, k: str | None) -> str:
+    return f"lr{lr}" + (f"_k{k}" if k else "")
+
+
+def sweep_specs() -> list[tuple[str, str, str, str | None]]:
+    """(experiment, method, lr, k) grid; humanline also searches the sync interval k."""
+    out = []
     for lr in LRS:
-        for spec in ("online_grpo", "stale_grpo", "humanline_grpo"):
-            module, args = spec_args(spec, "stale64")
-            jobs.append((RUNS / "sweep" / f"lr{lr}" / "stale64" / spec, spec, "stale64", module,
-                         args + ["--lr", lr, "--seed", "7"]))
-    train_many(jobs)
-    table = {}
-    for lr in LRS:
-        res = evaluate("train", RUNS / "sweep" / f"lr{lr}", RESULTS / f"sweep_lr{lr}_train.json")
-        rows = res["experiments"]["stale64"]["results"]
-        table[lr] = {k: rows[k]["unconstrained_pass_at_1"] for k in ("online_grpo", "stale_grpo", "humanline_grpo")}
-    best = max(LRS, key=lambda lr: (table[lr]["online_grpo"], -float(lr)))
-    (RESULTS / "lr_choice.json").write_text(json.dumps({"rule": "argmax online_grpo visible pass@1 (seed 7)",
-                                                        "validation": table, "chosen_lr": best}, indent=2) + "\n")
-    log(f"LR sweep {table} -> chosen {best}")
-    return best
+        out += [("stale64", "online_grpo", lr, None), ("stale64", "stale_grpo", lr, None), ("offline", "offline_grpo", lr, None)]
+        for k in KS:
+            out += [("stale64", "humanline_grpo", lr, k), ("offline", "humanline_grpo", lr, k)]
+    return out
 
 
-def phase_reference(lr: str) -> None:
-    for spec in ("online_grpo", "stale_grpo", "humanline_grpo"):
-        src = RUNS / "sweep" / f"lr{lr}" / "stale64" / spec
-        dst = CKPT / "stale64" / spec
-        if not (dst / "policy.pt").exists():
-            shutil.rmtree(dst, ignore_errors=True)
-            shutil.copytree(src, dst)
-            meta = json.loads((dst / "run.json").read_text())
-            meta["config"]["run_dir"] = str(dst)
-            meta["note"] = f"seed-7 run selected by the pre-registered LR rule (lr={lr}); copied from the sweep"
-            (dst / "run.json").write_text(json.dumps(meta, indent=2) + "\n")
-    online_off = CKPT / "offline" / "online_grpo"
-    if not (online_off / "policy.pt").exists():
-        shutil.rmtree(online_off, ignore_errors=True)
-        shutil.copytree(CKPT / "stale64" / "online_grpo", online_off)
-        meta = json.loads((online_off / "run.json").read_text())
-        meta["experiment"] = "offline"
-        meta["config"]["experiment"] = "offline"
-        meta["config"]["run_dir"] = str(online_off)
-        meta["note"] = "same online run as stale64/online_grpo, listed as the fresh-sampling comparator"
-        (online_off / "run.json").write_text(json.dumps(meta, indent=2) + "\n")
+def phase_sweep() -> dict:
+    """Per-method hyperparameter selection on the visible slice (paper Table 3 protocol)."""
     jobs = []
-    for spec in ("humanline_sync_only", "humanline_clip_only"):
-        module, args = spec_args(spec, "stale64")
-        jobs.append((CKPT / "stale64" / spec, spec, "stale64", module, args + ["--lr", lr, "--seed", "7"]))
-    for spec in ("humanline_grpo", "offline_grpo", "humanline_sync_only", "humanline_clip_only"):
-        module, args = spec_args(spec, "offline")
-        jobs.append((CKPT / "offline" / spec, spec, "offline", module, args + ["--lr", lr, "--seed", "7"]))
+    for exp, method, lr, k in sweep_specs():
+        module, args = spec_args(method, exp)
+        name = f"{method}__{cfg_name(lr, k)}"
+        extra = ["--lr", lr, "--seed", "7"] + (["--sync-k", k] if k else [])
+        jobs.append((RUNS / "sweep" / exp / name, name, exp, module, args + extra))
+    train_many(jobs, allow_fail=True)
+    val = {}
+    for exp in ("stale64", "offline"):
+        res = evaluate("train", RUNS / "sweep" / exp, RESULTS / f"sweep_{exp}_train.json")
+        val[exp] = {m: r["unconstrained_pass_at_1"] for m, r in res["experiments"][exp]["results"].items() if "__" in m}
+    selection = {}
+    for exp, method in (("stale64", "online_grpo"), ("stale64", "stale_grpo"), ("stale64", "humanline_grpo"),
+                        ("offline", "offline_grpo"), ("offline", "humanline_grpo")):
+        cands = [(exp_, m, lr, k) for exp_, m, lr, k in sweep_specs() if exp_ == exp and m == method]
+        scored = [(val[exp].get(f"{method}__{cfg_name(lr, k)}", -1.0), lr, k) for _, _, lr, k in cands]
+        best = max(scored, key=lambda t: (t[0], -float(t[1]), -int(t[2] or 0)))
+        selection[f"{exp}/{method}"] = {"lr": best[1], "k": best[2], "validation_pass_at_1": best[0]}
+    (RESULTS / "selection.json").write_text(json.dumps({
+        "rule": "per (experiment, method): argmax seed-7 visible-validation pass@1 over the grid; ties -> smaller lr, smaller k",
+        "grid": {"lr": LRS, "k_humanline": KS}, "validation": val, "selected": selection}, indent=2) + "\n")
+    log(f"selection {json.dumps(selection)}")
+    return selection
+
+
+def sel_args(selection: dict, exp: str, method: str) -> list[str]:
+    s = selection[f"{exp}/{method}"]
+    return ["--lr", s["lr"]] + (["--sync-k", s["k"]] if s["k"] else [])
+
+
+def copy_run(src: Path, dst: Path, method: str, experiment: str, note: str) -> None:
+    if (dst / "policy.pt").exists():
+        return
+    shutil.rmtree(dst, ignore_errors=True)
+    shutil.copytree(src, dst)
+    meta = json.loads((dst / "run.json").read_text())
+    meta["method"] = method
+    meta["experiment"] = experiment
+    meta["config"].update({"run_dir": str(dst), "name": method, "experiment": experiment})
+    meta["note"] = note
+    (dst / "run.json").write_text(json.dumps(meta, indent=2) + "\n")
+
+
+def phase_reference(selection: dict) -> None:
+    for exp, method in (("stale64", "online_grpo"), ("stale64", "stale_grpo"), ("stale64", "humanline_grpo"),
+                        ("offline", "offline_grpo"), ("offline", "humanline_grpo")):
+        s = selection[f"{exp}/{method}"]
+        src = RUNS / "sweep" / exp / f"{method}__{cfg_name(s['lr'], s['k'])}"
+        copy_run(src, CKPT / exp / method, method, exp,
+                 f"seed-7 sweep run selected on the visible slice ({cfg_name(s['lr'], s['k'])})")
+    copy_run(CKPT / "stale64" / "online_grpo", CKPT / "offline" / "online_grpo", "online_grpo", "offline",
+             "same online run as stale64/online_grpo, listed as the fresh-sampling comparator")
+    jobs = []
+    for exp in ("stale64", "offline"):
+        for spec in ("humanline_sync_only", "humanline_clip_only"):
+            module, args = spec_args(spec, exp)
+            jobs.append((CKPT / exp / spec, spec, exp, module, args + sel_args(selection, exp, "humanline_grpo") + ["--seed", "7"]))
     train_many(jobs)
 
 
-def phase_seeds(lr: str) -> None:
+def phase_seeds(selection: dict) -> None:
     jobs = []
     for seed in EXTRA_SEEDS:
-        for spec in ("online_grpo", "stale_grpo", "humanline_grpo"):
-            module, args = spec_args(spec, "stale64")
-            jobs.append((RUNS / "seeds" / f"seed{seed}" / "stale64" / spec, spec, "stale64", module,
-                         args + ["--lr", lr, "--seed", str(seed)]))
-        for spec in ("offline_grpo", "humanline_grpo"):
-            module, args = spec_args(spec, "offline")
-            jobs.append((RUNS / "seeds" / f"seed{seed}" / "offline" / spec, spec, "offline", module,
-                         args + ["--lr", lr, "--seed", str(seed)]))
+        for exp, method in (("stale64", "online_grpo"), ("stale64", "stale_grpo"), ("stale64", "humanline_grpo"),
+                            ("offline", "offline_grpo"), ("offline", "humanline_grpo")):
+            module, args = spec_args(method, exp)
+            jobs.append((RUNS / "seeds" / f"seed{seed}" / exp / method, method, exp, module,
+                         args + sel_args(selection, exp, method) + ["--seed", str(seed)]))
     train_many(jobs, allow_fail=True)
 
 
-def phase_variants(lr: str) -> None:
-    lr_up = f"{float(lr) * 3:g}"
-    lr_down = f"{float(lr) / 3:g}"
+def phase_variants(selection: dict) -> None:
     module, hl = spec_args("humanline_grpo", "stale64")
     _, hl_off = spec_args("humanline_grpo", "offline")
-    base = ["--seed", "7"]
+    lr = selection["stale64/humanline_grpo"]["lr"]
+    lr_off = selection["offline/humanline_grpo"]["lr"]
+    k = selection["stale64/humanline_grpo"]["k"]
+    seed = ["--seed", "7"]
+    v = RUNS / "variants"
     jobs = [
-        (RUNS / "variants" / "stale64" / "humanline_k4", "humanline_k4", "stale64", module, hl + ["--lr", lr, "--sync-k", "4"] + base),
-        (RUNS / "variants" / "stale64" / "humanline_k24", "humanline_k24", "stale64", module, hl + ["--lr", lr, "--sync-k", "24"] + base),
-        (RUNS / "variants" / "stale64" / "humanline_k1", "humanline_k1", "stale64", module, hl + ["--lr", lr, "--sync-k", "1"] + base),
-        (RUNS / "variants" / "stale64" / "humanline_lr_up", "humanline_lr_up", "stale64", module, hl + ["--lr", lr_up] + base),
-        (RUNS / "variants" / "stale64" / "humanline_lr_down", "humanline_lr_down", "stale64", module, hl + ["--lr", lr_down] + base),
-        (RUNS / "variants" / "stale64" / "humanline_one_round", "humanline_one_round", "stale64", module,
-         hl + ["--lr", lr, "--train-steps", "64"] + base),
-        (RUNS / "variants" / "stale64" / "humanline_double_budget", "humanline_double_budget", "stale64", module,
-         hl + ["--lr", lr, "--train-steps", "1024"] + base),
-        (RUNS / "variants" / "offline" / "humanline_k4", "humanline_k4", "offline", module, hl_off + ["--lr", lr, "--sync-k", "4"] + base),
-        (RUNS / "variants" / "offline" / "humanline_lr_up", "humanline_lr_up", "offline", module, hl_off + ["--lr", lr_up] + base),
+        (v / "stale64" / "humanline_k1", "humanline_k1", "stale64", module, hl + ["--lr", lr, "--sync-k", "1"] + seed),
+        (v / "stale64" / "humanline_k4", "humanline_k4", "stale64", module, hl + ["--lr", lr, "--sync-k", "4"] + seed),
+        (v / "stale64" / "humanline_one_round", "humanline_one_round", "stale64", module,
+         hl + ["--lr", lr, "--sync-k", k, "--train-steps", "64"] + seed),
+        (v / "stale64" / "humanline_double_budget", "humanline_double_budget", "stale64", module,
+         hl + ["--lr", lr, "--sync-k", k, "--train-steps", "1024"] + seed),
+        (v / "offline" / "humanline_k1", "humanline_k1", "offline", module, hl_off + ["--lr", lr_off, "--sync-k", "1"] + seed),
+        (v / "offline" / "humanline_k4", "humanline_k4", "offline", module, hl_off + ["--lr", lr_off, "--sync-k", "4"] + seed),
     ]
     train_many(jobs, allow_fail=True)
 
@@ -288,9 +311,8 @@ def phase_evaluate() -> None:
     sh("bash scripts/evaluate_test.sh > /dev/null")
     evaluate("test", CKPT, TMP / "reference_test_dump.json", TMP / "correct" / "reference")
     evaluate("train", CKPT, TMP / "reference_train_dump.json", TMP / "correct_train" / "reference")
-    roots = {"variants": RUNS / "variants"}
-    for lr in LRS:
-        roots[f"sweep_lr{lr}"] = RUNS / "sweep" / f"lr{lr}"
+    roots = {"variants": RUNS / "variants", "sweep_stale64": RUNS / "sweep" / "stale64",
+             "sweep_offline": RUNS / "sweep" / "offline"}
     for seed_dir in sorted((RUNS / "seeds").glob("seed*")):
         roots[f"seeds_{seed_dir.name}"] = seed_dir
     for name, root in roots.items():
@@ -305,10 +327,10 @@ def main() -> None:
         d.mkdir(parents=True, exist_ok=True)
     phase_smoke()
     phase_base()
-    lr = phase_sweep()
-    phase_reference(lr)
-    phase_seeds(lr)
-    phase_variants(lr)
+    selection = phase_sweep()
+    phase_reference(selection)
+    phase_seeds(selection)
+    phase_variants(selection)
     phase_evaluate()
     phase_shortcuts()
     subprocess.run([PY, "-m", "redteam.hardening.analyze"], check=True, env=ENV, cwd=ROOT)

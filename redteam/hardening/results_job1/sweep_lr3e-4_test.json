@@ -1,0 +1,53 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "test",
+      "evaluated_prompts": 4000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.3577499985694885,
+          "hard_pass_at_1": 0.354144811630249,
+          "unconstrained_pass_at_1": 0.3577499985694885,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo": {
+          "pass_at_1": 0.3659999966621399,
+          "hard_pass_at_1": 0.37513116002082825,
+          "unconstrained_pass_at_1": 0.3659999966621399,
+          "operating_point_ok": 1.0
+        },
+        "online_grpo": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.7667499780654907,
+          "operating_point_ok": 0.0
+        },
+        "stale_grpo": {
+          "pass_at_1": 0.518750011920929,
+          "hard_pass_at_1": 0.5440713763237,
+          "unconstrained_pass_at_1": 0.518750011920929,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "test",
+      "evaluated_prompts": 4000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.3577499985694885,
+          "hard_pass_at_1": 0.354144811630249,
+          "unconstrained_pass_at_1": 0.3577499985694885,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy)",
+    "offline/base_policy": "ok (evaluator-owned starting policy)",
+    "stale64/humanline_grpo": "ok",
+    "stale64/online_grpo": "failed operating point: sampling_rounds 512 > 8",
+    "stale64/stale_grpo": "ok"
+  }
+}

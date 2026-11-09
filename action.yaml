@@ -5,4 +5,4 @@ action: submit
 gpus: 1
 test: false
 milestone: core_claim_plus
-notes: "Hardening job: smoke test, fixed base-policy build, pre-registered LR sweep, reference/baseline/ablation runs (stale64 + offline), 5 seeds, variants, shortcut submissions, visible + hidden evaluation"
+notes: "Hardening job 2: per-method LR (and humanline k) selection on the visible slice (paper Table 3 protocol), reference set, 5 seeds, variants, shortcuts, visible + hidden evaluation"

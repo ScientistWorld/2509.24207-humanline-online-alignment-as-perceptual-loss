@@ -1,0 +1,67 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo": {
+          "pass_at_1": 0.34549999237060547,
+          "hard_pass_at_1": 0.33826637268066406,
+          "unconstrained_pass_at_1": 0.34549999237060547,
+          "operating_point_ok": 1.0
+        },
+        "online_grpo": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.7894999980926514,
+          "operating_point_ok": 0.0
+        },
+        "stale_grpo": {
+          "pass_at_1": 0.5720000267028809,
+          "hard_pass_at_1": 0.5866807699203491,
+          "unconstrained_pass_at_1": 0.5720000267028809,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo": {
+          "pass_at_1": 0.014000000432133675,
+          "hard_pass_at_1": 0.0031712474301457405,
+          "unconstrained_pass_at_1": 0.014000000432133675,
+          "operating_point_ok": 1.0
+        },
+        "offline_grpo": {
+          "pass_at_1": 0.5149999856948853,
+          "hard_pass_at_1": 0.5338266491889954,
+          "unconstrained_pass_at_1": 0.5149999856948853,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy)",
+    "offline/base_policy": "ok (evaluator-owned starting policy)",
+    "offline/humanline_grpo": "ok",
+    "offline/offline_grpo": "ok",
+    "stale64/humanline_grpo": "ok",
+    "stale64/online_grpo": "failed operating point: sampling_rounds 512 > 8",
+    "stale64/stale_grpo": "ok"
+  }
+}
