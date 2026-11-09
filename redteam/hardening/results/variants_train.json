@@ -47,15 +47,15 @@
           "operating_point_ok": 1.0
         },
         "humanline_k1": {
-          "pass_at_1": 0.09749999642372131,
-          "hard_pass_at_1": 0.06342494487762451,
-          "unconstrained_pass_at_1": 0.09749999642372131,
+          "pass_at_1": 0.06949999928474426,
+          "hard_pass_at_1": 0.04651162773370743,
+          "unconstrained_pass_at_1": 0.06949999928474426,
           "operating_point_ok": 1.0
         },
         "humanline_k4": {
-          "pass_at_1": 0.10249999910593033,
-          "hard_pass_at_1": 0.06659619510173798,
-          "unconstrained_pass_at_1": 0.10249999910593033,
+          "pass_at_1": 0.03550000116229057,
+          "hard_pass_at_1": 0.014799154363572598,
+          "unconstrained_pass_at_1": 0.03550000116229057,
           "operating_point_ok": 1.0
         }
       }

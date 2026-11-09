@@ -28,6 +28,12 @@
           "unconstrained_pass_at_1": 0.0729999989271164,
           "operating_point_ok": 1.0
         },
+        "humanline_grpo__lr1e-4_k192": {
+          "pass_at_1": 0.590499997138977,
+          "hard_pass_at_1": 0.6002098917961121,
+          "unconstrained_pass_at_1": 0.590499997138977,
+          "operating_point_ok": 1.0
+        },
         "humanline_grpo__lr1e-4_k24": {
           "pass_at_1": 0.21649999916553497,
           "hard_pass_at_1": 0.2392444908618927,
@@ -38,6 +44,12 @@
           "pass_at_1": 0.38475000858306885,
           "hard_pass_at_1": 0.38614898920059204,
           "unconstrained_pass_at_1": 0.38475000858306885,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo__lr1e-4_k96": {
+          "pass_at_1": 0.5432500243186951,
+          "hard_pass_at_1": 0.5461699962615967,
+          "unconstrained_pass_at_1": 0.5432500243186951,
           "operating_point_ok": 1.0
         },
         "humanline_grpo__lr1e-5_k12": {
@@ -82,6 +94,12 @@
           "unconstrained_pass_at_1": 0.18424999713897705,
           "operating_point_ok": 1.0
         },
+        "humanline_grpo__lr3e-5_k192": {
+          "pass_at_1": 0.5370000004768372,
+          "hard_pass_at_1": 0.5529905557632446,
+          "unconstrained_pass_at_1": 0.5370000004768372,
+          "operating_point_ok": 1.0
+        },
         "humanline_grpo__lr3e-5_k24": {
           "pass_at_1": 0.3802500069141388,
           "hard_pass_at_1": 0.370409220457077,
@@ -92,6 +110,12 @@
           "pass_at_1": 0.5207499861717224,
           "hard_pass_at_1": 0.5304301977157593,
           "unconstrained_pass_at_1": 0.5207499861717224,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo__lr3e-5_k96": {
+          "pass_at_1": 0.5720000267028809,
+          "hard_pass_at_1": 0.5750262141227722,
+          "unconstrained_pass_at_1": 0.5720000267028809,
           "operating_point_ok": 1.0
         },
         "offline_grpo__lr1e-4": {
@@ -125,8 +149,10 @@
     "stale64/base_policy": "ok (evaluator-owned starting policy)",
     "offline/base_policy": "ok (evaluator-owned starting policy)",
     "offline/humanline_grpo__lr1e-4_k12": "ok",
+    "offline/humanline_grpo__lr1e-4_k192": "ok",
     "offline/humanline_grpo__lr1e-4_k24": "ok",
     "offline/humanline_grpo__lr1e-4_k48": "ok",
+    "offline/humanline_grpo__lr1e-4_k96": "ok",
     "offline/humanline_grpo__lr1e-5_k12": "ok",
     "offline/humanline_grpo__lr1e-5_k24": "ok",
     "offline/humanline_grpo__lr1e-5_k48": "ok",
@@ -134,8 +160,10 @@
     "offline/humanline_grpo__lr3e-4_k24": "ok",
     "offline/humanline_grpo__lr3e-4_k48": "ok",
     "offline/humanline_grpo__lr3e-5_k12": "ok",
+    "offline/humanline_grpo__lr3e-5_k192": "ok",
     "offline/humanline_grpo__lr3e-5_k24": "ok",
     "offline/humanline_grpo__lr3e-5_k48": "ok",
+    "offline/humanline_grpo__lr3e-5_k96": "ok",
     "offline/offline_grpo__lr1e-4": "ok",
     "offline/offline_grpo__lr1e-5": "ok",
     "offline/offline_grpo__lr3e-4": "ok",

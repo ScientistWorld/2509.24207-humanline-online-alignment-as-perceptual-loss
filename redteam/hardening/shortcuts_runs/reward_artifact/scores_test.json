@@ -53,21 +53,21 @@
           "operating_point_ok": 1.0
         },
         "humanline_clip_only": {
-          "pass_at_1": 0.44225001335144043,
-          "hard_pass_at_1": 0.4323189854621887,
-          "unconstrained_pass_at_1": 0.44225001335144043,
+          "pass_at_1": 0.4724999964237213,
+          "hard_pass_at_1": 0.46694648265838623,
+          "unconstrained_pass_at_1": 0.4724999964237213,
           "operating_point_ok": 1.0
         },
         "humanline_grpo": {
-          "pass_at_1": 0.5207499861717224,
-          "hard_pass_at_1": 0.5304301977157593,
-          "unconstrained_pass_at_1": 0.5207499861717224,
+          "pass_at_1": 0.590499997138977,
+          "hard_pass_at_1": 0.6002098917961121,
+          "unconstrained_pass_at_1": 0.590499997138977,
           "operating_point_ok": 1.0
         },
         "humanline_sync_only": {
-          "pass_at_1": 0.5230000019073486,
-          "hard_pass_at_1": 0.5330535173416138,
-          "unconstrained_pass_at_1": 0.5230000019073486,
+          "pass_at_1": 0.5755000114440918,
+          "hard_pass_at_1": 0.5860440731048584,
+          "unconstrained_pass_at_1": 0.5755000114440918,
           "operating_point_ok": 1.0
         },
         "offline_grpo": {

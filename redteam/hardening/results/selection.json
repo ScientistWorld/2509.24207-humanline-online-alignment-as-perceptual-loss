@@ -11,6 +11,10 @@
       "12",
       "24",
       "48"
+    ],
+    "k_humanline_offline_extra(lr 3e-5,1e-4)": [
+      "96",
+      "192"
     ]
   },
   "validation": {
@@ -38,8 +42,10 @@
     },
     "offline": {
       "humanline_grpo__lr1e-4_k12": 0.06800000369548798,
+      "humanline_grpo__lr1e-4_k192": 0.5975000262260437,
       "humanline_grpo__lr1e-4_k24": 0.20600000023841858,
       "humanline_grpo__lr1e-4_k48": 0.3675000071525574,
+      "humanline_grpo__lr1e-4_k96": 0.5174999833106995,
       "humanline_grpo__lr1e-5_k12": 0.1679999977350235,
       "humanline_grpo__lr1e-5_k24": 0.29499998688697815,
       "humanline_grpo__lr1e-5_k48": 0.43700000643730164,
@@ -47,8 +53,10 @@
       "humanline_grpo__lr3e-4_k24": 0.04450000077486038,
       "humanline_grpo__lr3e-4_k48": 0.16099999845027924,
       "humanline_grpo__lr3e-5_k12": 0.18950000405311584,
+      "humanline_grpo__lr3e-5_k192": 0.5329999923706055,
       "humanline_grpo__lr3e-5_k24": 0.3564999997615814,
       "humanline_grpo__lr3e-5_k48": 0.5115000009536743,
+      "humanline_grpo__lr3e-5_k96": 0.5605000257492065,
       "offline_grpo__lr1e-4": 0.5404999852180481,
       "offline_grpo__lr1e-5": 0.46549999713897705,
       "offline_grpo__lr3e-4": 0.4320000112056732,
@@ -77,9 +85,9 @@
       "validation_pass_at_1": 0.5404999852180481
     },
     "offline/humanline_grpo": {
-      "lr": "3e-5",
-      "k": "48",
-      "validation_pass_at_1": 0.5115000009536743
+      "lr": "1e-4",
+      "k": "192",
+      "validation_pass_at_1": 0.5975000262260437
     }
   }
 }
