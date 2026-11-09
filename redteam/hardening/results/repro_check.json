@@ -1,0 +1,53 @@
+{
+  "identical": true,
+  "rows": {
+    "stale64/base_policy": {
+      "job3_sweep_copy": 0.3577499985694885,
+      "reproduce_sh": 0.3577499985694885
+    },
+    "stale64/humanline_clip_only": {
+      "job3_sweep_copy": 0.6637499928474426,
+      "reproduce_sh": 0.6637499928474426
+    },
+    "stale64/humanline_grpo": {
+      "job3_sweep_copy": 0.6827499866485596,
+      "reproduce_sh": 0.6827499866485596
+    },
+    "stale64/humanline_sync_only": {
+      "job3_sweep_copy": 0.6552500128746033,
+      "reproduce_sh": 0.6552500128746033
+    },
+    "stale64/online_grpo": {
+      "job3_sweep_copy": 0.7667499780654907,
+      "reproduce_sh": 0.7667499780654907
+    },
+    "stale64/stale_grpo": {
+      "job3_sweep_copy": 0.6682500243186951,
+      "reproduce_sh": 0.6682500243186951
+    },
+    "offline/base_policy": {
+      "job3_sweep_copy": 0.3577499985694885,
+      "reproduce_sh": 0.3577499985694885
+    },
+    "offline/humanline_clip_only": {
+      "job3_sweep_copy": 0.4724999964237213,
+      "reproduce_sh": 0.4724999964237213
+    },
+    "offline/humanline_grpo": {
+      "job3_sweep_copy": 0.590499997138977,
+      "reproduce_sh": 0.590499997138977
+    },
+    "offline/humanline_sync_only": {
+      "job3_sweep_copy": 0.5755000114440918,
+      "reproduce_sh": 0.5755000114440918
+    },
+    "offline/offline_grpo": {
+      "job3_sweep_copy": 0.546500027179718,
+      "reproduce_sh": 0.546500027179718
+    },
+    "offline/online_grpo": {
+      "job3_sweep_copy": 0.7667499780654907,
+      "reproduce_sh": 0.7667499780654907
+    }
+  }
+}
