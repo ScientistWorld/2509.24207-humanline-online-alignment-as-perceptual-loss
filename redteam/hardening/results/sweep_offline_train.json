@@ -1,0 +1,144 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo__lr1e-4_k12": {
+          "pass_at_1": 0.06800000369548798,
+          "hard_pass_at_1": 0.03488372266292572,
+          "unconstrained_pass_at_1": 0.06800000369548798,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo__lr1e-4_k24": {
+          "pass_at_1": 0.20600000023841858,
+          "hard_pass_at_1": 0.23572938144207,
+          "unconstrained_pass_at_1": 0.20600000023841858,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo__lr1e-4_k48": {
+          "pass_at_1": 0.3675000071525574,
+          "hard_pass_at_1": 0.3720930218696594,
+          "unconstrained_pass_at_1": 0.3675000071525574,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo__lr1e-5_k12": {
+          "pass_at_1": 0.1679999977350235,
+          "hard_pass_at_1": 0.14482030272483826,
+          "unconstrained_pass_at_1": 0.1679999977350235,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo__lr1e-5_k24": {
+          "pass_at_1": 0.29499998688697815,
+          "hard_pass_at_1": 0.2906976640224457,
+          "unconstrained_pass_at_1": 0.29499998688697815,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo__lr1e-5_k48": {
+          "pass_at_1": 0.43700000643730164,
+          "hard_pass_at_1": 0.4365750551223755,
+          "unconstrained_pass_at_1": 0.43700000643730164,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo__lr3e-4_k12": {
+          "pass_at_1": 0.012000000104308128,
+          "hard_pass_at_1": 0.013742071576416492,
+          "unconstrained_pass_at_1": 0.012000000104308128,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo__lr3e-4_k24": {
+          "pass_at_1": 0.04450000077486038,
+          "hard_pass_at_1": 0.04439746215939522,
+          "unconstrained_pass_at_1": 0.04450000077486038,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo__lr3e-4_k48": {
+          "pass_at_1": 0.16099999845027924,
+          "hard_pass_at_1": 0.19873149693012238,
+          "unconstrained_pass_at_1": 0.16099999845027924,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo__lr3e-5_k12": {
+          "pass_at_1": 0.18950000405311584,
+          "hard_pass_at_1": 0.13847780227661133,
+          "unconstrained_pass_at_1": 0.18950000405311584,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo__lr3e-5_k24": {
+          "pass_at_1": 0.3564999997615814,
+          "hard_pass_at_1": 0.34355178475379944,
+          "unconstrained_pass_at_1": 0.3564999997615814,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo__lr3e-5_k48": {
+          "pass_at_1": 0.5115000009536743,
+          "hard_pass_at_1": 0.5338266491889954,
+          "unconstrained_pass_at_1": 0.5115000009536743,
+          "operating_point_ok": 1.0
+        },
+        "offline_grpo__lr1e-4": {
+          "pass_at_1": 0.5404999852180481,
+          "hard_pass_at_1": 0.5095137357711792,
+          "unconstrained_pass_at_1": 0.5404999852180481,
+          "operating_point_ok": 1.0
+        },
+        "offline_grpo__lr1e-5": {
+          "pass_at_1": 0.46549999713897705,
+          "hard_pass_at_1": 0.46088793873786926,
+          "unconstrained_pass_at_1": 0.46549999713897705,
+          "operating_point_ok": 1.0
+        },
+        "offline_grpo__lr3e-4": {
+          "pass_at_1": 0.4320000112056732,
+          "hard_pass_at_1": 0.3942917585372925,
+          "unconstrained_pass_at_1": 0.4320000112056732,
+          "operating_point_ok": 1.0
+        },
+        "offline_grpo__lr3e-5": {
+          "pass_at_1": 0.5040000081062317,
+          "hard_pass_at_1": 0.4926004111766815,
+          "unconstrained_pass_at_1": 0.5040000081062317,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy)",
+    "offline/base_policy": "ok (evaluator-owned starting policy)",
+    "offline/humanline_grpo__lr1e-4_k12": "ok",
+    "offline/humanline_grpo__lr1e-4_k24": "ok",
+    "offline/humanline_grpo__lr1e-4_k48": "ok",
+    "offline/humanline_grpo__lr1e-5_k12": "ok",
+    "offline/humanline_grpo__lr1e-5_k24": "ok",
+    "offline/humanline_grpo__lr1e-5_k48": "ok",
+    "offline/humanline_grpo__lr3e-4_k12": "ok",
+    "offline/humanline_grpo__lr3e-4_k24": "ok",
+    "offline/humanline_grpo__lr3e-4_k48": "ok",
+    "offline/humanline_grpo__lr3e-5_k12": "ok",
+    "offline/humanline_grpo__lr3e-5_k24": "ok",
+    "offline/humanline_grpo__lr3e-5_k48": "ok",
+    "offline/offline_grpo__lr1e-4": "ok",
+    "offline/offline_grpo__lr1e-5": "ok",
+    "offline/offline_grpo__lr3e-4": "ok",
+    "offline/offline_grpo__lr3e-5": "ok"
+  }
+}

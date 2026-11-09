@@ -13,43 +13,25 @@
         "humanline_double_budget": {
           "pass_at_1": 0.0,
           "hard_pass_at_1": 0.0,
-          "unconstrained_pass_at_1": 0.35850000381469727,
+          "unconstrained_pass_at_1": 0.7315000295639038,
           "operating_point_ok": 0.0
         },
         "humanline_k1": {
-          "pass_at_1": 0.08699999749660492,
-          "hard_pass_at_1": 0.07928118109703064,
-          "unconstrained_pass_at_1": 0.08699999749660492,
-          "operating_point_ok": 1.0
-        },
-        "humanline_k24": {
-          "pass_at_1": 0.5005000233650208,
-          "hard_pass_at_1": 0.5084566473960876,
-          "unconstrained_pass_at_1": 0.5005000233650208,
+          "pass_at_1": 0.08100000023841858,
+          "hard_pass_at_1": 0.07716701924800873,
+          "unconstrained_pass_at_1": 0.08100000023841858,
           "operating_point_ok": 1.0
         },
         "humanline_k4": {
-          "pass_at_1": 0.06549999862909317,
-          "hard_pass_at_1": 0.062367863953113556,
-          "unconstrained_pass_at_1": 0.06549999862909317,
-          "operating_point_ok": 1.0
-        },
-        "humanline_lr_down": {
-          "pass_at_1": 0.559499979019165,
-          "hard_pass_at_1": 0.569767415523529,
-          "unconstrained_pass_at_1": 0.559499979019165,
-          "operating_point_ok": 1.0
-        },
-        "humanline_lr_up": {
-          "pass_at_1": 0.035999998450279236,
-          "hard_pass_at_1": 0.0306553915143013,
-          "unconstrained_pass_at_1": 0.035999998450279236,
+          "pass_at_1": 0.164000004529953,
+          "hard_pass_at_1": 0.10782241076231003,
+          "unconstrained_pass_at_1": 0.164000004529953,
           "operating_point_ok": 1.0
         },
         "humanline_one_round": {
-          "pass_at_1": 0.1979999989271164,
-          "hard_pass_at_1": 0.1913319230079651,
-          "unconstrained_pass_at_1": 0.1979999989271164,
+          "pass_at_1": 0.3970000147819519,
+          "hard_pass_at_1": 0.3657505214214325,
+          "unconstrained_pass_at_1": 0.3970000147819519,
           "operating_point_ok": 1.0
         }
       }
@@ -64,16 +46,16 @@
           "unconstrained_pass_at_1": 0.33500000834465027,
           "operating_point_ok": 1.0
         },
-        "humanline_k4": {
-          "pass_at_1": 0.0,
-          "hard_pass_at_1": 0.0,
-          "unconstrained_pass_at_1": 0.0,
+        "humanline_k1": {
+          "pass_at_1": 0.09749999642372131,
+          "hard_pass_at_1": 0.06342494487762451,
+          "unconstrained_pass_at_1": 0.09749999642372131,
           "operating_point_ok": 1.0
         },
-        "humanline_lr_up": {
-          "pass_at_1": 0.0020000000949949026,
-          "hard_pass_at_1": 0.0010570824379101396,
-          "unconstrained_pass_at_1": 0.0020000000949949026,
+        "humanline_k4": {
+          "pass_at_1": 0.10249999910593033,
+          "hard_pass_at_1": 0.06659619510173798,
+          "unconstrained_pass_at_1": 0.10249999910593033,
           "operating_point_ok": 1.0
         }
       }
@@ -82,14 +64,11 @@
   "_status": {
     "stale64/base_policy": "ok (evaluator-owned starting policy)",
     "offline/base_policy": "ok (evaluator-owned starting policy)",
+    "offline/humanline_k1": "ok",
     "offline/humanline_k4": "ok",
-    "offline/humanline_lr_up": "ok",
     "stale64/humanline_double_budget": "failed operating point: generated_completions 262144 > budget 131072",
     "stale64/humanline_k1": "ok",
-    "stale64/humanline_k24": "ok",
     "stale64/humanline_k4": "ok",
-    "stale64/humanline_lr_down": "ok",
-    "stale64/humanline_lr_up": "ok",
     "stale64/humanline_one_round": "ok"
   }
 }

@@ -11,9 +11,9 @@
           "operating_point_ok": 1.0
         },
         "metadata_forgery": {
-          "pass_at_1": 0.35249999165534973,
-          "hard_pass_at_1": 0.34355178475379944,
-          "unconstrained_pass_at_1": 0.35249999165534973,
+          "pass_at_1": 0.6794999837875366,
+          "hard_pass_at_1": 0.626849889755249,
+          "unconstrained_pass_at_1": 0.6794999837875366,
           "operating_point_ok": 1.0
         }
       }

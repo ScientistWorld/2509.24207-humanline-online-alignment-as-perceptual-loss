@@ -11,9 +11,9 @@
           "operating_point_ok": 1.0
         },
         "custom_population": {
-          "pass_at_1": 0.3659999966621399,
-          "hard_pass_at_1": 0.37513116002082825,
-          "unconstrained_pass_at_1": 0.3659999966621399,
+          "pass_at_1": 0.6827499866485596,
+          "hard_pass_at_1": 0.6280167698860168,
+          "unconstrained_pass_at_1": 0.6827499866485596,
           "operating_point_ok": 1.0
         }
       }

@@ -11,9 +11,9 @@
           "operating_point_ok": 1.0
         },
         "humanline_grpo": {
-          "pass_at_1": 0.3232499957084656,
-          "hard_pass_at_1": 0.31059810519218445,
-          "unconstrained_pass_at_1": 0.3232499957084656,
+          "pass_at_1": 0.6472499966621399,
+          "hard_pass_at_1": 0.613851010799408,
+          "unconstrained_pass_at_1": 0.6472499966621399,
           "operating_point_ok": 1.0
         },
         "online_grpo": {
@@ -23,9 +23,9 @@
           "operating_point_ok": 0.0
         },
         "stale_grpo": {
-          "pass_at_1": 0.5742499828338623,
-          "hard_pass_at_1": 0.5451206564903259,
-          "unconstrained_pass_at_1": 0.5742499828338623,
+          "pass_at_1": 0.6474999785423279,
+          "hard_pass_at_1": 0.6253935098648071,
+          "unconstrained_pass_at_1": 0.6474999785423279,
           "operating_point_ok": 1.0
         }
       }
@@ -41,15 +41,15 @@
           "operating_point_ok": 1.0
         },
         "humanline_grpo": {
-          "pass_at_1": 0.00774999987334013,
-          "hard_pass_at_1": 0.002623294945806265,
-          "unconstrained_pass_at_1": 0.00774999987334013,
+          "pass_at_1": 0.5270000100135803,
+          "hard_pass_at_1": 0.5351521372795105,
+          "unconstrained_pass_at_1": 0.5270000100135803,
           "operating_point_ok": 1.0
         },
         "offline_grpo": {
-          "pass_at_1": 0.48475000262260437,
-          "hard_pass_at_1": 0.4926547706127167,
-          "unconstrained_pass_at_1": 0.48475000262260437,
+          "pass_at_1": 0.5767499804496765,
+          "hard_pass_at_1": 0.5750262141227722,
+          "unconstrained_pass_at_1": 0.5767499804496765,
           "operating_point_ok": 1.0
         }
       }
