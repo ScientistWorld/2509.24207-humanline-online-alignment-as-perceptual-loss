@@ -5,4 +5,4 @@ action: submit
 gpus: 1
 test: false
 milestone: core_claim_plus
-notes: "Hardening job 4 (final): regenerate reference set from final scripts (determinism check), informative-group candidates (3 seeds) for headroom, re-evaluation, shortcuts, analysis"
+notes: "Final hardening job: retrain reference set from final scripts (baseline renamed grpo), score on 16k-prompt hidden test with missing-experiment/duplicate-run fixes, rescore saved variants, rebuild shortcut cases, analysis."

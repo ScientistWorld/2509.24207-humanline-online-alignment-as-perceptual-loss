@@ -1,0 +1,74 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "humanline_double_budget": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.7315000295639038,
+          "operating_point_ok": 0.0
+        },
+        "humanline_k1": {
+          "pass_at_1": 0.08100000023841858,
+          "hard_pass_at_1": 0.07716701924800873,
+          "unconstrained_pass_at_1": 0.08100000023841858,
+          "operating_point_ok": 1.0
+        },
+        "humanline_k4": {
+          "pass_at_1": 0.164000004529953,
+          "hard_pass_at_1": 0.10782241076231003,
+          "unconstrained_pass_at_1": 0.164000004529953,
+          "operating_point_ok": 1.0
+        },
+        "humanline_one_round": {
+          "pass_at_1": 0.3970000147819519,
+          "hard_pass_at_1": 0.3657505214214325,
+          "unconstrained_pass_at_1": 0.3970000147819519,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "humanline_k1": {
+          "pass_at_1": 0.06949999928474426,
+          "hard_pass_at_1": 0.04651162773370743,
+          "unconstrained_pass_at_1": 0.06949999928474426,
+          "operating_point_ok": 1.0
+        },
+        "humanline_k4": {
+          "pass_at_1": 0.03550000116229057,
+          "hard_pass_at_1": 0.014799154363572598,
+          "unconstrained_pass_at_1": 0.03550000116229057,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy)",
+    "offline/base_policy": "ok (evaluator-owned starting policy)",
+    "offline/humanline_k1": "ok",
+    "offline/humanline_k4": "ok",
+    "stale64/humanline_double_budget": "failed operating point: generated_completions 262144 > budget 131072",
+    "stale64/humanline_k1": "ok",
+    "stale64/humanline_k4": "ok",
+    "stale64/humanline_one_round": "ok"
+  }
+}

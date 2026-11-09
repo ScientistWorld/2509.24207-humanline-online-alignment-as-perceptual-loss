@@ -1,194 +1,165 @@
 {
   "experiments": {
-    "synthetic_math_stale_grpo": {
-      "description": "Scaled verifiable-reward benchmark for stale/off-policy generated feedback on deterministic synthetic arithmetic.",
-      "weight": 1.0,
+    "stale64": {
+      "description": "Post-training from verifiable feedback when completions may only be sampled every 64 optimizer updates (64x less often than online): 512 updates, at most 8 sampling rounds, at most 131,072 generated completions, starting from the fixed base policy.",
+      "weight": 0.5,
       "primary_metric": "pass_at_1",
       "metrics": {
         "pass_at_1": {
           "higher_is_better": true,
           "coefficient": 1.0,
-          "description": "Exact answer accuracy on the scored arithmetic prompts."
+          "description": "Exact-match accuracy of the evaluator's own greedy decoding of the submitted policy on the hidden test prompts. Set to 0 when the run violates the experiment's fixed operating point or cannot be evaluated."
         },
-        "mean_reward": {
+        "hard_pass_at_1": {
           "higher_is_better": true,
-          "coefficient": 0.4,
-          "description": "Average verifiable reward combining exact correctness with the small format bonus."
+          "coefficient": 0.5,
+          "description": "Same accuracy restricted to hidden prompts whose addition needs at least two carries (about half of the prompts, the harder half). Set to 0 on a failed run."
         },
-        "format_rate": {
-          "higher_is_better": true,
-          "coefficient": 0.0,
-          "description": "Diagnostic fraction of completions using the expected answer-tag format; exact correctness and mean reward carry the scored answer-quality signal."
-        },
-        "numeric_mae": {
-          "higher_is_better": false,
-          "coefficient": -0.25,
-          "description": "Mean absolute numeric error after parsing the tagged answer, penalizing near-miss and constant-answer shortcuts."
-        },
-        "carry_pass_at_1": {
-          "higher_is_better": true,
-          "coefficient": 0.35,
-          "description": "Exact answer accuracy restricted to prompts whose ones digits require carrying."
-        },
-        "unique_prompt_rate": {
+        "unconstrained_pass_at_1": {
           "higher_is_better": true,
           "coefficient": 0.0,
-          "description": "Diagnostic fraction of scored prediction rows with distinct prompts; minimum slice-size and unique-prompt checks enforce coverage."
+          "description": "Diagnostic only: accuracy ignoring the operating-point gate (e.g. the online comparator's accuracy). Never ranked, so exceeding the sampling budget cannot pay."
         },
-        "evaluated_rows": {
+        "operating_point_ok": {
           "higher_is_better": true,
           "coefficient": 0.0,
-          "description": "Diagnostic count of rows included in the slice after prompt-hash filtering."
-        },
-        "stale_refresh_interval": {
-          "higher_is_better": true,
-          "coefficient": 0.0,
-          "description": "Diagnostic stale-data reuse interval reported by the method artifact."
-        },
-        "generated_examples": {
-          "higher_is_better": false,
-          "coefficient": -0.1,
-          "description": "Generated training examples consumed, used as a resource constraint."
-        },
-        "initial_pass_at_1": {
-          "higher_is_better": false,
-          "coefficient": -0.1,
-          "description": "Initial model accuracy before post-training, discouraging gains from starting with a stronger model."
+          "description": "Constraint gate: 1 if the declared training schedule fits the experiment's fixed budget (sampling rounds, refresh interval, generated completions, optimizer updates), else 0. A 0 zeroes the scored metrics."
         }
       },
       "results": {
-        "online_refresh_grpo": {
+        "base_policy": {
           "type": "baseline",
-          "pass_at_1": 0.59375,
-          "mean_reward": 0.64375,
-          "format_rate": 1.0,
-          "numeric_mae": 0.46875,
-          "carry_pass_at_1": 0.6714285714285714,
-          "unique_prompt_rate": 0.81875,
-          "evaluated_rows": 160.0,
-          "stale_refresh_interval": 1,
-          "generated_examples": 65536,
-          "initial_pass_at_1": 0.48125
+          "pass_at_1": 0.3577499985694885,
+          "hard_pass_at_1": 0.354144811630249,
+          "unconstrained_pass_at_1": 0.3577499985694885,
+          "operating_point_ok": 1.0
         },
-        "stale_grpo_64x_offpolicy": {
+        "humanline_clip_only": {
+          "type": "proposed",
+          "pass_at_1": 0.6637499928474426,
+          "hard_pass_at_1": 0.6484785079956055,
+          "unconstrained_pass_at_1": 0.6637499928474426,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo": {
+          "type": "proposed",
+          "pass_at_1": 0.6827499866485596,
+          "hard_pass_at_1": 0.6280167698860168,
+          "unconstrained_pass_at_1": 0.6827499866485596,
+          "operating_point_ok": 1.0
+        },
+        "humanline_sync_only": {
+          "type": "proposed",
+          "pass_at_1": 0.6552500128746033,
+          "hard_pass_at_1": 0.6169989705085754,
+          "unconstrained_pass_at_1": 0.6552500128746033,
+          "operating_point_ok": 1.0
+        },
+        "online_grpo": {
           "type": "baseline",
-          "pass_at_1": 0.61875,
-          "mean_reward": 0.66875,
-          "format_rate": 1.0,
-          "numeric_mae": 0.4375,
-          "carry_pass_at_1": 0.6571428571428571,
-          "unique_prompt_rate": 0.81875,
-          "evaluated_rows": 160.0,
-          "stale_refresh_interval": 64,
-          "generated_examples": 65536,
-          "initial_pass_at_1": 0.48125
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.7667499780654907,
+          "operating_point_ok": 0.0
         },
-        "offline_humanline_grpo": {
-          "type": "proposed",
-          "pass_at_1": 0.61875,
-          "mean_reward": 0.66875,
-          "format_rate": 1.0,
-          "numeric_mae": 0.4875,
-          "carry_pass_at_1": 0.5857142857142857,
-          "unique_prompt_rate": 0.81875,
-          "evaluated_rows": 160.0,
-          "stale_refresh_interval": 64,
-          "generated_examples": 65536,
-          "initial_pass_at_1": 0.48125
-        },
-        "humanline_sync_only_grpo": {
-          "type": "proposed",
-          "pass_at_1": 0.61875,
-          "mean_reward": 0.66875,
-          "format_rate": 1.0,
-          "numeric_mae": 0.4875,
-          "carry_pass_at_1": 0.5857142857142857,
-          "unique_prompt_rate": 0.81875,
-          "evaluated_rows": 160.0,
-          "stale_refresh_interval": 64,
-          "generated_examples": 65536,
-          "initial_pass_at_1": 0.48125
-        },
-        "humanline_clip_only_grpo": {
-          "type": "proposed",
-          "pass_at_1": 0.625,
-          "mean_reward": 0.675,
-          "format_rate": 1.0,
-          "numeric_mae": 0.4375,
-          "carry_pass_at_1": 0.6714285714285714,
-          "unique_prompt_rate": 0.81875,
-          "evaluated_rows": 160.0,
-          "stale_refresh_interval": 64,
-          "generated_examples": 65536,
-          "initial_pass_at_1": 0.48125
-        },
-        "stale_grpo_128x_offpolicy": {
+        "grpo": {
           "type": "baseline",
-          "pass_at_1": 0.6125,
-          "mean_reward": 0.6625,
-          "format_rate": 1.0,
-          "numeric_mae": 0.45,
-          "carry_pass_at_1": 0.6428571428571429,
-          "unique_prompt_rate": 0.81875,
-          "evaluated_rows": 160.0,
-          "stale_refresh_interval": 128,
-          "generated_examples": 65536,
-          "initial_pass_at_1": 0.48125
-        },
-        "offline_humanline_grpo_128x": {
-          "type": "proposed",
-          "pass_at_1": 0.51875,
-          "mean_reward": 0.56875,
-          "format_rate": 1.0,
-          "numeric_mae": 0.59375,
-          "carry_pass_at_1": 0.5428571428571428,
-          "unique_prompt_rate": 0.81875,
-          "evaluated_rows": 160.0,
-          "stale_refresh_interval": 128,
-          "generated_examples": 65536,
-          "initial_pass_at_1": 0.48125
-        },
-        "offline_humanline_grpo_64x_sync8": {
-          "type": "proposed",
-          "pass_at_1": 0.5875,
-          "mean_reward": 0.6375,
-          "format_rate": 1.0,
-          "numeric_mae": 0.59375,
-          "carry_pass_at_1": 0.6,
-          "unique_prompt_rate": 0.81875,
-          "evaluated_rows": 160.0,
-          "stale_refresh_interval": 64,
-          "generated_examples": 65536,
-          "initial_pass_at_1": 0.48125
-        },
-        "offline_humanline_grpo_64x_sync16": {
-          "type": "proposed",
-          "pass_at_1": 0.6125,
-          "mean_reward": 0.6625,
-          "format_rate": 1.0,
-          "numeric_mae": 0.46875,
-          "carry_pass_at_1": 0.6285714285714286,
-          "unique_prompt_rate": 0.81875,
-          "evaluated_rows": 160.0,
-          "stale_refresh_interval": 64,
-          "generated_examples": 65536,
-          "initial_pass_at_1": 0.48125
-        },
-        "offline_humanline_grpo_64x_sync24": {
-          "type": "proposed",
-          "pass_at_1": 0.69375,
-          "mean_reward": 0.74375,
-          "format_rate": 1.0,
-          "numeric_mae": 0.375,
-          "carry_pass_at_1": 0.7714285714285715,
-          "unique_prompt_rate": 0.81875,
-          "evaluated_rows": 160.0,
-          "stale_refresh_interval": 64,
-          "generated_examples": 65536,
-          "initial_pass_at_1": 0.48125
+          "pass_at_1": 0.6682500243186951,
+          "hard_pass_at_1": 0.6479538083076477,
+          "unconstrained_pass_at_1": 0.6682500243186951,
+          "operating_point_ok": 1.0
         }
       },
-      "notes": "The paper reports MATH500 Pass@1 around 0.593 for online and stale-data Humanline GRPO after 1600 steps. This gym uses a reduced synthetic arithmetic task; reference values are calibrated from the reproduced reduced-benchmark artifacts, not copied from the full MATH500 result."
+      "notes": "Scaled setup: three-digit addition with a 0.6M-parameter transformer instead of MATH500 with Qwen2.5-1.5B, 512 updates instead of 1600. The paper's numbers are on a different task and scale and are kept under _paper_reported only. Results rows are the seed-7 reference runs scored by eval/test/evaluate.py; online_grpo is the fresh-sampling comparator, scored as failed because it samples every update (its accuracy is in unconstrained_pass_at_1).",
+      "_paper_reported": {
+        "source": "Section 5.2.2 and Figure 6: Qwen2.5-1.5B-Instruct aligned on the MATH500 training set, evaluated on MATH500 test after 1600 steps",
+        "online_grpo_pass_at_1": 0.593,
+        "humanline_grpo_64x_less_frequent_sampling_pass_at_1": 0.593,
+        "pass_at_1_plus_minus": 0.019,
+        "grpo_64x_less_frequent_sampling": "significantly worse than online GRPO (p < 0.05); no number reported in the text",
+        "humanline_settings": "log epsilon_P = -1.5, log epsilon_R = 1.5; sync interval k in [12, 24]; k = 1 collapses"
+      }
+    },
+    "offline": {
+      "description": "Post-training from verifiable feedback with a single sampling round drawn from the starting policy and no further sampling: 512 updates, at most 131,072 generated completions, starting from the fixed base policy.",
+      "weight": 0.5,
+      "primary_metric": "pass_at_1",
+      "metrics": {
+        "pass_at_1": {
+          "higher_is_better": true,
+          "coefficient": 1.0,
+          "description": "Exact-match accuracy of the evaluator's own greedy decoding of the submitted policy on the hidden test prompts. Set to 0 when the run violates the experiment's fixed operating point or cannot be evaluated."
+        },
+        "hard_pass_at_1": {
+          "higher_is_better": true,
+          "coefficient": 0.5,
+          "description": "Same accuracy restricted to hidden prompts whose addition needs at least two carries (about half of the prompts, the harder half). Set to 0 on a failed run."
+        },
+        "unconstrained_pass_at_1": {
+          "higher_is_better": true,
+          "coefficient": 0.0,
+          "description": "Diagnostic only: accuracy ignoring the operating-point gate (e.g. the online comparator's accuracy). Never ranked, so exceeding the sampling budget cannot pay."
+        },
+        "operating_point_ok": {
+          "higher_is_better": true,
+          "coefficient": 0.0,
+          "description": "Constraint gate: 1 if the declared training schedule fits the experiment's fixed budget (sampling rounds, refresh interval, generated completions, optimizer updates), else 0. A 0 zeroes the scored metrics."
+        }
+      },
+      "results": {
+        "base_policy": {
+          "type": "baseline",
+          "pass_at_1": 0.3577499985694885,
+          "hard_pass_at_1": 0.354144811630249,
+          "unconstrained_pass_at_1": 0.3577499985694885,
+          "operating_point_ok": 1.0
+        },
+        "humanline_clip_only": {
+          "type": "proposed",
+          "pass_at_1": 0.4724999964237213,
+          "hard_pass_at_1": 0.46694648265838623,
+          "unconstrained_pass_at_1": 0.4724999964237213,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo": {
+          "type": "proposed",
+          "pass_at_1": 0.590499997138977,
+          "hard_pass_at_1": 0.6002098917961121,
+          "unconstrained_pass_at_1": 0.590499997138977,
+          "operating_point_ok": 1.0
+        },
+        "humanline_sync_only": {
+          "type": "proposed",
+          "pass_at_1": 0.5755000114440918,
+          "hard_pass_at_1": 0.5860440731048584,
+          "unconstrained_pass_at_1": 0.5755000114440918,
+          "operating_point_ok": 1.0
+        },
+        "grpo": {
+          "type": "baseline",
+          "pass_at_1": 0.546500027179718,
+          "hard_pass_at_1": 0.5236096382141113,
+          "unconstrained_pass_at_1": 0.546500027179718,
+          "operating_point_ok": 1.0
+        },
+        "online_grpo": {
+          "type": "baseline",
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.7667499780654907,
+          "operating_point_ok": 0.0
+        }
+      },
+      "notes": "Scaled setup as in stale64. The paper reports offline GRPO only for instruction following (AlpacaEval2 win rates, kept under _paper_reported); this experiment applies the paper's offline GRPO protocol (one pool, fixed reference, epsilon 0.5) to the gym's verifiable task. online_grpo is the same fresh-sampling comparator, scored as failed here.",
+      "_paper_reported": {
+        "source": "Table 3 (instruction following, Llama3-8B-Instruct, AlpacaEval2 length-controlled win rate); the paper runs offline GRPO only in this setting",
+        "offline_grpo_lc_winrate": 15.52,
+        "offline_humanline_grpo_lc_winrate": 25.24,
+        "online_grpo_lc_winrate": 25.05,
+        "online_humanline_grpo_lc_winrate": 26.1,
+        "offline_grpo_epsilon": 0.5,
+        "humanline_grpo_epsilon": 0.15
+      }
     }
   }
 }

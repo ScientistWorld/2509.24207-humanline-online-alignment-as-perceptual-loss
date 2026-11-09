@@ -1,0 +1,67 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "humanline_k12": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.6990000009536743,
+          "operating_point_ok": 0.0
+        },
+        "humanline_k24": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.7645000219345093,
+          "operating_point_ok": 0.0
+        },
+        "humanline_k48": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.8245000243186951,
+          "operating_point_ok": 0.0
+        },
+        "online_grpo": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.9294999837875366,
+          "operating_point_ok": 0.0
+        },
+        "stale_grpo": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.8650000095367432,
+          "operating_point_ok": 0.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy)",
+    "offline/base_policy": "ok (evaluator-owned starting policy)",
+    "stale64/humanline_k12": "failed operating point: generated_completions 524288 > budget 131072",
+    "stale64/humanline_k24": "failed operating point: generated_completions 524288 > budget 131072",
+    "stale64/humanline_k48": "failed operating point: generated_completions 524288 > budget 131072",
+    "stale64/online_grpo": "failed operating point: generated_completions 524288 > budget 131072",
+    "stale64/stale_grpo": "failed operating point: generated_completions 524288 > budget 131072"
+  }
+}

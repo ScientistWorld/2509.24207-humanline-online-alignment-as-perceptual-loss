@@ -6,6 +6,9 @@ policy architecture, runs greedy decoding itself on held-out prompts that only
 this directory holds, and scores exact-match accuracy.  Nothing the method
 wrote is trusted as a score: run.json is read only for the experiment name,
 the method name, and the declared operating point, which can only fail a run.
+Every method found is scored in every experiment (a missing experiment is a
+failed row), and several runs declaring one (experiment, method) score the
+worst of them.
 
 Self-contained on purpose: no imports from data/, method/ or eval/train/.
 """
@@ -213,15 +216,10 @@ def main() -> None:
         dump_dir.mkdir(parents=True, exist_ok=True)
 
     def record(experiment: str, method: str, row: dict, correct: torch.Tensor | None, note: str) -> None:
-        key = method
-        n = 2
-        while key in results[experiment]:
-            key = f"{method}__dup{n}"
-            n += 1
-        results[experiment][key] = row
-        status[f"{experiment}/{key}"] = note
+        results[experiment][method] = row
+        status[f"{experiment}/{method}"] = note
         if dump_dir is not None and correct is not None:
-            (dump_dir / f"{experiment}__{key}.json").write_text(json.dumps(correct.int().tolist()))
+            (dump_dir / f"{experiment}__{method}.json").write_text(json.dumps(correct.int().tolist()))
 
     base_correct = None
     if BASE_HASH_FILE.is_file() and BASE_POLICY.is_file():
@@ -237,6 +235,8 @@ def main() -> None:
 
     runs_root = Path(args.runs_root)
     run_files = sorted(runs_root.rglob("run.json")) if runs_root.is_dir() else []
+    # (experiment, method) -> [(row, correctness, note)] for every submitted run
+    submitted: dict[tuple[str, str], list[tuple[dict, torch.Tensor | None, str]]] = {}
     for run_file in run_files:
         try:
             meta = json.loads(run_file.read_text())
@@ -250,19 +250,35 @@ def main() -> None:
             continue
         if method == BASE_ROW:
             method = f"{method}_submitted"
+        entries = submitted.setdefault((experiment, method), [])
         try:
             violation = operating_point_violation(meta, experiment)
         except ValueError as exc:
-            record(experiment, method, dict(FAILED), None, f"failed: {exc}")
+            entries.append((dict(FAILED), None, f"failed: {exc}"))
             continue
         try:
             model = load_checkpoint(run_file.parent / "policy.pt")
             correct = greedy_correct(model, prompts, answers)
         except Exception as exc:
-            record(experiment, method, dict(FAILED), None, f"failed: cannot evaluate policy.pt ({exc})")
+            entries.append((dict(FAILED), None, f"failed: cannot evaluate policy.pt ({exc})"))
             continue
         note = "ok" if violation is None else f"failed operating point: {violation}"
-        record(experiment, method, metrics_from(correct, hard, violation is None), correct, note)
+        entries.append((metrics_from(correct, hard, violation is None), correct, note))
+
+    # Every submitted method is scored in every experiment: a method with no
+    # run in an experiment gets the failed row there.  Several runs declaring
+    # the same (experiment, method) are not a choice of the best one: the
+    # worst of them is scored.
+    for method in sorted({m for _, m in submitted}):
+        for experiment in EXPERIMENTS:
+            entries = submitted.get((experiment, method))
+            if not entries:
+                record(experiment, method, dict(FAILED), None, "failed: no run submitted for this experiment")
+                continue
+            row, correct, note = min(entries, key=lambda e: (e[0]["pass_at_1"], e[0]["hard_pass_at_1"]))
+            if len(entries) > 1:
+                note = f"{note} (worst of {len(entries)} runs declaring this method)"
+            record(experiment, method, row, correct, note)
 
     scores = {
         "experiments": {

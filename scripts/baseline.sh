@@ -1,16 +1,16 @@
 #!/bin/bash
 # Run the comparison baselines with the same GRPO code path, without humanline.
 #
-#   stale_grpo   (stale64): sample every 64 updates; the reference is the
-#                policy that generated the current round (paper's 64x-stale GRPO).
-#   offline_grpo (offline): one pool from the starting policy; the reference
-#                never moves (paper's offline GRPO, epsilon 0.5 as in Table 3).
-#   online_grpo  (both):    fresh samples every update.  It deliberately violates
-#                both operating points, so the evaluators score it as failed and
-#                report its accuracy only as `unconstrained_pass_at_1`.
+#   grpo        (stale64): sample every 64 updates; the reference is the policy
+#               that generated the current round (the paper's 64x-stale GRPO).
+#   grpo        (offline): one pool from the starting policy; the reference never
+#               moves (the paper's offline GRPO, epsilon 0.5 as in its Table 3).
+#   online_grpo (both):    fresh samples every update.  It deliberately violates
+#               both operating points, so the evaluators score it as failed and
+#               report its accuracy only as `unconstrained_pass_at_1`.
 #
 # Learning rates were selected per method on the visible validation slice:
-#   stale_grpo 1e-4, offline_grpo 1e-4, online_grpo 3e-4.
+#   grpo 1e-4 (both experiments), online_grpo 3e-4.
 # Usage: bash scripts/baseline.sh
 
 set -e
@@ -22,10 +22,10 @@ LR_OFFLINE="${LR_OFFLINE:-1e-4}"
 LR_ONLINE="${LR_ONLINE:-3e-4}"
 OUT="${OUTPUT_ROOT:-checkpoints}"
 
-python -m baseline.stale_grpo --name stale_grpo --experiment stale64 --output-root "${OUT}" \
+python -m baseline.stale_grpo --name grpo --experiment stale64 --output-root "${OUT}" \
   --refresh-interval 64 --train-steps 512 --seed "${SEED}" --lr "${LR_STALE}"
 
-python -m baseline.stale_grpo --name offline_grpo --experiment offline --output-root "${OUT}" \
+python -m baseline.stale_grpo --name grpo --experiment offline --output-root "${OUT}" \
   --refresh-interval 512 --train-steps 512 --grpo-epsilon 0.5 --seed "${SEED}" --lr "${LR_OFFLINE}"
 
 for EXP in stale64 offline; do

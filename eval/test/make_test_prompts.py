@@ -15,7 +15,7 @@ sys.path.insert(0, str(WORKSPACE))
 from data.arithmetic import visible_pairs  # noqa: E402
 
 SEED = 863590777
-SIZE = 4000
+SIZE = 16000
 
 if __name__ == "__main__":
     exclude = visible_pairs() | {tuple(p) for p in json.loads((WORKSPACE / "eval/train/val_prompts.json").read_text())}

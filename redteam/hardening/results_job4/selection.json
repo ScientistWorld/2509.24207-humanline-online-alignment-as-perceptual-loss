@@ -1,0 +1,93 @@
+{
+  "rule": "per (experiment, method): argmax seed-7 visible-validation pass@1 over the grid; ties -> smaller lr, smaller k",
+  "grid": {
+    "lr": [
+      "1e-5",
+      "3e-5",
+      "1e-4",
+      "3e-4"
+    ],
+    "k_humanline": [
+      "12",
+      "24",
+      "48"
+    ],
+    "k_humanline_offline_extra(lr 3e-5,1e-4)": [
+      "96",
+      "192"
+    ]
+  },
+  "validation": {
+    "stale64": {
+      "humanline_grpo__lr1e-4_k12": 0.559499979019165,
+      "humanline_grpo__lr1e-4_k24": 0.6485000252723694,
+      "humanline_grpo__lr1e-4_k48": 0.6794999837875366,
+      "humanline_grpo__lr1e-5_k12": 0.5065000057220459,
+      "humanline_grpo__lr1e-5_k24": 0.5109999775886536,
+      "humanline_grpo__lr1e-5_k48": 0.5059999823570251,
+      "humanline_grpo__lr3e-4_k12": 0.35249999165534973,
+      "humanline_grpo__lr3e-4_k24": 0.5005000233650208,
+      "humanline_grpo__lr3e-4_k48": 0.49300000071525574,
+      "humanline_grpo__lr3e-5_k12": 0.5274999737739563,
+      "humanline_grpo__lr3e-5_k24": 0.5995000004768372,
+      "humanline_grpo__lr3e-5_k48": 0.6144999861717224,
+      "online_grpo__lr1e-4": 0.7135000228881836,
+      "online_grpo__lr1e-5": 0.5130000114440918,
+      "online_grpo__lr3e-4": 0.7540000081062317,
+      "online_grpo__lr3e-5": 0.6054999828338623,
+      "stale_grpo__lr1e-4": 0.6735000014305115,
+      "stale_grpo__lr1e-5": 0.4945000112056732,
+      "stale_grpo__lr3e-4": 0.49300000071525574,
+      "stale_grpo__lr3e-5": 0.6004999876022339
+    },
+    "offline": {
+      "humanline_grpo__lr1e-4_k12": 0.06800000369548798,
+      "humanline_grpo__lr1e-4_k192": 0.5975000262260437,
+      "humanline_grpo__lr1e-4_k24": 0.20600000023841858,
+      "humanline_grpo__lr1e-4_k48": 0.3675000071525574,
+      "humanline_grpo__lr1e-4_k96": 0.5174999833106995,
+      "humanline_grpo__lr1e-5_k12": 0.1679999977350235,
+      "humanline_grpo__lr1e-5_k24": 0.29499998688697815,
+      "humanline_grpo__lr1e-5_k48": 0.43700000643730164,
+      "humanline_grpo__lr3e-4_k12": 0.012000000104308128,
+      "humanline_grpo__lr3e-4_k24": 0.04450000077486038,
+      "humanline_grpo__lr3e-4_k48": 0.16099999845027924,
+      "humanline_grpo__lr3e-5_k12": 0.18950000405311584,
+      "humanline_grpo__lr3e-5_k192": 0.5329999923706055,
+      "humanline_grpo__lr3e-5_k24": 0.3564999997615814,
+      "humanline_grpo__lr3e-5_k48": 0.5115000009536743,
+      "humanline_grpo__lr3e-5_k96": 0.5605000257492065,
+      "offline_grpo__lr1e-4": 0.5404999852180481,
+      "offline_grpo__lr1e-5": 0.46549999713897705,
+      "offline_grpo__lr3e-4": 0.4320000112056732,
+      "offline_grpo__lr3e-5": 0.5040000081062317
+    }
+  },
+  "selected": {
+    "stale64/online_grpo": {
+      "lr": "3e-4",
+      "k": null,
+      "validation_pass_at_1": 0.7540000081062317
+    },
+    "stale64/stale_grpo": {
+      "lr": "1e-4",
+      "k": null,
+      "validation_pass_at_1": 0.6735000014305115
+    },
+    "stale64/humanline_grpo": {
+      "lr": "1e-4",
+      "k": "48",
+      "validation_pass_at_1": 0.6794999837875366
+    },
+    "offline/offline_grpo": {
+      "lr": "1e-4",
+      "k": null,
+      "validation_pass_at_1": 0.5404999852180481
+    },
+    "offline/humanline_grpo": {
+      "lr": "1e-4",
+      "k": "192",
+      "validation_pass_at_1": 0.5975000262260437
+    }
+  }
+}

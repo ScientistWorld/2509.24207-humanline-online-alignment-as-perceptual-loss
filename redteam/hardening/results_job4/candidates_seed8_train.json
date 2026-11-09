@@ -1,0 +1,95 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "humanline_eps03": {
+          "pass_at_1": 0.6694999933242798,
+          "hard_pass_at_1": 0.5909090638160706,
+          "unconstrained_pass_at_1": 0.6694999933242798,
+          "operating_point_ok": 1.0
+        },
+        "humanline_group16": {
+          "pass_at_1": 0.6004999876022339,
+          "hard_pass_at_1": 0.5443974733352661,
+          "unconstrained_pass_at_1": 0.6004999876022339,
+          "operating_point_ok": 1.0
+        },
+        "humanline_lr2x": {
+          "pass_at_1": 0.628000020980835,
+          "hard_pass_at_1": 0.6257928013801575,
+          "unconstrained_pass_at_1": 0.628000020980835,
+          "operating_point_ok": 1.0
+        },
+        "humanline_nokl": {
+          "pass_at_1": 0.6549999713897705,
+          "hard_pass_at_1": 0.6120507121086121,
+          "unconstrained_pass_at_1": 0.6549999713897705,
+          "operating_point_ok": 1.0
+        },
+        "humanline_temp1": {
+          "pass_at_1": 0.7110000252723694,
+          "hard_pass_at_1": 0.6522198915481567,
+          "unconstrained_pass_at_1": 0.7110000252723694,
+          "operating_point_ok": 1.0
+        },
+        "stale_eps03": {
+          "pass_at_1": 0.6545000076293945,
+          "hard_pass_at_1": 0.5940803289413452,
+          "unconstrained_pass_at_1": 0.6545000076293945,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "humanline_eps05": {
+          "pass_at_1": 0.5699999928474426,
+          "hard_pass_at_1": 0.5665962100028992,
+          "unconstrained_pass_at_1": 0.5699999928474426,
+          "operating_point_ok": 1.0
+        },
+        "humanline_group16": {
+          "pass_at_1": 0.5199999809265137,
+          "hard_pass_at_1": 0.5232558250427246,
+          "unconstrained_pass_at_1": 0.5199999809265137,
+          "operating_point_ok": 1.0
+        },
+        "humanline_temp1": {
+          "pass_at_1": 0.5400000214576721,
+          "hard_pass_at_1": 0.5433403849601746,
+          "unconstrained_pass_at_1": 0.5400000214576721,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy)",
+    "offline/base_policy": "ok (evaluator-owned starting policy)",
+    "offline/humanline_eps05": "ok",
+    "offline/humanline_group16": "ok",
+    "offline/humanline_temp1": "ok",
+    "stale64/humanline_eps03": "ok",
+    "stale64/humanline_group16": "ok",
+    "stale64/humanline_lr2x": "ok",
+    "stale64/humanline_nokl": "ok",
+    "stale64/humanline_temp1": "ok",
+    "stale64/stale_eps03": "ok"
+  }
+}

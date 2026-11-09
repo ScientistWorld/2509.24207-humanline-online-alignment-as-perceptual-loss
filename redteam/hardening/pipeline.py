@@ -397,16 +397,19 @@ def phase_candidates2(selection: dict) -> None:
 def phase_shortcuts() -> None:
     from redteam.hardening.shortcuts import CASES
 
-    ref = CKPT / "stale64" / "humanline_grpo"
-    online = CKPT / "stale64" / "online_grpo"
     for case in CASES:
         out = SHORT / case
         if not (out / "scores_test.json").exists():
             subprocess.run([PY, "-m", "redteam.hardening.shortcuts", "--case", case, "--out", str(out),
-                            "--reference-run", str(ref), "--online-run", str(online)],
+                            "--checkpoints", str(CKPT), "--runs", str(RUNS)],
                            check=True, env=ENV, cwd=ROOT, stdout=subprocess.DEVNULL)
             evaluate("train", out, out / "scores_train.json")
             evaluate("test", out, out / "scores_test.json")
+            if case in ("missing_experiment", "duplicate_seeds"):
+                # "before": the evaluator as it stood before the final job (4000 prompts)
+                subprocess.run([PY, str(H / "old_eval_test.py"), "--runs-root", str(out),
+                                "--output", str(out / "scores_test_before.json")],
+                               check=True, stdout=subprocess.DEVNULL, env=ENV, cwd=ROOT)
     # reward-artifact: make the visible task reward unconditionally correct, rescore the reference runs
     out = SHORT / "reward_artifact"
     if not (out / "scores_test.json").exists():
@@ -429,8 +432,9 @@ def phase_evaluate() -> None:
     sh("bash scripts/evaluate_test.sh > /dev/null")
     evaluate("test", CKPT, TMP / "reference_test_dump.json", TMP / "correct" / "reference")
     evaluate("train", CKPT, TMP / "reference_train_dump.json", TMP / "correct_train" / "reference")
-    roots = {"variants": RUNS / "variants", "sweep_stale64": RUNS / "sweep" / "stale64",
-             "sweep_offline": RUNS / "sweep" / "offline"}
+    # the LR/k sweep is not rescored: selection used the visible slice, which is
+    # unchanged; its job-4 test numbers stay in results_job4/.
+    roots = {"variants": RUNS / "variants"}
     for seed_dir in sorted((RUNS / "seeds").glob("seed*")):
         roots[f"seeds_{seed_dir.name}"] = seed_dir
     for group in ("candidates", "long", "candidates2"):

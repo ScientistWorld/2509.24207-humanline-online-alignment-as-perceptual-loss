@@ -1,0 +1,60 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "humanline_informative": {
+          "pass_at_1": 0.7114999890327454,
+          "hard_pass_at_1": 0.6606765389442444,
+          "unconstrained_pass_at_1": 0.7114999890327454,
+          "operating_point_ok": 1.0
+        },
+        "humanline_informative_temp1": {
+          "pass_at_1": 0.6919999718666077,
+          "hard_pass_at_1": 0.6437631845474243,
+          "unconstrained_pass_at_1": 0.6919999718666077,
+          "operating_point_ok": 1.0
+        },
+        "stale_informative": {
+          "pass_at_1": 0.6614999771118164,
+          "hard_pass_at_1": 0.6395348906517029,
+          "unconstrained_pass_at_1": 0.6614999771118164,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "humanline_informative": {
+          "pass_at_1": 0.6169999837875366,
+          "hard_pass_at_1": 0.6099365949630737,
+          "unconstrained_pass_at_1": 0.6169999837875366,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy)",
+    "offline/base_policy": "ok (evaluator-owned starting policy)",
+    "offline/humanline_informative": "ok",
+    "stale64/humanline_informative": "ok",
+    "stale64/humanline_informative_temp1": "ok",
+    "stale64/stale_informative": "ok"
+  }
+}
