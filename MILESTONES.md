@@ -1,8 +1,13 @@
 # Reproduction Milestones
 
-**Current: core_claim_plus**
+**Current: core_claim**
 
 ## Progress Log
+
+### [2026-11-10 20:10] - core_claim
+- Hardening iterations 11-12 rebuilt the gym (three-digit addition, fixed 0.6M-parameter transformer and starting policy, evaluator-owned decoding, `stale64` and `offline` operating points) and now score each method as the mean over training seeds 7-14 (see `HARDENING.md`).
+- Paper direction reproduced with the paper's training method: humanline GRPO beats 64x-stale GRPO by +0.016 and offline GRPO by +0.011 hidden-test accuracy (24 seeds: t = 3.4 and 2.6); syncing carries most of the offline gain and clipping alone hurts, as in the paper's ablation; syncing too often (k = 4) collapses.
+- Not reproduced: closing the gap to online GRPO (0.760 vs 0.662 / 0.558). The label is lowered from `core_claim_plus` to `core_claim` because only the direction of the paper's central claim holds at this scale, not its magnitude.
 
 ### [2026-05-27 04:10] - method_runs
 - Audited the existing reproduction and found that the active `answer_grpo` pipeline is an action-level scaled analogue, not the paper's token-wise Humanline GRPO.

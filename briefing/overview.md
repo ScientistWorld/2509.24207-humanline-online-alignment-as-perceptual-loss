@@ -13,3 +13,7 @@ The paper studies why online on-policy alignment often outperforms offline off-p
 
 - Llama3-8B-Instruct offline+humanline GRPO reaches 25.24 length-controlled AlpacaEval2 win rate versus 15.52 for offline GRPO and 25.05 for online GRPO.
 - On mathematical reasoning, both online GRPO and 64x-less-frequent humanline GRPO reach MATH500 Pass@1 of 0.593 +/- 0.019 after 1600 steps.
+
+## This Gym
+
+A scaled, compute-feasible version of the paper's verifiable-reward experiment: a fixed 0.6M-parameter transformer post-trained with GRPO-style feedback on three-digit addition under two fixed sampling regimes (64x-stale and offline), scored on 16,000 hidden prompts as the mean over training seeds 7-14. See `HARDENING.md` for how the scoring was hardened and what it can and cannot detect.

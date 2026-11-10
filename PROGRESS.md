@@ -1,5 +1,7 @@
 # Progress
 
+> **Final state (hardening, 2026-11-10).** The sections below are the original reproduction log for an earlier version of the gym. The final gym, its numbers and its known limits are described in `HARDENING.md`, `briefing/` and `scoring/`. In short: humanline GRPO beats stale/offline GRPO (+0.016 / +0.011 accuracy, mean of seeds 7-14) but does not reach online GRPO.
+
 ## What Works
 
 Implemented a scaled reproduction of the paper's verifiable-reward humanline GRPO setting. The token-level method code includes upstream token log-ratio clipping, standard GRPO surrogate clipping, stale/off-policy batch generation, and lagged humanline reference syncing. A separate structured complete-answer action policy has produced diagnostic positive results, but it is now treated as a scaled analogue rather than the milestone-carrying implementation.

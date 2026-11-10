@@ -14,21 +14,36 @@ The paper studies why online on-policy alignment often outperforms offline off-p
 - Llama3-8B-Instruct offline+humanline GRPO reaches 25.24 length-controlled AlpacaEval2 win rate versus 15.52 for offline GRPO and 25.05 for online GRPO.
 - On mathematical reasoning, both online GRPO and 64x-less-frequent humanline GRPO reach MATH500 Pass@1 of 0.593 +/- 0.019 after 1600 steps.
 
+## This Gym
+
+A scaled, compute-feasible version of the paper's verifiable-reward experiment: a fixed 0.6M-parameter transformer post-trained with GRPO-style feedback on three-digit addition under two fixed sampling regimes (64x-stale and offline), scored on 16,000 hidden prompts as the mean over training seeds 7-14. See `HARDENING.md` for how the scoring was hardened and what it can and cannot detect.
+
 ---
 
 # Problem Definition
 
 ## Research Question
 
-Can language models be post-trained effectively when feedback data is stale or off-policy, rather than freshly sampled from the current model at every update?
+Can a generative model be post-trained effectively from verifiable feedback when the training completions are stale or off-policy, rather than freshly sampled from the current model at every update?
 
 ## Why It Matters
 
-Fresh online sampling is expensive because generation, labeling, and training are tightly coupled. A good solution should preserve downstream task quality while reducing the frequency of sampling and labeling.
+Fresh online sampling is expensive: generation, labeling and training are tightly coupled, so every optimizer step waits for new samples from the current model. If training can reuse completions sampled much less often (or sampled once, offline) without losing quality, sampling, labeling and training can be decoupled and post-training becomes cheaper and more parallel.
+
+## The Task in This Gym
+
+- **Model.** A fixed decoder-only character transformer (about 0.6M parameters, `data/policy.py`). Every submission is a `state_dict` of exactly this architecture.
+- **Starting point.** Every run starts from the committed policy `data/base_policy.pt`, which was supervised-trained once (on a pool disjoint from all evaluation prompts) to about 36% accuracy and then frozen.
+- **Problem.** Three-digit addition, `a2a1a0+b2b1b0=` → four answer digits. The training feedback is a verifiable exact-match reward on the model's own sampled completions (`data/arithmetic.py`). Methods may sample prompts from the visible training pool of 20,000 operand pairs.
+- **Operating points.** Two fixed training regimes, per training run:
+  - `stale64`: completions may be sampled at most every 64 optimizer updates (64x less often than online): 512 updates, at most 8 sampling rounds, at most 131,072 generated completions.
+  - `offline`: a single sampling round, drawn from the starting policy before training, then no new samples: 512 updates, at most 131,072 generated completions.
+  Sampling at every update with the same 131,072-completion volume ("online") reaches about 76% held-out accuracy in 512 updates; it is outside both operating points and serves only as a reference for how much is lost to staleness.
+- **Seeds.** Training from feedback is noisy from seed to seed, so each method is trained once for each of the eight training seeds 7-14 in each experiment and scored as the mean.
 
 ## Success Criteria
 
-A successful system improves verifiable task performance from model-generated feedback, maintains answer correctness and output format under stale/off-policy training data, and does not simply use more sampled examples to compensate.
+A successful method reaches higher exact-match accuracy on held-out addition prompts (and on the harder, carry-heavy half) at each fixed operating point, from the same starting policy and model, using the model's own sampled completions and the verifiable reward as its training signal, without sampling more often or generating more completions than the operating point allows.
 
 ---
 
@@ -36,40 +51,85 @@ A successful system improves verifiable task performance from model-generated fe
 
 ## Key Contribution
 
-The paper introduces humanline variants of reference-model-based alignment objectives. The goal is to make offline or stale feedback data behave more like the human-perceived distribution of model outcomes.
+The paper introduces humanline variants of reference-model-based alignment objectives (DPO, KTO, GRPO). Motivated by prospect theory, it argues that online on-policy sampling works because it approximates the human-perceived distribution of model outcomes, and that PPO/GRPO clipping already recovers part of this perceptual bias. Making the bias explicit should let stale or offline data train as well as fresh online data.
 
-## Approach
+## Approach (the design pattern)
 
-For each token in an aligned completion, compute the likelihood ratio between the policy and the reference model. Humanline clipping clamps this token-wise log-ratio to an asymmetric range before the normal objective sees it. Humanline syncing periodically updates the reference model from the previous policy state, after loss computation and before the optimizer step. For GRPO, these changes are applied upstream of the standard GRPO clipped surrogate, so the ratio is clipped once by the humanline rule and again by GRPO.
+1. **Humanline syncing.** Every `k` steps, after the loss is computed but before the optimizer step, the reference model is synced with the policy (so the next update is judged against the previous-step policy).
+2. **Humanline clipping.** Token-wise log-ratios `log pi_theta / pi_ref` are clamped to `[log eps_P, log eps_R]` (the paper uses -1.5 and 1.5) upstream of the loss. For GRPO the ratio is therefore clipped twice: once by the humanline clamp and once by GRPO's `[1-eps, 1+eps]` surrogate. The KL term is not humanline-clipped.
 
-The active scaled implementation preserves this computation with a small token-level policy that generates formatted arithmetic completions. The default reduced-benchmark policy is constrained to valid answer-tag strings and exposes autoregressive log-probabilities for answer characters; the earlier unconstrained character GRU remains available with `--policy-type gru` but was too weak to learn prompt-conditioned arithmetic in the CPU budget. Training reuses stale generated completion pools, computes group-relative advantages from verifiable rewards, forms the GRPO token ratio from policy/reference log-probabilities as in the paper appendix, applies optional Humanline log-ratio clipping upstream of the GRPO surrogate, and syncs a lagged reference model from the policy.
+## Implementation in This Gym
 
-## Main Claims
+`method/humanline_grpo.py` implements GRPO (group-relative advantages from the 0/1 verifiable reward, the clipped surrogate on the token-wise policy/reference ratio, a k3 KL penalty to the reference, DAPO-style token-mean loss) on the fixed tiny transformer, with the paper's two humanline changes behind `--humanline` (and `--disable-humanline-sync` / `--disable-humanline-clipping` for the ablations). Sampling follows the paper's 64x-less-frequent protocol: every `refresh_interval` updates a pool of 64 batches is sampled from a frozen snapshot of the policy and consumed one batch per update; the reference is reset to the sampling policy at the start of each round. A single round (`refresh_interval = 512`) is the offline setting, where the reference never moves without humanline syncing.
 
-Primary: offline or stale-data humanline variants can match online alignment performance on instruction following and mathematical reasoning. Secondary: most of the improvement comes from syncing, clipping gives additional benefit, and stale humanline GRPO can sample mathematical reasoning data up to 64x less often without Pass@1 degradation.
+Settings (paper values where they apply): 32 prompts x group size 8 = 256 completions per update, temperature 0.7, AdamW (beta 0.9/0.999, eps 1e-8, no weight decay), 10% warmup, max grad norm 1.0, GRPO eps 0.15 (offline GRPO baseline: 0.5, paper Table 3), KL beta 0.01, humanline log-clip range [-1.5, 1.5]. Learning rate and `k` were selected per method on the visible slice (the paper tunes LR per variant and `k` per setting): humanline GRPO lr 1e-4 with `k = 48` (stale64) and `k = 192` (offline); GRPO lr 1e-4; online GRPO lr 3e-4. Scaled down from the paper: a 0.6M-parameter model and three-digit addition instead of Qwen2.5-1.5B on MATH, and 512 updates instead of 1600.
+
+`scripts/method.sh`, `scripts/baseline.sh` and `scripts/ablation.sh` train each configuration for seeds 7-14.
+
+## Main Claims and What Reproduces Here
+
+- **Primary (paper):** offline or 64x-stale humanline GRPO matches online GRPO. **Here:** humanline GRPO beats the stale/offline GRPO baseline at the same data volume (+0.016 and +0.011 hidden-test accuracy over seeds 7-14; +0.016 and +0.013 over 24 seeds, t = 3.4 and 2.6), but stays well below online GRPO (0.76): the direction reproduces, closing the gap does not at this scale.
+- **Secondary (paper):** syncing gives most of the improvement; clipping alone is no better than the offline variant. **Here (offline):** sync-only ≈ full humanline (0.557 vs 0.558), clip-only well below the baseline (0.473). In stale64 both components alone land between the baseline and the full method.
+- **Paper:** syncing too often (`k = 1`) collapses with small models. **Here:** `k = 4` collapses (0.19 stale64, 0.04 offline).
 
 ---
 
 # Evaluation
 
+## What a Submission Is
+
+One training run per (experiment, training seed), each in its own directory anywhere under `checkpoints/` (the reference uses `checkpoints/<experiment>/<method>/seed<seed>/`):
+
+- `policy.pt`: a plain `state_dict` of the fixed architecture in `data/policy.py` (loaded with `strict=True`; finite floating-point tensors only).
+- `run.json`: `method` (name, `[A-Za-z0-9_.-]`), `experiment` (`stale64` or `offline`), `seed` (one of 7-14), and the declared schedule: `refresh_interval`, `sampling_rounds`, `generated_completions`, `optimizer_updates` (integers).
+
+Nothing else the method writes is read: no predictions, scores, flags or claimed metrics.
+
+## How It Is Scored
+
+`eval/test/evaluate.py` (hidden test, 16,000 prompts that exist only in `eval/test/`) and `eval/train/evaluate.py` (visible slice, 2,000 prompts in `eval/train/val_prompts.json`) apply the same rules:
+
+1. The evaluator loads each `policy.pt` into its own copy of the architecture and decodes greedily itself (four answer tokens), then scores exact-match accuracy.
+2. Each run's declared schedule is checked against the experiment's operating point (`stale64`: at most 512 updates, 8 sampling rounds, 131,072 completions, refresh interval at least 64; `offline`: at most 512 updates, 1 round, 131,072 completions). A run outside it, or with an impossible or missing value, fails the method's whole row in that experiment (scored metrics 0).
+3. A row is the mean over the eight required training seeds 7-14. A seed with no run, an unloadable checkpoint, or a policy whose greedy outputs repeat another seed's (identical outputs on at least 90% of the prompts where either run errs) contributes 0. Several runs declaring the same seed score the worst of them. Runs declaring any other seed are ignored.
+4. Every method found is scored in every experiment; a method with no run in an experiment gets a failed row there.
+5. `base_policy` is an evaluator-owned row: the pinned starting policy, evaluated once.
+
 ## Metrics
 
-- `pass_at_1`: fraction of greedy completions whose parsed answer matches the ground-truth arithmetic answer. Higher is better.
-- `mean_reward`: average verifiable reward combining required answer-tag formatting and correctness. Higher is better.
-- `format_rate`: fraction of completions containing the expected answer tags. Higher is better.
-- `numeric_mae`: mean absolute numeric error after parsing an answer. Lower is better.
-- `carry_pass_at_1`: exact-answer accuracy on prompts whose ones digits require carrying. Higher is better.
-- `generated_examples`: number of sampled completions used during training. Lower is better when task quality is held fixed.
+| Metric | Direction | Coefficient | Meaning |
+|---|---|---|---|
+| `pass_at_1` | higher | 1.0 | seed-mean exact-match accuracy on the slice's prompts |
+| `hard_pass_at_1` | higher | 0.5 | the same on prompts needing at least two carries (about half) |
+| `unconstrained_pass_at_1` | higher | 0 | diagnostic: accuracy ignoring the operating-point gate |
+| `operating_point_ok` | higher | 0 | diagnostic: 1 if every run fits the operating point |
 
-## Baselines and Targets
+The two experiments have weight 0.5 each. Ranking uses only `scoring/scores_test.json`.
 
-The original paper evaluates stale-feedback post-training on mathematical reasoning. This gym uses a small deterministic arithmetic benchmark to test the same research question at compute-feasible scale. Because the scored task is not the paper's full mathematical-reasoning benchmark, `scoring/reference.json` records calibrated reference values for this reduced benchmark and includes notes documenting that scale change.
+## Reference Numbers (hidden test, mean over seeds 7-14)
 
-## Evaluation Protocol
+| Method | stale64 `pass_at_1` | stale64 `hard` | offline `pass_at_1` | offline `hard` |
+|---|---:|---:|---:|---:|
+| `base_policy` (no post-training) | 0.360 | 0.356 | 0.360 | 0.356 |
+| `grpo` (stale / offline GRPO baseline) | 0.646 | 0.621 | 0.546 | 0.545 |
+| `humanline_grpo` (reference) | **0.662** | **0.620** | **0.558** | **0.557** |
+| `online_grpo` (samples every update; fails both operating points) | 0 (0.760 unconstrained) | 0 | 0 (0.760 unconstrained) | 0 |
 
-Run `scripts/reproduce.sh` to regenerate the reference run artifacts, then run `scripts/evaluate.sh`. Evaluation reads run metadata and prediction JSONL files produced under `checkpoints/humanline_grpo/` and writes `scoring/scores.json`. The evaluator is method-agnostic and does not import from `method/`.
+`scoring/reference.json` also lists the two reference ablation rows. On the visible slice the trained methods score within about 0.005 of these (the starting policy: 0.335).
 
-Any competing method should write one JSON metadata file and one matching `*_predictions.jsonl` file per method under the evaluated run directory. Each prediction row must include `prompt`, `answer`, and `completion`.
+## Noise
+
+Training-seed noise dominates prompt-sampling noise. One run's accuracy has a standard deviation of about 0.015 across seeds for the stale and offline methods (0.035 for the online comparator); an 8-seed mean, about 0.005. Two independent 8-seed sets of the same method differ in the ranked score (weight × coefficient × change) by about 0.0054 in stale64 and 0.0063 in offline, or 0.008 summed over both experiments (one standard deviation). Re-running the reference method with seeds 15-22 or 23-30 changed it by -0.002 and +0.001. Differences that are small relative to this are not evidence of an improvement.
+
+## Protocol
+
+```bash
+bash scripts/reproduce.sh       # trains the reference runs (seeds 7-14), writes scoring/scores.json
+bash scripts/evaluate_train.sh  # visible slice  -> scoring/scores_train.json
+bash scripts/evaluate_test.sh   # hidden test    -> scoring/scores_test.json (no arguments)
+```
+
+The evaluators are self-contained (no imports from `data/`, `method/`, or each other) and use the GPU when available; CPU and GPU decoding gave identical scores for the reference runs.
 
 ---
 

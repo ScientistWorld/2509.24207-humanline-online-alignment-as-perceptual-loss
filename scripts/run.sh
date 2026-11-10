@@ -1,19 +1,16 @@
 #!/bin/bash
-# Final hardening job (last iteration).  See redteam/hardening/final.py:
-#   smoke      fail-fast checks of the multi-seed evaluators
-#   reference  scripts/reproduce.sh (80 runs, seeds 7-14) + visible/hidden scoring,
-#              CPU-vs-GPU decoding and retrain-determinism checks
-#   variants   better / weaker / simple-baseline variants (8 seeds each)
-#   pool       extra seeds 15-30 of humanline_grpo and grpo (noise estimate)
-#   shortcuts  every shortcut case through the hidden test (+ the pre-fix evaluator)
-#   analyze    redteam/hardening/results_final/summary.json
-#   reference_json  scoring/reference.json from scoring/scores_test.json
+# Reproduce the reference end to end: train the 80 reference runs (baselines,
+# humanline GRPO and its two ablations; 2 experiments x seeds 7-14) from the
+# committed starting policy, then score them on the visible slice
+# (scoring/scores.json, scoring/scores_train.json) and the hidden test
+# (scoring/scores_test.json).  About 20 minutes on one GPU.
 #
-# For the plain reference reproduction alone, run:
-#   bash scripts/reproduce.sh && bash scripts/evaluate_train.sh && bash scripts/evaluate_test.sh
+# The final hardening job (variants, extra seeds, shortcut cases, analysis) is
+#   python -m redteam.hardening.final
 set -euo pipefail
 cd /home/user
 export PYTHONPATH=/home/user
 
-python -m redteam.hardening.final
-python validate.py || true
+bash scripts/reproduce.sh
+bash scripts/evaluate_train.sh > /dev/null
+bash scripts/evaluate_test.sh > /dev/null

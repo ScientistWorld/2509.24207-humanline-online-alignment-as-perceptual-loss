@@ -1,7 +1,13 @@
 # Experiment Overview
 
-## synthetic_math_stale_grpo
+Both experiments start from the same fixed starting policy and model, train on the model's own sampled completions scored by a verifiable exact-match reward, and are scored on held-out three-digit addition prompts as the mean over the eight training seeds 7-14. They differ only in how often new completions may be sampled.
 
-Tests whether a post-training approach remains effective when generated feedback data is reused for multiple updates instead of being refreshed at every step. The experiment measures answer correctness, formatting reliability, and generated-data usage on a small verifiable arithmetic task.
+## stale64
 
-The default reproduction includes a fresh-data comparator, a 64-update stale-data setting, a harder 128-update stale-data diagnostic, diagnostic variants, and several refresh schedules. All scored methods use the same generated-example budget in the main setting, so improvements should come from better use of stale feedback rather than from more sampling. The diagnostic entries are retained to show whether a result is robust beyond one refresh configuration; the primary interpretation is still whether answer quality can be maintained while generated feedback is reused for many updates.
+Establishes how much answer quality a post-training method can reach when completions may only be sampled every 64 optimizer updates (64x less often than online), with the same number of updates and the same completion volume that sampling at every update would use. Sampling at every update reaches about 0.76 accuracy under the same budget, so the experiment measures how much of the loss caused by staleness a method recovers. Scored: held-out accuracy and accuracy on the carry-heavy half; a run outside the sampling schedule fails.
+
+## offline
+
+Establishes the same for the fully offline case: one pool of completions, sampled once from the starting policy before training, is all the feedback a method gets for 512 updates. It measures how well a method learns from data that becomes increasingly off-policy as training proceeds. Scored the same way; a run that samples again fails.
+
+Both rows include an evaluator-owned no-post-training row (the starting policy) and a fresh-sampling comparator that is scored as failed (its accuracy is shown only as a diagnostic).

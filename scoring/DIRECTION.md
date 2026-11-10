@@ -2,19 +2,19 @@
 
 ## Research Problem
 
-The benchmark asks how to keep post-training effective when model-generated feedback data is stale or off-policy. Improvements should address alignment under reduced sampling frequency.
+Keep post-training from verifiable feedback effective when the training completions are stale (sampled every 64 updates) or offline (sampled once, before training), at a fixed number of updates and completions.
 
 ## Core Contribution
 
-Work must remain focused on post-training generated-text models from verifiable feedback when the feedback data may be stale or off-policy.
+Work must improve how a model learns from completions sampled by an earlier version of itself: the objective, how stale or off-policy samples are weighted, selected or reused, the reference model, regularization, the optimizer schedule, or how the sampling budget is spread across prompts and rounds within the operating point.
 
 ## Approach Scope
 
-Changes may modify the learning objective, feedback weighting, reward shaping, data-refresh schedule, or training schedule, as long as training still uses generated completions with verifiable feedback and stale/off-policy reuse remains central.
+Anything inside one training run that respects the operating point: e.g. changes to the loss, ratio corrections, clipping, reference-model handling, group construction, advantage estimation, which prompts each round samples, temperature, learning-rate schedule, hyperparameters.
 
 ## Out of Bounds
 
-- Replacing the task with supervised answer memorization.
-- Using a deterministic calculator or parser in generation.
-- Solving the benchmark by refreshing data every step while claiming stale-data performance.
-- Switching to a larger pretrained model to bypass the post-training question.
+- Supervised training on answers the method computes itself (the task is addition, so labels are trivially available; using them bypasses the research question).
+- Sampling more often, or generating more completions, than the operating point allows, whatever `run.json` declares.
+- Selecting among extra training seeds, relabelling seeds, or submitting one run under several seeds.
+- Changing the architecture, the starting policy, or the evaluators.

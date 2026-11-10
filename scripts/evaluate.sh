@@ -4,7 +4,8 @@
 #
 # The evaluator loads each run's policy.pt into its own copy of the fixed
 # architecture and decodes greedily itself; it does not import method/ or
-# data/.  Optional args: --runs-root DIR --output FILE.
+# data/.  Rows are means over the required training seeds 7-14.
+# Optional args: --runs-root DIR --output FILE --device auto|cpu|cuda.
 
 set -e
 cd /home/user
