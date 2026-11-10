@@ -1,0 +1,842 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "grpo_eps03": {
+          "pass_at_1": 0.6788749992847443,
+          "hard_pass_at_1": 0.6329281181097031,
+          "unconstrained_pass_at_1": 0.6788749992847443,
+          "operating_point_ok": 1.0
+        },
+        "humanline_double_budget": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.7412500083446503,
+          "operating_point_ok": 0.0
+        },
+        "humanline_eps03": {
+          "pass_at_1": 0.6743749976158142,
+          "hard_pass_at_1": 0.6342494785785675,
+          "unconstrained_pass_at_1": 0.6743749976158142,
+          "operating_point_ok": 1.0
+        },
+        "humanline_eps05": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.0,
+          "operating_point_ok": 0.0
+        },
+        "humanline_informative": {
+          "pass_at_1": 0.6972500085830688,
+          "hard_pass_at_1": 0.6458773761987686,
+          "unconstrained_pass_at_1": 0.6972500085830688,
+          "operating_point_ok": 1.0
+        },
+        "humanline_k24": {
+          "pass_at_1": 0.648312509059906,
+          "hard_pass_at_1": 0.6135042235255241,
+          "unconstrained_pass_at_1": 0.648312509059906,
+          "operating_point_ok": 1.0
+        },
+        "humanline_k4": {
+          "pass_at_1": 0.1827500034123659,
+          "hard_pass_at_1": 0.14495243038982153,
+          "unconstrained_pass_at_1": 0.1827500034123659,
+          "operating_point_ok": 1.0
+        },
+        "humanline_one_round": {
+          "pass_at_1": 0.42518750205636024,
+          "hard_pass_at_1": 0.41767970100045204,
+          "unconstrained_pass_at_1": 0.42518750205636024,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "grpo_eps03": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.0,
+          "operating_point_ok": 0.0
+        },
+        "humanline_double_budget": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.0,
+          "operating_point_ok": 0.0
+        },
+        "humanline_eps03": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.0,
+          "operating_point_ok": 0.0
+        },
+        "humanline_eps05": {
+          "pass_at_1": 0.590875007212162,
+          "hard_pass_at_1": 0.5823202878236771,
+          "unconstrained_pass_at_1": 0.590875007212162,
+          "operating_point_ok": 1.0
+        },
+        "humanline_informative": {
+          "pass_at_1": 0.5966874957084656,
+          "hard_pass_at_1": 0.5891913324594498,
+          "unconstrained_pass_at_1": 0.5966874957084656,
+          "operating_point_ok": 1.0
+        },
+        "humanline_k24": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.0,
+          "operating_point_ok": 0.0
+        },
+        "humanline_k4": {
+          "pass_at_1": 0.03412499953992665,
+          "hard_pass_at_1": 0.018631078186444938,
+          "unconstrained_pass_at_1": 0.03412499953992665,
+          "operating_point_ok": 1.0
+        },
+        "humanline_one_round": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.0,
+          "operating_point_ok": 0.0
+        }
+      }
+    }
+  },
+  "_per_seed": {
+    "stale64": {
+      "grpo_eps03": {
+        "7": {
+          "pass_at_1": 0.6884999871253967,
+          "hard_pass_at_1": 0.6437631845474243,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.6545000076293945,
+          "hard_pass_at_1": 0.5940803289413452,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.722000002861023,
+          "hard_pass_at_1": 0.6670190095901489,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.6779999732971191,
+          "hard_pass_at_1": 0.663847804069519,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.7005000114440918,
+          "hard_pass_at_1": 0.6501057147979736,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.6510000228881836,
+          "hard_pass_at_1": 0.6321353316307068,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.6570000052452087,
+          "hard_pass_at_1": 0.5613107681274414,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.6794999837875366,
+          "hard_pass_at_1": 0.6511628031730652,
+          "note": "ok"
+        }
+      },
+      "humanline_double_budget": {
+        "7": {
+          "pass_at_1": 0.7315000295639038,
+          "hard_pass_at_1": 0.6765327453613281,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.7695000171661377,
+          "hard_pass_at_1": 0.7093023061752319,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.7369999885559082,
+          "hard_pass_at_1": 0.6955602765083313,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.7315000295639038,
+          "hard_pass_at_1": 0.6701902747154236,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.7555000185966492,
+          "hard_pass_at_1": 0.7283298373222351,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.699999988079071,
+          "hard_pass_at_1": 0.6945031881332397,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.7400000095367432,
+          "hard_pass_at_1": 0.6945031881332397,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.7649999856948853,
+          "hard_pass_at_1": 0.7093023061752319,
+          "note": "ok"
+        }
+      },
+      "humanline_eps03": {
+        "7": {
+          "pass_at_1": 0.659500002861023,
+          "hard_pass_at_1": 0.5961945056915283,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.6694999933242798,
+          "hard_pass_at_1": 0.5909090638160706,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.6880000233650208,
+          "hard_pass_at_1": 0.6532769799232483,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.6664999723434448,
+          "hard_pass_at_1": 0.6532769799232483,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.6775000095367432,
+          "hard_pass_at_1": 0.6405919790267944,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.6919999718666077,
+          "hard_pass_at_1": 0.6754757165908813,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.6880000233650208,
+          "hard_pass_at_1": 0.6522198915481567,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.6539999842643738,
+          "hard_pass_at_1": 0.6120507121086121,
+          "note": "ok"
+        }
+      },
+      "humanline_eps05": {
+        "7": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "8": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "9": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "10": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "11": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "12": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "13": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "14": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        }
+      },
+      "humanline_informative": {
+        "7": {
+          "pass_at_1": 0.7114999890327454,
+          "hard_pass_at_1": 0.6606765389442444,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.7005000114440918,
+          "hard_pass_at_1": 0.599365770816803,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.6915000081062317,
+          "hard_pass_at_1": 0.6437631845474243,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.7160000205039978,
+          "hard_pass_at_1": 0.6680760979652405,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.6919999718666077,
+          "hard_pass_at_1": 0.6374207139015198,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.7045000195503235,
+          "hard_pass_at_1": 0.6818181872367859,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.7085000276565552,
+          "hard_pass_at_1": 0.6511628031730652,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.6535000205039978,
+          "hard_pass_at_1": 0.6247357130050659,
+          "note": "ok"
+        }
+      },
+      "humanline_k24": {
+        "7": {
+          "pass_at_1": 0.6485000252723694,
+          "hard_pass_at_1": 0.6067653298377991,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.6414999961853027,
+          "hard_pass_at_1": 0.6057082414627075,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.6345000267028809,
+          "hard_pass_at_1": 0.6331923604011536,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.675000011920929,
+          "hard_pass_at_1": 0.6458773612976074,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.6455000042915344,
+          "hard_pass_at_1": 0.5507399439811707,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.6625000238418579,
+          "hard_pass_at_1": 0.6543340086936951,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.6694999933242798,
+          "hard_pass_at_1": 0.6532769799232483,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.609499990940094,
+          "hard_pass_at_1": 0.5581395626068115,
+          "note": "ok"
+        }
+      },
+      "humanline_k4": {
+        "7": {
+          "pass_at_1": 0.164000004529953,
+          "hard_pass_at_1": 0.10782241076231003,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.1835000067949295,
+          "hard_pass_at_1": 0.18816067278385162,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.21699999272823334,
+          "hard_pass_at_1": 0.16067653894424438,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.21150000393390656,
+          "hard_pass_at_1": 0.17758984863758087,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.15800000727176666,
+          "hard_pass_at_1": 0.11522198468446732,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.17550000548362732,
+          "hard_pass_at_1": 0.12156448513269424,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.15049999952316284,
+          "hard_pass_at_1": 0.1532769501209259,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.20200000703334808,
+          "hard_pass_at_1": 0.13530655205249786,
+          "note": "ok"
+        }
+      },
+      "humanline_one_round": {
+        "7": {
+          "pass_at_1": 0.3970000147819519,
+          "hard_pass_at_1": 0.3657505214214325,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.42500001192092896,
+          "hard_pass_at_1": 0.415433406829834,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.43149998784065247,
+          "hard_pass_at_1": 0.4365750551223755,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.4320000112056732,
+          "hard_pass_at_1": 0.4312896430492401,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.43299999833106995,
+          "hard_pass_at_1": 0.4460887908935547,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.4399999976158142,
+          "hard_pass_at_1": 0.4344608783721924,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.42149999737739563,
+          "hard_pass_at_1": 0.4080338180065155,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.42149999737739563,
+          "hard_pass_at_1": 0.4038054943084717,
+          "note": "ok"
+        }
+      }
+    },
+    "offline": {
+      "grpo_eps03": {
+        "7": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "8": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "9": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "10": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "11": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "12": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "13": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "14": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        }
+      },
+      "humanline_double_budget": {
+        "7": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "8": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "9": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "10": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "11": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "12": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "13": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "14": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        }
+      },
+      "humanline_eps03": {
+        "7": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "8": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "9": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "10": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "11": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "12": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "13": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "14": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        }
+      },
+      "humanline_eps05": {
+        "7": {
+          "pass_at_1": 0.5845000147819519,
+          "hard_pass_at_1": 0.5708245038986206,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.5699999928474426,
+          "hard_pass_at_1": 0.5665962100028992,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.6140000224113464,
+          "hard_pass_at_1": 0.6014798879623413,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.6190000176429749,
+          "hard_pass_at_1": 0.6141648888587952,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.5964999794960022,
+          "hard_pass_at_1": 0.5517970323562622,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.6010000109672546,
+          "hard_pass_at_1": 0.6183932423591614,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.5764999985694885,
+          "hard_pass_at_1": 0.5856236815452576,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.565500020980835,
+          "hard_pass_at_1": 0.5496828556060791,
+          "note": "ok"
+        }
+      },
+      "humanline_informative": {
+        "7": {
+          "pass_at_1": 0.6169999837875366,
+          "hard_pass_at_1": 0.6099365949630737,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.6014999747276306,
+          "hard_pass_at_1": 0.5919661521911621,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.6140000224113464,
+          "hard_pass_at_1": 0.6025369763374329,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.5734999775886536,
+          "hard_pass_at_1": 0.5750528573989868,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.578000009059906,
+          "hard_pass_at_1": 0.5835095047950745,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.590499997138977,
+          "hard_pass_at_1": 0.5676532983779907,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.593999981880188,
+          "hard_pass_at_1": 0.5877378582954407,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.6050000190734863,
+          "hard_pass_at_1": 0.5951374173164368,
+          "note": "ok"
+        }
+      },
+      "humanline_k24": {
+        "7": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "8": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "9": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "10": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "11": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "12": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "13": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "14": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        }
+      },
+      "humanline_k4": {
+        "7": {
+          "pass_at_1": 0.03550000116229057,
+          "hard_pass_at_1": 0.014799154363572598,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.032499998807907104,
+          "hard_pass_at_1": 0.021141648292541504,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.02500000037252903,
+          "hard_pass_at_1": 0.014799154363572598,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.026499999687075615,
+          "hard_pass_at_1": 0.02219873107969761,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.045499999076128006,
+          "hard_pass_at_1": 0.02431289665400982,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.035999998450279236,
+          "hard_pass_at_1": 0.014799154363572598,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.029999999329447746,
+          "hard_pass_at_1": 0.020084567368030548,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.041999999433755875,
+          "hard_pass_at_1": 0.016913319006562233,
+          "note": "ok"
+        }
+      },
+      "humanline_one_round": {
+        "7": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "8": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "9": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "10": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "11": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "12": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "13": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "14": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "offline/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "stale64/grpo_eps03": "ok (8/8 seeds scored)",
+    "offline/grpo_eps03": "failed: no run submitted for this experiment",
+    "stale64/humanline_double_budget": "failed operating point: seed 10: generated_completions 262144 > budget 131072; seed 11: generated_completions 262144 > budget 131072; seed 12: generated_completions 262144 > budget 131072 (+5 more)",
+    "offline/humanline_double_budget": "failed: no run submitted for this experiment",
+    "stale64/humanline_eps03": "ok (8/8 seeds scored)",
+    "offline/humanline_eps03": "failed: no run submitted for this experiment",
+    "stale64/humanline_eps05": "failed: no run submitted for this experiment",
+    "offline/humanline_eps05": "ok (8/8 seeds scored)",
+    "stale64/humanline_informative": "ok (8/8 seeds scored)",
+    "offline/humanline_informative": "ok (8/8 seeds scored)",
+    "stale64/humanline_k24": "ok (8/8 seeds scored)",
+    "offline/humanline_k24": "failed: no run submitted for this experiment",
+    "stale64/humanline_k4": "ok (8/8 seeds scored)",
+    "offline/humanline_k4": "ok (8/8 seeds scored)",
+    "stale64/humanline_one_round": "ok (8/8 seeds scored)",
+    "offline/humanline_one_round": "failed: no run submitted for this experiment"
+  }
+}

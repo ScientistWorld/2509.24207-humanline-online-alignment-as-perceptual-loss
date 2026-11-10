@@ -1,0 +1,172 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "undeclared_seeds": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.0,
+          "operating_point_ok": 0.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "undeclared_seeds": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.0,
+          "operating_point_ok": 0.0
+        }
+      }
+    }
+  },
+  "_per_seed": {
+    "stale64": {
+      "undeclared_seeds": {
+        "7": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "8": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "9": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "10": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "11": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "12": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "13": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "14": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        }
+      }
+    },
+    "offline": {
+      "undeclared_seeds": {
+        "7": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "8": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "9": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "10": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "11": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "12": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "13": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "14": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "offline/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "/home/user/redteam/hardening/shortcuts_final/undeclared_seeds/offline/undeclared_seeds/seed100/run.json": "ignored: seed 100 is not one of the required seeds [7, 8, 9, 10, 11, 12, 13, 14]",
+    "/home/user/redteam/hardening/shortcuts_final/undeclared_seeds/offline/undeclared_seeds/seed101/run.json": "ignored: seed 101 is not one of the required seeds [7, 8, 9, 10, 11, 12, 13, 14]",
+    "/home/user/redteam/hardening/shortcuts_final/undeclared_seeds/offline/undeclared_seeds/seed102/run.json": "ignored: seed 102 is not one of the required seeds [7, 8, 9, 10, 11, 12, 13, 14]",
+    "/home/user/redteam/hardening/shortcuts_final/undeclared_seeds/offline/undeclared_seeds/seed103/run.json": "ignored: seed 103 is not one of the required seeds [7, 8, 9, 10, 11, 12, 13, 14]",
+    "/home/user/redteam/hardening/shortcuts_final/undeclared_seeds/offline/undeclared_seeds/seed104/run.json": "ignored: seed 104 is not one of the required seeds [7, 8, 9, 10, 11, 12, 13, 14]",
+    "/home/user/redteam/hardening/shortcuts_final/undeclared_seeds/offline/undeclared_seeds/seed105/run.json": "ignored: seed 105 is not one of the required seeds [7, 8, 9, 10, 11, 12, 13, 14]",
+    "/home/user/redteam/hardening/shortcuts_final/undeclared_seeds/offline/undeclared_seeds/seed106/run.json": "ignored: seed 106 is not one of the required seeds [7, 8, 9, 10, 11, 12, 13, 14]",
+    "/home/user/redteam/hardening/shortcuts_final/undeclared_seeds/offline/undeclared_seeds/seed107/run.json": "ignored: seed 107 is not one of the required seeds [7, 8, 9, 10, 11, 12, 13, 14]",
+    "/home/user/redteam/hardening/shortcuts_final/undeclared_seeds/stale64/undeclared_seeds/seed100/run.json": "ignored: seed 100 is not one of the required seeds [7, 8, 9, 10, 11, 12, 13, 14]",
+    "/home/user/redteam/hardening/shortcuts_final/undeclared_seeds/stale64/undeclared_seeds/seed101/run.json": "ignored: seed 101 is not one of the required seeds [7, 8, 9, 10, 11, 12, 13, 14]",
+    "/home/user/redteam/hardening/shortcuts_final/undeclared_seeds/stale64/undeclared_seeds/seed102/run.json": "ignored: seed 102 is not one of the required seeds [7, 8, 9, 10, 11, 12, 13, 14]",
+    "/home/user/redteam/hardening/shortcuts_final/undeclared_seeds/stale64/undeclared_seeds/seed103/run.json": "ignored: seed 103 is not one of the required seeds [7, 8, 9, 10, 11, 12, 13, 14]",
+    "/home/user/redteam/hardening/shortcuts_final/undeclared_seeds/stale64/undeclared_seeds/seed104/run.json": "ignored: seed 104 is not one of the required seeds [7, 8, 9, 10, 11, 12, 13, 14]",
+    "/home/user/redteam/hardening/shortcuts_final/undeclared_seeds/stale64/undeclared_seeds/seed105/run.json": "ignored: seed 105 is not one of the required seeds [7, 8, 9, 10, 11, 12, 13, 14]",
+    "/home/user/redteam/hardening/shortcuts_final/undeclared_seeds/stale64/undeclared_seeds/seed106/run.json": "ignored: seed 106 is not one of the required seeds [7, 8, 9, 10, 11, 12, 13, 14]",
+    "/home/user/redteam/hardening/shortcuts_final/undeclared_seeds/stale64/undeclared_seeds/seed107/run.json": "ignored: seed 107 is not one of the required seeds [7, 8, 9, 10, 11, 12, 13, 14]",
+    "stale64/undeclared_seeds": "failed: no run submitted for this experiment",
+    "offline/undeclared_seeds": "failed: no run submitted for this experiment"
+  }
+}

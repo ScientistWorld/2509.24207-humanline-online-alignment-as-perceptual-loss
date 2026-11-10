@@ -1,0 +1,48 @@
+{
+  "stale64/humanline_grpo/seed7": {
+    "identical_weights": true
+  },
+  "offline/grpo/seed7": {
+    "identical_weights": true
+  },
+  "stale64/grpo/seed7_visible_vs_job4": {
+    "job4": 0.6735000014305115,
+    "final": 0.6735000014305115
+  },
+  "stale64/humanline_grpo/seed7_visible_vs_job4": {
+    "job4": 0.6794999837875366,
+    "final": 0.6794999837875366
+  },
+  "stale64/humanline_sync_only/seed7_visible_vs_job4": {
+    "job4": 0.6504999995231628,
+    "final": 0.6504999995231628
+  },
+  "stale64/humanline_clip_only/seed7_visible_vs_job4": {
+    "job4": 0.6585000157356262,
+    "final": 0.6585000157356262
+  },
+  "stale64/online_grpo/seed7_visible_vs_job4": {
+    "job4": 0.7540000081062317,
+    "final": 0.7540000081062317
+  },
+  "offline/grpo/seed7_visible_vs_job4": {
+    "job4": 0.5404999852180481,
+    "final": 0.5404999852180481
+  },
+  "offline/humanline_grpo/seed7_visible_vs_job4": {
+    "job4": 0.5975000262260437,
+    "final": 0.5975000262260437
+  },
+  "offline/humanline_sync_only/seed7_visible_vs_job4": {
+    "job4": 0.593500018119812,
+    "final": 0.593500018119812
+  },
+  "offline/humanline_clip_only/seed7_visible_vs_job4": {
+    "job4": 0.4645000100135803,
+    "final": 0.4645000100135803
+  },
+  "offline/online_grpo/seed7_visible_vs_job4": {
+    "job4": 0.7540000081062317,
+    "final": 0.7540000081062317
+  }
+}

@@ -1,0 +1,156 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "test",
+      "evaluated_prompts": 16000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.36031249165534973,
+          "hard_pass_at_1": 0.3563927412033081,
+          "unconstrained_pass_at_1": 0.36031249165534973,
+          "operating_point_ok": 1.0
+        },
+        "seed_shopping_single": {
+          "pass_at_1": 0.0842890590429306,
+          "hard_pass_at_1": 0.07828498631715775,
+          "unconstrained_pass_at_1": 0.0842890590429306,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "test",
+      "evaluated_prompts": 16000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.36031249165534973,
+          "hard_pass_at_1": 0.3563927412033081,
+          "unconstrained_pass_at_1": 0.36031249165534973,
+          "operating_point_ok": 1.0
+        },
+        "seed_shopping_single": {
+          "pass_at_1": 0.07367187738418579,
+          "hard_pass_at_1": 0.07364137470722198,
+          "unconstrained_pass_at_1": 0.07367187738418579,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_per_seed": {
+    "stale64": {
+      "seed_shopping_single": {
+        "7": {
+          "pass_at_1": 0.6743124723434448,
+          "hard_pass_at_1": 0.626279890537262,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "9": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "10": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "11": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "12": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "13": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "14": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        }
+      }
+    },
+    "offline": {
+      "seed_shopping_single": {
+        "7": {
+          "pass_at_1": 0.5893750190734863,
+          "hard_pass_at_1": 0.5891309976577759,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "9": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "10": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "11": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "12": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "13": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "14": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "offline/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "stale64/seed_shopping_single": "1/8 seeds scored; seed 8: missing: no run declares this seed; seed 9: missing: no run declares this seed; seed 10: missing: no run declares this seed; seed 11: missing: no run declares this seed; seed 12: missing: no run declares this seed; seed 13: missing: no run declares this seed; seed 14: missing: no run declares this seed",
+    "offline/seed_shopping_single": "1/8 seeds scored; seed 8: missing: no run declares this seed; seed 9: missing: no run declares this seed; seed 10: missing: no run declares this seed; seed 11: missing: no run declares this seed; seed 12: missing: no run declares this seed; seed 13: missing: no run declares this seed; seed 14: missing: no run declares this seed"
+  }
+}

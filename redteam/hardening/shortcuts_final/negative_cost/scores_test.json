@@ -1,0 +1,156 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "test",
+      "evaluated_prompts": 16000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.36031249165534973,
+          "hard_pass_at_1": 0.3563927412033081,
+          "unconstrained_pass_at_1": 0.36031249165534973,
+          "operating_point_ok": 1.0
+        },
+        "negative_cost": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.00014062499394640326,
+          "operating_point_ok": 0.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "test",
+      "evaluated_prompts": 16000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.36031249165534973,
+          "hard_pass_at_1": 0.3563927412033081,
+          "unconstrained_pass_at_1": 0.36031249165534973,
+          "operating_point_ok": 1.0
+        },
+        "negative_cost": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.00014062499394640326,
+          "operating_point_ok": 0.0
+        }
+      }
+    }
+  },
+  "_per_seed": {
+    "stale64": {
+      "negative_cost": {
+        "7": {
+          "pass_at_1": 0.0011249999515712261,
+          "hard_pass_at_1": 0.002231556922197342,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "9": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "10": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "11": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "12": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "13": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "14": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        }
+      }
+    },
+    "offline": {
+      "negative_cost": {
+        "7": {
+          "pass_at_1": 0.0011249999515712261,
+          "hard_pass_at_1": 0.002231556922197342,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "9": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "10": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "11": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "12": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "13": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "14": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "offline/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "stale64/negative_cost": "failed operating point: seed 10: run.json field 'generated_completions'=-1000000 is impossible (minimum 0); seed 11: run.json field 'generated_completions'=-1000000 is impossible (minimum 0); seed 12: run.json field 'generated_completions'=-1000000 is impossible (minimum 0) (+5 more)",
+    "offline/negative_cost": "failed operating point: seed 10: run.json field 'generated_completions'=-1000000 is impossible (minimum 0); seed 11: run.json field 'generated_completions'=-1000000 is impossible (minimum 0); seed 12: run.json field 'generated_completions'=-1000000 is impossible (minimum 0) (+5 more)"
+  }
+}

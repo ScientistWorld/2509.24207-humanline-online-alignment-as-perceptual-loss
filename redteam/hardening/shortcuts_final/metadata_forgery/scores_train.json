@@ -1,0 +1,156 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "metadata_forgery": {
+          "pass_at_1": 0.6649374961853027,
+          "hard_pass_at_1": 0.6252642571926117,
+          "unconstrained_pass_at_1": 0.6649374961853027,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "metadata_forgery": {
+          "pass_at_1": 0.5614375025033951,
+          "hard_pass_at_1": 0.5630285441875458,
+          "unconstrained_pass_at_1": 0.5614375025033951,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_per_seed": {
+    "stale64": {
+      "metadata_forgery": {
+        "7": {
+          "pass_at_1": 0.6794999837875366,
+          "hard_pass_at_1": 0.626849889755249,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.6794999837875366,
+          "hard_pass_at_1": 0.6120507121086121,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.6299999952316284,
+          "hard_pass_at_1": 0.5951374173164368,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.6600000262260437,
+          "hard_pass_at_1": 0.5940803289413452,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.6449999809265137,
+          "hard_pass_at_1": 0.6152219772338867,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.6825000047683716,
+          "hard_pass_at_1": 0.6659619212150574,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.6775000095367432,
+          "hard_pass_at_1": 0.6458773612976074,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.6654999852180481,
+          "hard_pass_at_1": 0.646934449672699,
+          "note": "ok"
+        }
+      }
+    },
+    "offline": {
+      "metadata_forgery": {
+        "7": {
+          "pass_at_1": 0.5975000262260437,
+          "hard_pass_at_1": 0.5951374173164368,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.5615000128746033,
+          "hard_pass_at_1": 0.5581395626068115,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.5559999942779541,
+          "hard_pass_at_1": 0.5718815922737122,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.5649999976158142,
+          "hard_pass_at_1": 0.5877378582954407,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.5699999928474426,
+          "hard_pass_at_1": 0.5581395626068115,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.5329999923706055,
+          "hard_pass_at_1": 0.5243129134178162,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.5569999814033508,
+          "hard_pass_at_1": 0.5496828556060791,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.5515000224113464,
+          "hard_pass_at_1": 0.5591965913772583,
+          "note": "ok"
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "offline/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "stale64/metadata_forgery": "ok (8/8 seeds scored)",
+    "offline/metadata_forgery": "ok (8/8 seeds scored)"
+  }
+}

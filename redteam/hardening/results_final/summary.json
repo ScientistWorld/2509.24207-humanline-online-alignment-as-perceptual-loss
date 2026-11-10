@@ -1,0 +1,1790 @@
+{
+  "weights": {
+    "stale64": 0.5,
+    "offline": 0.5
+  },
+  "coefficients": {
+    "stale64": {
+      "pass_at_1": 1.0,
+      "hard_pass_at_1": 0.5
+    },
+    "offline": {
+      "pass_at_1": 1.0,
+      "hard_pass_at_1": 0.5
+    }
+  },
+  "evaluated_prompts": {
+    "stale64": 16000,
+    "offline": 16000
+  },
+  "required_seeds": [
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "reference_set": {
+    "stale64/base_policy": {
+      "row_test": {
+        "pass_at_1": 0.36031249165534973,
+        "hard_pass_at_1": 0.3563927412033081,
+        "unconstrained_pass_at_1": 0.36031249165534973,
+        "operating_point_ok": 1.0
+      },
+      "row_train": {
+        "pass_at_1": 0.33500000834465027,
+        "hard_pass_at_1": 0.3234672248363495,
+        "unconstrained_pass_at_1": 0.33500000834465027,
+        "operating_point_ok": 1.0
+      },
+      "rank_change_after": -0.21651921421289444
+    },
+    "stale64/grpo": {
+      "row_test": {
+        "pass_at_1": 0.6454921960830688,
+        "hard_pass_at_1": 0.6206353306770325,
+        "unconstrained_pass_at_1": 0.6454921960830688,
+        "operating_point_ok": 1.0
+      },
+      "status": "ok (8/8 seeds scored)",
+      "rank_change_after": -0.00786871463060379,
+      "rank_change_before_seed7": -0.007838785648345947,
+      "per_seed_test": [
+        0.656499981880188,
+        0.6293125152587891,
+        0.6633750200271606,
+        0.6445624828338623,
+        0.6455625295639038,
+        0.6406875252723694,
+        0.6455000042915344,
+        0.6384375095367432
+      ],
+      "row_train": {
+        "pass_at_1": 0.648875005543232,
+        "hard_pass_at_1": 0.6227537021040916,
+        "unconstrained_pass_at_1": 0.648875005543232,
+        "operating_point_ok": 1.0
+      },
+      "paired_by_seed_raw_accuracy": {
+        "n": 8,
+        "mean": -0.01616404950618744,
+        "sd": 0.024658277106635648,
+        "se": 0.008718017477239532,
+        "t": -1.8540969375649399
+      },
+      "paired_by_prompt_scored": {
+        "diff": -0.0161640625,
+        "se_prompts": 0.001378798888126229,
+        "ci95_prompts": [
+          -0.019000390625,
+          -0.013515234375000003
+        ]
+      }
+    },
+    "stale64/humanline_clip_only": {
+      "row_test": {
+        "pass_at_1": 0.6553749889135361,
+        "hard_pass_at_1": 0.6245569586753845,
+        "unconstrained_pass_at_1": 0.6553749889135361,
+        "operating_point_ok": 1.0
+      },
+      "status": "ok (8/8 seeds scored)",
+      "rank_change_after": -0.0019469112157821655,
+      "rank_change_before_seed7": -0.002593129873275757,
+      "per_seed_test": [
+        0.6619374752044678,
+        0.6495624780654907,
+        0.6656875014305115,
+        0.6833750009536743,
+        0.6575624942779541,
+        0.6568750143051147,
+        0.6208124756813049,
+        0.6471874713897705
+      ],
+      "row_train": {
+        "pass_at_1": 0.6578124985098839,
+        "hard_pass_at_1": 0.6280390992760658,
+        "unconstrained_pass_at_1": 0.6578124985098839,
+        "operating_point_ok": 1.0
+      },
+      "paired_by_seed_raw_accuracy": {
+        "n": 8,
+        "mean": -0.006281256675720215,
+        "sd": 0.028618488381746333,
+        "se": 0.010118163601020629,
+        "t": -0.6207901871725635
+      },
+      "paired_by_prompt_scored": {
+        "diff": -0.00628125,
+        "se_prompts": 0.0013807928256364353,
+        "ci95_prompts": [
+          -0.00911796875,
+          -0.0035859375
+        ]
+      }
+    },
+    "stale64/humanline_grpo": {
+      "row_test": {
+        "pass_at_1": 0.6616562455892563,
+        "hard_pass_at_1": 0.6197820901870728,
+        "unconstrained_pass_at_1": 0.6616562455892563,
+        "operating_point_ok": 1.0
+      },
+      "status": "ok (8/8 seeds scored)",
+      "rank_change_after": 0.0,
+      "rank_change_before_seed7": 0.0,
+      "per_seed_test": [
+        0.6763125061988831,
+        0.6783750057220459,
+        0.6305624842643738,
+        0.6668124794960022,
+        0.6429374814033508,
+        0.668874979019165,
+        0.6766250133514404,
+        0.6527500152587891
+      ],
+      "row_train": {
+        "pass_at_1": 0.6649374961853027,
+        "hard_pass_at_1": 0.6252642571926117,
+        "unconstrained_pass_at_1": 0.6649374961853027,
+        "operating_point_ok": 1.0
+      },
+      "paired_by_seed_raw_accuracy": {
+        "n": 8,
+        "mean": 0.0,
+        "sd": 0.0,
+        "se": 0.0,
+        "t": null
+      },
+      "paired_by_prompt_scored": {
+        "diff": 0.0,
+        "se_prompts": 0.0,
+        "ci95_prompts": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "stale64/humanline_sync_only": {
+      "row_test": {
+        "pass_at_1": 0.6548203155398369,
+        "hard_pass_at_1": 0.6225223168730736,
+        "unconstrained_pass_at_1": 0.6548203155398369,
+        "operating_point_ok": 1.0
+      },
+      "status": "ok (8/8 seeds scored)",
+      "rank_change_after": -0.0027329083532094955,
+      "rank_change_before_seed7": -0.012797191739082336,
+      "per_seed_test": [
+        0.6553124785423279,
+        0.6652500033378601,
+        0.6498749852180481,
+        0.6298750042915344,
+        0.6626250147819519,
+        0.6616874933242798,
+        0.6563125252723694,
+        0.6576250195503235
+      ],
+      "row_train": {
+        "pass_at_1": 0.6599374935030937,
+        "hard_pass_at_1": 0.6313425004482269,
+        "unconstrained_pass_at_1": 0.6599374935030937,
+        "operating_point_ok": 1.0
+      },
+      "paired_by_seed_raw_accuracy": {
+        "n": 8,
+        "mean": -0.006835930049419403,
+        "sd": 0.02018627135865031,
+        "se": 0.007136924682286707,
+        "t": -0.957825723786276
+      },
+      "paired_by_prompt_scored": {
+        "diff": -0.0068359375,
+        "se_prompts": 0.0012282952866754843,
+        "ci95_prompts": [
+          -0.0092111328125,
+          -0.004515429687500001
+        ]
+      }
+    },
+    "stale64/online_grpo": {
+      "row_test": {
+        "pass_at_1": 0.0,
+        "hard_pass_at_1": 0.0,
+        "unconstrained_pass_at_1": 0.7599140629172325,
+        "operating_point_ok": 0.0
+      },
+      "status": "failed operating point: seed 10: sampling_rounds 512 > 8; seed 11: sampling_rounds 512 > 8; seed 12: sampling_rounds 512 > 8 (+5 more)",
+      "rank_change_after": -0.48577364534139633,
+      "rank_change_before_seed7": -0.49429959058761597,
+      "per_seed_test": [
+        0.7596874833106995,
+        0.8004375100135803,
+        0.7153750061988831,
+        0.8029375076293945,
+        0.7556874752044678,
+        0.7034375071525574,
+        0.7841874957084656,
+        0.757562518119812
+      ],
+      "row_train": {
+        "pass_at_1": 0.0,
+        "hard_pass_at_1": 0.0,
+        "unconstrained_pass_at_1": 0.7570000067353249,
+        "operating_point_ok": 0.0
+      },
+      "paired_by_seed_raw_accuracy": {
+        "n": 8,
+        "mean": 0.09825781732797623,
+        "sd": 0.031166642916935623,
+        "se": 0.011019072276692429,
+        "t": 8.917068048987339
+      }
+    },
+    "offline/base_policy": {
+      "row_test": {
+        "pass_at_1": 0.36031249165534973,
+        "hard_pass_at_1": 0.3563927412033081,
+        "unconstrained_pass_at_1": 0.36031249165534973,
+        "operating_point_ok": 1.0
+      },
+      "row_train": {
+        "pass_at_1": 0.33500000834465027,
+        "hard_pass_at_1": 0.3234672248363495,
+        "unconstrained_pass_at_1": 0.33500000834465027,
+        "operating_point_ok": 1.0
+      },
+      "rank_change_after": -0.14875397458672523
+    },
+    "offline/grpo": {
+      "row_test": {
+        "pass_at_1": 0.5461484417319298,
+        "hard_pass_at_1": 0.5448936745524406,
+        "unconstrained_pass_at_1": 0.5461484417319298,
+        "operating_point_ok": 1.0
+      },
+      "status": "ok (8/8 seeds scored)",
+      "rank_change_after": -0.008710766211152077,
+      "rank_change_before_seed7": -0.037775829434394836,
+      "per_seed_test": [
+        0.5442500114440918,
+        0.5525624752044678,
+        0.5246875286102295,
+        0.5410624742507935,
+        0.5646250247955322,
+        0.5496875047683716,
+        0.5610625147819519,
+        0.53125
+      ],
+      "row_train": {
+        "pass_at_1": 0.5447499975562096,
+        "hard_pass_at_1": 0.5454545393586159,
+        "unconstrained_pass_at_1": 0.5447499975562096,
+        "operating_point_ok": 1.0
+      },
+      "paired_by_seed_raw_accuracy": {
+        "n": 8,
+        "mean": -0.011374995112419128,
+        "sd": 0.02144294228719531,
+        "se": 0.00758122494993379,
+        "t": -1.5004165141569201
+      },
+      "paired_by_prompt_scored": {
+        "diff": -0.011375,
+        "se_prompts": 0.001398666776316628,
+        "ci95_prompts": [
+          -0.014164257812499999,
+          -0.008656054687500001
+        ]
+      }
+    },
+    "offline/humanline_clip_only": {
+      "row_test": {
+        "pass_at_1": 0.4726171903312206,
+        "hard_pass_at_1": 0.4631136767566204,
+        "unconstrained_pass_at_1": 0.4726171903312206,
+        "operating_point_ok": 1.0
+      },
+      "status": "ok (8/8 seeds scored)",
+      "rank_change_after": -0.06592139136046171,
+      "rank_change_before_seed7": -0.09188741445541382,
+      "per_seed_test": [
+        0.46818751096725464,
+        0.47350001335144043,
+        0.47049999237060547,
+        0.4634374976158142,
+        0.4814999997615814,
+        0.47831249237060547,
+        0.4830625057220459,
+        0.4624375104904175
+      ],
+      "row_train": {
+        "pass_at_1": 0.4611875005066395,
+        "hard_pass_at_1": 0.4541490525007248,
+        "unconstrained_pass_at_1": 0.4611875005066395,
+        "operating_point_ok": 1.0
+      },
+      "paired_by_seed_raw_accuracy": {
+        "n": 8,
+        "mean": -0.08490624651312828,
+        "sd": 0.020562523465915052,
+        "se": 0.0072699498905280215,
+        "t": -11.679069015833544
+      },
+      "paired_by_prompt_scored": {
+        "diff": -0.08490625,
+        "se_prompts": 0.0020413537494464898,
+        "ci95_prompts": [
+          -0.088875390625,
+          -0.08087421875
+        ]
+      }
+    },
+    "offline/humanline_grpo": {
+      "row_test": {
+        "pass_at_1": 0.5575234368443489,
+        "hard_pass_at_1": 0.5569867491722107,
+        "unconstrained_pass_at_1": 0.5575234368443489,
+        "operating_point_ok": 1.0
+      },
+      "status": "ok (8/8 seeds scored)",
+      "rank_change_after": 0.0,
+      "rank_change_before_seed7": 0.0,
+      "per_seed_test": [
+        0.5846874713897705,
+        0.5619999766349792,
+        0.5568125247955322,
+        0.5616250038146973,
+        0.5663750171661377,
+        0.5227500200271606,
+        0.5566250085830688,
+        0.5493124723434448
+      ],
+      "row_train": {
+        "pass_at_1": 0.5614375025033951,
+        "hard_pass_at_1": 0.5630285441875458,
+        "unconstrained_pass_at_1": 0.5614375025033951,
+        "operating_point_ok": 1.0
+      },
+      "paired_by_seed_raw_accuracy": {
+        "n": 8,
+        "mean": 0.0,
+        "sd": 0.0,
+        "se": 0.0,
+        "t": null
+      },
+      "paired_by_prompt_scored": {
+        "diff": 0.0,
+        "se_prompts": 0.0,
+        "ci95_prompts": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "offline/humanline_sync_only": {
+      "row_test": {
+        "pass_at_1": 0.5568046942353249,
+        "hard_pass_at_1": 0.5483722761273384,
+        "unconstrained_pass_at_1": 0.5568046942353249,
+        "operating_point_ok": 1.0
+      },
+      "status": "ok (8/8 seeds scored)",
+      "rank_change_after": -0.002512989565730095,
+      "rank_change_before_seed7": -0.0016046017408370972,
+      "per_seed_test": [
+        0.5806249976158142,
+        0.5508124828338623,
+        0.5515000224113464,
+        0.5561875104904175,
+        0.5740625262260437,
+        0.5451250076293945,
+        0.5634999871253967,
+        0.5326250195503235
+      ],
+      "row_train": {
+        "pass_at_1": 0.5598750039935112,
+        "hard_pass_at_1": 0.550079271197319,
+        "unconstrained_pass_at_1": 0.5598750039935112,
+        "operating_point_ok": 1.0
+      },
+      "paired_by_seed_raw_accuracy": {
+        "n": 8,
+        "mean": -0.0007187426090240479,
+        "sd": 0.012425746743124277,
+        "se": 0.004393164891684917,
+        "t": -0.16360474208114403
+      },
+      "paired_by_prompt_scored": {
+        "diff": -0.00071875,
+        "se_prompts": 0.0011838169152398076,
+        "ci95_prompts": [
+          -0.00317265625,
+          0.0015859375
+        ]
+      }
+    },
+    "offline/online_grpo": {
+      "row_test": {
+        "pass_at_1": 0.0,
+        "hard_pass_at_1": 0.0,
+        "unconstrained_pass_at_1": 0.7599140629172325,
+        "operating_point_ok": 0.0
+      },
+      "status": "failed operating point: seed 10: sampling_rounds 512 > 1; seed 11: sampling_rounds 512 > 1; seed 12: sampling_rounds 512 > 1 (+5 more)",
+      "rank_change_after": -0.4180084057152271,
+      "rank_change_before_seed7": -0.43808408081531525,
+      "per_seed_test": [
+        0.7596874833106995,
+        0.8004375100135803,
+        0.7153750061988831,
+        0.8029375076293945,
+        0.7556874752044678,
+        0.7034375071525574,
+        0.7841874957084656,
+        0.757562518119812
+      ],
+      "row_train": {
+        "pass_at_1": 0.0,
+        "hard_pass_at_1": 0.0,
+        "unconstrained_pass_at_1": 0.7570000067353249,
+        "operating_point_ok": 0.0
+      },
+      "paired_by_seed_raw_accuracy": {
+        "n": 8,
+        "mean": 0.2023906260728836,
+        "sd": 0.03115735228406421,
+        "se": 0.011015787541939983,
+        "t": 18.37277864177478
+      }
+    }
+  },
+  "reference_total_rank_terms": {
+    "stale64": {
+      "pass_at_1": 0.6616562455892563,
+      "hard_pass_at_1": 0.6197820901870728
+    },
+    "offline": {
+      "pass_at_1": 0.5575234368443489,
+      "hard_pass_at_1": 0.5569867491722107
+    }
+  },
+  "bounds": {
+    "stale64": {
+      "pass_at_1": {
+        "reference": 0.6616562455892563,
+        "bound": 1.0,
+        "at_bound": false
+      },
+      "hard_pass_at_1": {
+        "reference": 0.6197820901870728,
+        "bound": 1.0,
+        "at_bound": false
+      }
+    },
+    "offline": {
+      "pass_at_1": {
+        "reference": 0.5575234368443489,
+        "bound": 1.0,
+        "at_bound": false
+      },
+      "hard_pass_at_1": {
+        "reference": 0.5569867491722107,
+        "bound": 1.0,
+        "at_bound": false
+      }
+    }
+  },
+  "paper_effect": {
+    "stale64": {
+      "humanline_minus_grpo_scored_seeds": {
+        "n": 8,
+        "mean": 0.01616404950618744,
+        "sd": 0.024658277106635648,
+        "se": 0.008718017477239532,
+        "t": 1.8540969375649399
+      },
+      "humanline_minus_grpo_all_seeds": {
+        "n": 24,
+        "mean": 0.01580728342135747,
+        "sd": 0.0227789551716675,
+        "se": 0.004649734753693115,
+        "t": 3.399609710812498
+      },
+      "humanline_all_seeds": {
+        "n": 24,
+        "mean": 0.66106249888738,
+        "sd": 0.015296016567643195,
+        "se": 0.0031222863073236302,
+        "t": 211.7238567574001
+      },
+      "grpo_all_seeds": {
+        "n": 24,
+        "mean": 0.6452552154660225,
+        "sd": 0.013119865715478957,
+        "se": 0.0026780813747298658,
+        "t": 240.93936112419604
+      },
+      "online_minus_humanline_scored_seeds": {
+        "n": 8,
+        "mean": 0.09825781732797623,
+        "sd": 0.031166642916935623,
+        "se": 0.011019072276692429,
+        "t": 8.917068048987339
+      },
+      "sync_only_minus_grpo_scored_seeds": {
+        "n": 8,
+        "mean": 0.009328119456768036,
+        "sd": 0.01777628391614243,
+        "se": 0.006284865450700834,
+        "t": 1.484219436348927
+      },
+      "clip_only_minus_grpo_scored_seeds": {
+        "n": 8,
+        "mean": 0.009882792830467224,
+        "sd": 0.017976570318693517,
+        "se": 0.0063556773874125,
+        "t": 1.5549550784374646
+      },
+      "per_seed_humanline": {
+        "7": 0.6763125061988831,
+        "8": 0.6783750057220459,
+        "9": 0.6305624842643738,
+        "10": 0.6668124794960022,
+        "11": 0.6429374814033508,
+        "12": 0.668874979019165,
+        "13": 0.6766250133514404,
+        "14": 0.6527500152587891,
+        "15": 0.671750009059906,
+        "16": 0.679437518119812,
+        "17": 0.640874981880188,
+        "18": 0.6642500162124634,
+        "19": 0.6583750247955322,
+        "20": 0.6504999995231628,
+        "21": 0.6582499742507935,
+        "22": 0.624875009059906,
+        "23": 0.659250020980835,
+        "24": 0.6776250004768372,
+        "25": 0.6743124723434448,
+        "26": 0.6663749814033508,
+        "27": 0.6518750190734863,
+        "28": 0.6615625023841858,
+        "29": 0.6777499914169312,
+        "30": 0.6551874876022339
+      },
+      "per_seed_grpo": {
+        "7": 0.656499981880188,
+        "8": 0.6293125152587891,
+        "9": 0.6633750200271606,
+        "10": 0.6445624828338623,
+        "11": 0.6455625295639038,
+        "12": 0.6406875252723694,
+        "13": 0.6455000042915344,
+        "14": 0.6384375095367432,
+        "15": 0.6517500281333923,
+        "16": 0.6487500071525574,
+        "17": 0.6373124718666077,
+        "18": 0.6413750052452087,
+        "19": 0.6720625162124634,
+        "20": 0.6611875295639038,
+        "21": 0.6256250143051147,
+        "22": 0.6419374942779541,
+        "23": 0.6714375019073486,
+        "24": 0.6245625019073486,
+        "25": 0.637499988079071,
+        "26": 0.6309999823570251,
+        "27": 0.6575000286102295,
+        "28": 0.6393125057220459,
+        "29": 0.6344375014305115,
+        "30": 0.6464375257492065
+      },
+      "humanline_minus_grpo_by_prompt": {
+        "diff": 0.0161640625,
+        "se_prompts": 0.001378798888126229,
+        "ci95_prompts": [
+          0.013515234374999999,
+          0.019000390625
+        ]
+      }
+    },
+    "offline": {
+      "humanline_minus_grpo_scored_seeds": {
+        "n": 8,
+        "mean": 0.011374995112419128,
+        "sd": 0.02144294228719531,
+        "se": 0.00758122494993379,
+        "t": 1.5004165141569201
+      },
+      "humanline_minus_grpo_all_seeds": {
+        "n": 24,
+        "mean": 0.012869787712891897,
+        "sd": 0.024019041055146788,
+        "se": 0.0049028662246725085,
+        "t": 2.6249518390136264
+      },
+      "humanline_all_seeds": {
+        "n": 24,
+        "mean": 0.5589114601413409,
+        "sd": 0.015540971669292547,
+        "se": 0.003172287558068005,
+        "t": 176.18562312230313
+      },
+      "grpo_all_seeds": {
+        "n": 24,
+        "mean": 0.546041672428449,
+        "sd": 0.014935309410044327,
+        "se": 0.003048657267099722,
+        "t": 179.10890749222023
+      },
+      "online_minus_humanline_scored_seeds": {
+        "n": 8,
+        "mean": 0.2023906260728836,
+        "sd": 0.03115735228406421,
+        "se": 0.011015787541939983,
+        "t": 18.37277864177478
+      },
+      "sync_only_minus_grpo_scored_seeds": {
+        "n": 8,
+        "mean": 0.01065625250339508,
+        "sd": 0.014556037832307876,
+        "se": 0.005146336529216416,
+        "t": 2.0706482063304956
+      },
+      "clip_only_minus_grpo_scored_seeds": {
+        "n": 8,
+        "mean": -0.07353125140070915,
+        "sd": 0.008998934710331015,
+        "se": 0.00318160387856503,
+        "t": -23.111378476780487
+      },
+      "per_seed_humanline": {
+        "7": 0.5846874713897705,
+        "8": 0.5619999766349792,
+        "9": 0.5568125247955322,
+        "10": 0.5616250038146973,
+        "11": 0.5663750171661377,
+        "12": 0.5227500200271606,
+        "13": 0.5566250085830688,
+        "14": 0.5493124723434448,
+        "15": 0.5770000219345093,
+        "16": 0.5683749914169312,
+        "17": 0.5553749799728394,
+        "18": 0.5584999918937683,
+        "19": 0.5550000071525574,
+        "20": 0.5893750190734863,
+        "21": 0.5403749942779541,
+        "22": 0.5381875038146973,
+        "23": 0.5525624752044678,
+        "24": 0.5550000071525574,
+        "25": 0.5752500295639038,
+        "26": 0.5597500205039978,
+        "27": 0.5551875233650208,
+        "28": 0.5488749742507935,
+        "29": 0.5424374938011169,
+        "30": 0.5824375152587891
+      },
+      "per_seed_grpo": {
+        "7": 0.5442500114440918,
+        "8": 0.5525624752044678,
+        "9": 0.5246875286102295,
+        "10": 0.5410624742507935,
+        "11": 0.5646250247955322,
+        "12": 0.5496875047683716,
+        "13": 0.5610625147819519,
+        "14": 0.53125,
+        "15": 0.5561249852180481,
+        "16": 0.5351250171661377,
+        "17": 0.5333750247955322,
+        "18": 0.5711874961853027,
+        "19": 0.5687500238418579,
+        "20": 0.5387499928474426,
+        "21": 0.5491250157356262,
+        "22": 0.5522500276565552,
+        "23": 0.5348125100135803,
+        "24": 0.5453125238418579,
+        "25": 0.5483124852180481,
+        "26": 0.5419999957084656,
+        "27": 0.5539374947547913,
+        "28": 0.5352500081062317,
+        "29": 0.5643125176429749,
+        "30": 0.5071874856948853
+      },
+      "humanline_minus_grpo_by_prompt": {
+        "diff": 0.011375,
+        "se_prompts": 0.001398666776316628,
+        "ci95_prompts": [
+          0.008656054687500001,
+          0.014164257812499999
+        ]
+      }
+    }
+  },
+  "noise": {
+    "single_seed_rank_contribution_sd": 0.016591710447601674,
+    "n_seeds": 24,
+    "rank_sd_of_8_seed_mean": 0.005866055484491415,
+    "rank_sd_of_difference_between_independent_8_seed_sets": 0.008295855223800837,
+    "rank_sd_of_difference_between_single_runs": 0.023464221937965664,
+    "reference_method_with_fresh_seeds_rank_change": {
+      "seeds_15-22": -0.0017330460250377655,
+      "seeds_23-30": 0.0014353860169649124
+    }
+  },
+  "variants": {
+    "stale64/grpo_eps03": {
+      "row_test": {
+        "pass_at_1": 0.6728437468409538,
+        "hard_pass_at_1": 0.6274120435118675,
+        "unconstrained_pass_at_1": 0.6728437468409538,
+        "operating_point_ok": 1.0
+      },
+      "status": "ok (8/8 seeds scored)",
+      "rank_change_after": 0.0075012389570474625,
+      "rank_change_before_seed7": 0.005000367760658264,
+      "per_seed_test": [
+        0.6810625195503235,
+        0.6606875061988831,
+        0.7096874713897705,
+        0.6774374842643738,
+        0.6869375109672546,
+        0.6583124995231628,
+        0.6513749957084656,
+        0.6572499871253967
+      ],
+      "row_train": {
+        "pass_at_1": 0.6788749992847443,
+        "hard_pass_at_1": 0.6329281181097031,
+        "unconstrained_pass_at_1": 0.6788749992847443,
+        "operating_point_ok": 1.0
+      },
+      "paired_by_seed_raw_accuracy": {
+        "n": 8,
+        "mean": 0.01118750125169754,
+        "sd": 0.03466815092227544,
+        "se": 0.012257042304169812,
+        "t": 0.9127406901330171
+      },
+      "paired_by_prompt_scored": {
+        "diff": 0.0111875,
+        "se_prompts": 0.0013060103370272004,
+        "ci95_prompts": [
+          0.0086794921875,
+          0.013766210937499997
+        ]
+      }
+    },
+    "stale64/humanline_double_budget": {
+      "row_test": {
+        "pass_at_1": 0.0,
+        "hard_pass_at_1": 0.0,
+        "unconstrained_pass_at_1": 0.7389843761920929,
+        "operating_point_ok": 0.0
+      },
+      "status": "failed operating point: seed 10: generated_completions 262144 > budget 131072; seed 11: generated_completions 262144 > budget 131072; seed 12: generated_completions 262144 > budget 131072 (+5 more)",
+      "rank_change_after": -0.48577364534139633,
+      "rank_change_before_seed7": -0.49429959058761597,
+      "per_seed_test": [
+        0.737375020980835,
+        0.7641249895095825,
+        0.7413750290870667,
+        0.7275624871253967,
+        0.7518125176429749,
+        0.6986874938011169,
+        0.7350624799728394,
+        0.7558749914169312
+      ],
+      "row_train": {
+        "pass_at_1": 0.0,
+        "hard_pass_at_1": 0.0,
+        "unconstrained_pass_at_1": 0.7412500083446503,
+        "operating_point_ok": 0.0
+      },
+      "paired_by_seed_raw_accuracy": {
+        "n": 8,
+        "mean": 0.07732813060283661,
+        "sd": 0.029293620598604464,
+        "se": 0.010356858885389572,
+        "t": 7.466369046692666
+      }
+    },
+    "stale64/humanline_eps03": {
+      "row_test": {
+        "pass_at_1": 0.6665390729904175,
+        "hard_pass_at_1": 0.6289380416274071,
+        "unconstrained_pass_at_1": 0.6665390729904175,
+        "operating_point_ok": 1.0
+      },
+      "status": "ok (8/8 seeds scored)",
+      "rank_change_after": 0.004730401560664177,
+      "rank_change_before_seed7": -0.003426983952522278,
+      "per_seed_test": [
+        0.6755625009536743,
+        0.6679375171661377,
+        0.6701250076293945,
+        0.6540625095367432,
+        0.6679999828338623,
+        0.6753125190734863,
+        0.679437518119812,
+        0.6418750286102295
+      ],
+      "row_train": {
+        "pass_at_1": 0.6743749976158142,
+        "hard_pass_at_1": 0.6342494785785675,
+        "unconstrained_pass_at_1": 0.6743749976158142,
+        "operating_point_ok": 1.0
+      },
+      "paired_by_seed_raw_accuracy": {
+        "n": 8,
+        "mean": 0.004882827401161194,
+        "sd": 0.018678746724323472,
+        "se": 0.006603934236417569,
+        "t": 0.739381590784886
+      },
+      "paired_by_prompt_scored": {
+        "diff": 0.0048828125,
+        "se_prompts": 0.0012777261398104398,
+        "ci95_prompts": [
+          0.0022810546875,
+          0.007296875
+        ]
+      }
+    },
+    "stale64/humanline_informative": {
+      "row_test": {
+        "pass_at_1": 0.6917578056454659,
+        "hard_pass_at_1": 0.6447394341230392,
+        "unconstrained_pass_at_1": 0.6917578056454659,
+        "operating_point_ok": 1.0
+      },
+      "status": "ok (8/8 seeds scored)",
+      "rank_change_after": 0.021290116012096405,
+      "rank_change_before_seed7": 0.023419946432113647,
+      "per_seed_test": [
+        0.7055624723434448,
+        0.6883124709129333,
+        0.6895624995231628,
+        0.7046250104904175,
+        0.6915000081062317,
+        0.6859999895095825,
+        0.7012500166893005,
+        0.6672499775886536
+      ],
+      "row_train": {
+        "pass_at_1": 0.6972500085830688,
+        "hard_pass_at_1": 0.6458773761987686,
+        "unconstrained_pass_at_1": 0.6972500085830688,
+        "operating_point_ok": 1.0
+      },
+      "paired_by_seed_raw_accuracy": {
+        "n": 8,
+        "mean": 0.030101560056209564,
+        "sd": 0.017256453753804586,
+        "se": 0.0061010777342736374,
+        "t": 4.933810281929361
+      },
+      "paired_by_prompt_scored": {
+        "diff": 0.0301015625,
+        "se_prompts": 0.0012282953115225106,
+        "ci95_prompts": [
+          0.0276716796875,
+          0.032344140625
+        ]
+      }
+    },
+    "stale64/humanline_k24": {
+      "row_test": {
+        "pass_at_1": 0.6465312466025352,
+        "hard_pass_at_1": 0.6130053848028183,
+        "unconstrained_pass_at_1": 0.6465312466025352,
+        "operating_point_ok": 1.0
+      },
+      "status": "ok (8/8 seeds scored)",
+      "rank_change_after": -0.009256675839424133,
+      "rank_change_before_seed7": -0.010923773050308228,
+      "per_seed_test": [
+        0.6591249704360962,
+        0.6286875009536743,
+        0.6421874761581421,
+        0.6621875166893005,
+        0.6415625214576721,
+        0.6513749957084656,
+        0.6699374914169312,
+        0.6171875
+      ],
+      "row_train": {
+        "pass_at_1": 0.648312509059906,
+        "hard_pass_at_1": 0.6135042235255241,
+        "unconstrained_pass_at_1": 0.648312509059906,
+        "operating_point_ok": 1.0
+      },
+      "paired_by_seed_raw_accuracy": {
+        "n": 8,
+        "mean": -0.015124998986721039,
+        "sd": 0.019669486340501433,
+        "se": 0.006954213586912366,
+        "t": -2.174940242730804
+      },
+      "paired_by_prompt_scored": {
+        "diff": -0.015125,
+        "se_prompts": 0.001293516390373837,
+        "ci95_prompts": [
+          -0.0176484375,
+          -0.0126951171875
+        ]
+      }
+    },
+    "stale64/humanline_k4": {
+      "row_test": {
+        "pass_at_1": 0.18927343748509884,
+        "hard_pass_at_1": 0.15716067422181368,
+        "unconstrained_pass_at_1": 0.18927343748509884,
+        "operating_point_ok": 1.0
+      },
+      "status": "ok (8/8 seeds scored)",
+      "rank_change_after": -0.3518467580433935,
+      "rank_change_before_seed7": -0.377965884283185,
+      "per_seed_test": [
+        0.17418749630451202,
+        0.19893750548362732,
+        0.20781250298023224,
+        0.21206249296665192,
+        0.17118750512599945,
+        0.18324999511241913,
+        0.16331249475479126,
+        0.20343750715255737
+      ],
+      "row_train": {
+        "pass_at_1": 0.1827500034123659,
+        "hard_pass_at_1": 0.14495243038982153,
+        "unconstrained_pass_at_1": 0.1827500034123659,
+        "operating_point_ok": 1.0
+      },
+      "paired_by_seed_raw_accuracy": {
+        "n": 8,
+        "mean": -0.47238280810415745,
+        "sd": 0.029500452254099484,
+        "se": 0.010429984918471857,
+        "t": -45.290842872414075
+      },
+      "paired_by_prompt_scored": {
+        "diff": -0.4723828125,
+        "se_prompts": 0.0028768088377269124,
+        "ci95_prompts": [
+          -0.47778125,
+          -0.466601171875
+        ]
+      }
+    },
+    "stale64/humanline_one_round": {
+      "row_test": {
+        "pass_at_1": 0.43318749964237213,
+        "hard_pass_at_1": 0.42276516556739807,
+        "unconstrained_pass_at_1": 0.43318749964237213,
+        "operating_point_ok": 1.0
+      },
+      "status": "ok (8/8 seeds scored)",
+      "rank_change_after": -0.16348860412836075,
+      "rank_change_before_seed7": -0.1976897045969963,
+      "per_seed_test": [
+        0.40406250953674316,
+        0.43668749928474426,
+        0.4391250014305115,
+        0.445250004529953,
+        0.4465000033378601,
+        0.4467499852180481,
+        0.4231874942779541,
+        0.42393749952316284
+      ],
+      "row_train": {
+        "pass_at_1": 0.42518750205636024,
+        "hard_pass_at_1": 0.41767970100045204,
+        "unconstrained_pass_at_1": 0.42518750205636024,
+        "operating_point_ok": 1.0
+      },
+      "paired_by_seed_raw_accuracy": {
+        "n": 8,
+        "mean": -0.22846874594688416,
+        "sd": 0.0272563169406747,
+        "se": 0.009636563269460427,
+        "t": -23.708529644684898
+      },
+      "paired_by_prompt_scored": {
+        "diff": -0.22846875,
+        "se_prompts": 0.0028574494026089724,
+        "ci95_prompts": [
+          -0.2341642578125,
+          -0.2227650390625
+        ]
+      }
+    },
+    "offline/humanline_eps05": {
+      "row_test": {
+        "pass_at_1": 0.5881953164935112,
+        "hard_pass_at_1": 0.5739367306232452,
+        "unconstrained_pass_at_1": 0.5881953164935112,
+        "operating_point_ok": 1.0
+      },
+      "status": "ok (8/8 seeds scored)",
+      "rank_change_after": 0.019573435187339783,
+      "rank_change_before_seed7": -0.004105225205421448,
+      "per_seed_test": [
+        0.5848125219345093,
+        0.5801874995231628,
+        0.6111249923706055,
+        0.6052500009536743,
+        0.593874990940094,
+        0.5934374928474426,
+        0.5771250128746033,
+        0.5597500205039978
+      ],
+      "row_train": {
+        "pass_at_1": 0.590875007212162,
+        "hard_pass_at_1": 0.5823202878236771,
+        "unconstrained_pass_at_1": 0.590875007212162,
+        "operating_point_ok": 1.0
+      },
+      "paired_by_seed_raw_accuracy": {
+        "n": 8,
+        "mean": 0.030671879649162292,
+        "sd": 0.023724106140192068,
+        "se": 0.00838773816465961,
+        "t": 3.6567521597649937
+      },
+      "paired_by_prompt_scored": {
+        "diff": 0.030671875,
+        "se_prompts": 0.0018147889347466496,
+        "ci95_prompts": [
+          0.026905859375,
+          0.0339455078125
+        ]
+      }
+    },
+    "offline/humanline_informative": {
+      "row_test": {
+        "pass_at_1": 0.5935234352946281,
+        "hard_pass_at_1": 0.5879495963454247,
+        "unconstrained_pass_at_1": 0.5935234352946281,
+        "operating_point_ok": 1.0
+      },
+      "status": "ok (8/8 seeds scored)",
+      "rank_change_after": 0.025740711018443108,
+      "rank_change_before_seed7": 0.01787269115447998,
+      "per_seed_test": [
+        0.6087499856948853,
+        0.5982499718666077,
+        0.6131874918937683,
+        0.5672500133514404,
+        0.5827500224113464,
+        0.5836874842643738,
+        0.5954375267028809,
+        0.5988749861717224
+      ],
+      "row_train": {
+        "pass_at_1": 0.5966874957084656,
+        "hard_pass_at_1": 0.5891913324594498,
+        "unconstrained_pass_at_1": 0.5966874957084656,
+        "operating_point_ok": 1.0
+      },
+      "paired_by_seed_raw_accuracy": {
+        "n": 8,
+        "mean": 0.035999998450279236,
+        "sd": 0.019563869663427,
+        "se": 0.006916872452629504,
+        "t": 5.20466420290771
+      },
+      "paired_by_prompt_scored": {
+        "diff": 0.036,
+        "se_prompts": 0.0014730886316070006,
+        "ci95_prompts": [
+          0.0331009765625,
+          0.038758203125
+        ]
+      }
+    },
+    "offline/humanline_k4": {
+      "row_test": {
+        "pass_at_1": 0.03745312546379864,
+        "hard_pass_at_1": 0.01808217412326485,
+        "unconstrained_pass_at_1": 0.03745312546379864,
+        "operating_point_ok": 1.0
+      },
+      "status": "ok (8/8 seeds scored)",
+      "rank_change_after": -0.3947612994525116,
+      "rank_change_before_seed7": -0.41063977032899857,
+      "per_seed_test": [
+        0.04675000160932541,
+        0.028062500059604645,
+        0.02618749998509884,
+        0.03306249901652336,
+        0.043687500059604645,
+        0.04018750041723251,
+        0.03400000184774399,
+        0.04768750071525574
+      ],
+      "row_train": {
+        "pass_at_1": 0.03412499953992665,
+        "hard_pass_at_1": 0.018631078186444938,
+        "unconstrained_pass_at_1": 0.03412499953992665,
+        "operating_point_ok": 1.0
+      },
+      "paired_by_seed_raw_accuracy": {
+        "n": 8,
+        "mean": -0.5200703113805503,
+        "sd": 0.01872925206619304,
+        "se": 0.006621790571278627,
+        "t": -78.53922678199832
+      },
+      "paired_by_prompt_scored": {
+        "diff": -0.5200703125,
+        "se_prompts": 0.0030603877610412816,
+        "ci95_prompts": [
+          -0.5261099609375,
+          -0.514139453125
+        ]
+      }
+    }
+  },
+  "shortcuts": {
+    "constant_zero_training": {
+      "rows": {
+        "stale64": {
+          "pass_at_1": 0.00014062499394640326,
+          "hard_pass_at_1": 0.00027894461527466774,
+          "unconstrained_pass_at_1": 0.00014062499394640326,
+          "operating_point_ok": 1.0
+        },
+        "offline": {
+          "pass_at_1": 0.00014062499394640326,
+          "hard_pass_at_1": 0.00027894461527466774,
+          "unconstrained_pass_at_1": 0.00014062499394640326,
+          "operating_point_ok": 1.0
+        }
+      },
+      "status": {
+        "stale64": "1/8 seeds scored; seed 8: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 9: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 10: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 11: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 12: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 13: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 14: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0",
+        "offline": "1/8 seeds scored; seed 8: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 9: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 10: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 11: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 12: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 13: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 14: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+      },
+      "rank_change": -0.9035019537550397
+    },
+    "copy_best_seed": {
+      "rows": {
+        "stale64": {
+          "pass_at_1": 0.08360937237739563,
+          "hard_pass_at_1": 0.08092675358057022,
+          "unconstrained_pass_at_1": 0.08360937237739563,
+          "operating_point_ok": 1.0
+        },
+        "offline": {
+          "pass_at_1": 0.07308593392372131,
+          "hard_pass_at_1": 0.072870172560215,
+          "unconstrained_pass_at_1": 0.07308593392372131,
+          "operating_point_ok": 1.0
+        }
+      },
+      "status": {
+        "stale64": "1/8 seeds scored; seed 8: copy of seed 7: identical outputs on 1.000 of the 5298 prompts where either run errs; scored 0; seed 9: copy of seed 7: identical outputs on 1.000 of the 5298 prompts where either run errs; scored 0; seed 10: copy of seed 7: identical outputs on 1.000 of the 5298 prompts where either run errs; scored 0; seed 11: copy of seed 7: identical outputs on 1.000 of the 5298 prompts where either run errs; scored 0; seed 12: copy of seed 7: identical outputs on 1.000 of the 5298 prompts where either run errs; scored 0; seed 13: copy of seed 7: identical outputs on 1.000 of the 5298 prompts where either run errs; scored 0; seed 14: copy of seed 7: identical outputs on 1.000 of the 5298 prompts where either run errs; scored 0",
+        "offline": "1/8 seeds scored; seed 8: copy of seed 7: identical outputs on 1.000 of the 6645 prompts where either run errs; scored 0; seed 9: copy of seed 7: identical outputs on 1.000 of the 6645 prompts where either run errs; scored 0; seed 10: copy of seed 7: identical outputs on 1.000 of the 6645 prompts where either run errs; scored 0; seed 11: copy of seed 7: identical outputs on 1.000 of the 6645 prompts where either run errs; scored 0; seed 12: copy of seed 7: identical outputs on 1.000 of the 6645 prompts where either run errs; scored 0; seed 13: copy of seed 7: identical outputs on 1.000 of the 6645 prompts where either run errs; scored 0; seed 14: copy of seed 7: identical outputs on 1.000 of the 6645 prompts where either run errs; scored 0"
+      },
+      "rank_change": -0.7869851663708687,
+      "before_prev_evaluator": {
+        "rows": {
+          "stale64": {
+            "pass_at_1": 0.668874979019165,
+            "hard_pass_at_1": 0.6474140286445618,
+            "unconstrained_pass_at_1": 0.668874979019165,
+            "operating_point_ok": 1.0
+          },
+          "offline": {
+            "pass_at_1": 0.5846874713897705,
+            "hard_pass_at_1": 0.58296138048172,
+            "unconstrained_pass_at_1": 0.5846874713897705,
+            "operating_point_ok": 1.0
+          }
+        },
+        "rank_change": 0.0019914060831069946
+      }
+    },
+    "copy_best_seed_perturbed": {
+      "rows": {
+        "stale64": {
+          "pass_at_1": 0.08359374850988388,
+          "hard_pass_at_1": 0.08087752759456635,
+          "unconstrained_pass_at_1": 0.08359374850988388,
+          "operating_point_ok": 1.0
+        },
+        "offline": {
+          "pass_at_1": 0.07313281297683716,
+          "hard_pass_at_1": 0.072870172560215,
+          "unconstrained_pass_at_1": 0.07313281297683716,
+          "operating_point_ok": 1.0
+        }
+      },
+      "status": {
+        "stale64": "1/8 seeds scored; seed 8: copy of seed 7: identical outputs on 0.990 of the 5317 prompts where either run errs; scored 0; seed 9: copy of seed 7: identical outputs on 0.990 of the 5316 prompts where either run errs; scored 0; seed 10: copy of seed 7: identical outputs on 0.987 of the 5321 prompts where either run errs; scored 0; seed 11: copy of seed 7: identical outputs on 0.990 of the 5320 prompts where either run errs; scored 0; seed 12: copy of seed 7: identical outputs on 0.989 of the 5320 prompts where either run errs; scored 0; seed 13: copy of seed 7: identical outputs on 0.989 of the 5324 prompts where either run errs; scored 0; seed 14: copy of seed 7: identical outputs on 0.989 of the 5325 prompts where either run errs; scored 0",
+        "offline": "1/8 seeds scored; seed 8: copy of seed 7: identical outputs on 0.991 of the 6661 prompts where either run errs; scored 0; seed 9: copy of seed 7: identical outputs on 0.990 of the 6667 prompts where either run errs; scored 0; seed 10: copy of seed 7: identical outputs on 0.990 of the 6667 prompts where either run errs; scored 0; seed 11: copy of seed 7: identical outputs on 0.990 of the 6671 prompts where either run errs; scored 0; seed 12: copy of seed 7: identical outputs on 0.989 of the 6663 prompts where either run errs; scored 0; seed 13: copy of seed 7: identical outputs on 0.991 of the 6665 prompts where either run errs; scored 0; seed 14: copy of seed 7: identical outputs on 0.989 of the 6672 prompts where either run errs; scored 0"
+      },
+      "rank_change": -0.7869818452745676,
+      "before_prev_evaluator": {
+        "rows": {
+          "stale64": {
+            "pass_at_1": 0.6685624718666077,
+            "hard_pass_at_1": 0.6468889713287354,
+            "unconstrained_pass_at_1": 0.6685624718666077,
+            "operating_point_ok": 1.0
+          },
+          "offline": {
+            "pass_at_1": 0.5843124985694885,
+            "hard_pass_at_1": 0.5828301310539246,
+            "unconstrained_pass_at_1": 0.5843124985694885,
+            "operating_point_ok": 1.0
+          }
+        },
+        "rank_change": 0.0014835894107818604
+      }
+    },
+    "custom_population": {
+      "rows": {
+        "stale64": {
+          "pass_at_1": 0.6616562455892563,
+          "hard_pass_at_1": 0.6197820901870728,
+          "unconstrained_pass_at_1": 0.6616562455892563,
+          "operating_point_ok": 1.0
+        },
+        "offline": {
+          "pass_at_1": 0.5575234368443489,
+          "hard_pass_at_1": 0.5569867491722107,
+          "unconstrained_pass_at_1": 0.5575234368443489,
+          "operating_point_ok": 1.0
+        }
+      },
+      "status": {
+        "stale64": "ok (8/8 seeds scored)",
+        "offline": "ok (8/8 seeds scored)"
+      },
+      "rank_change": 0.0
+    },
+    "duplicate_seeds": {
+      "rows": {
+        "stale64": {
+          "pass_at_1": 0.6526874974370003,
+          "hard_pass_at_1": 0.6145313680171967,
+          "unconstrained_pass_at_1": 0.6526874974370003,
+          "operating_point_ok": 1.0
+        },
+        "offline": {
+          "pass_at_1": 0.5511484369635582,
+          "hard_pass_at_1": 0.5410540848970413,
+          "unconstrained_pass_at_1": 0.5511484369635582,
+          "operating_point_ok": 1.0
+        }
+      },
+      "status": {
+        "stale64": "ok (8/8 seeds scored)",
+        "offline": "ok (8/8 seeds scored)"
+      },
+      "rank_change": -0.012967720627784729,
+      "before_prev_evaluator": {
+        "rows": {
+          "stale64": {
+            "pass_at_1": 0.624875009059906,
+            "hard_pass_at_1": 0.5836177468299866,
+            "unconstrained_pass_at_1": 0.624875009059906,
+            "operating_point_ok": 1.0
+          },
+          "offline": {
+            "pass_at_1": 0.5227500200271606,
+            "hard_pass_at_1": 0.5086637139320374,
+            "unconstrained_pass_at_1": 0.5227500200271606,
+            "operating_point_ok": 1.0
+          }
+        },
+        "rank_change": -0.0855007916688919
+      }
+    },
+    "label_copy": {
+      "rows": {
+        "stale64": {
+          "pass_at_1": 0.045039061456918716,
+          "hard_pass_at_1": 0.04454909265041351,
+          "unconstrained_pass_at_1": 0.045039061456918716,
+          "operating_point_ok": 1.0
+        },
+        "offline": {
+          "pass_at_1": 0.045039061456918716,
+          "hard_pass_at_1": 0.04454909265041351,
+          "unconstrained_pass_at_1": 0.045039061456918716,
+          "operating_point_ok": 1.0
+        }
+      },
+      "status": {
+        "stale64": "1/8 seeds scored; seed 8: copy of seed 7: identical outputs on 1.000 of the 10235 prompts where either run errs; scored 0; seed 9: copy of seed 7: identical outputs on 1.000 of the 10235 prompts where either run errs; scored 0; seed 10: copy of seed 7: identical outputs on 1.000 of the 10235 prompts where either run errs; scored 0; seed 11: copy of seed 7: identical outputs on 1.000 of the 10235 prompts where either run errs; scored 0; seed 12: copy of seed 7: identical outputs on 1.000 of the 10235 prompts where either run errs; scored 0; seed 13: copy of seed 7: identical outputs on 1.000 of the 10235 prompts where either run errs; scored 0; seed 14: copy of seed 7: identical outputs on 1.000 of the 10235 prompts where either run errs; scored 0",
+        "offline": "1/8 seeds scored; seed 8: copy of seed 7: identical outputs on 1.000 of the 10235 prompts where either run errs; scored 0; seed 9: copy of seed 7: identical outputs on 1.000 of the 10235 prompts where either run errs; scored 0; seed 10: copy of seed 7: identical outputs on 1.000 of the 10235 prompts where either run errs; scored 0; seed 11: copy of seed 7: identical outputs on 1.000 of the 10235 prompts where either run errs; scored 0; seed 12: copy of seed 7: identical outputs on 1.000 of the 10235 prompts where either run errs; scored 0; seed 13: copy of seed 7: identical outputs on 1.000 of the 10235 prompts where either run errs; scored 0; seed 14: copy of seed 7: identical outputs on 1.000 of the 10235 prompts where either run errs; scored 0"
+      },
+      "rank_change": -0.836468443274498
+    },
+    "metadata_forgery": {
+      "rows": {
+        "stale64": {
+          "pass_at_1": 0.6616562455892563,
+          "hard_pass_at_1": 0.6197820901870728,
+          "unconstrained_pass_at_1": 0.6616562455892563,
+          "operating_point_ok": 1.0
+        },
+        "offline": {
+          "pass_at_1": 0.5575234368443489,
+          "hard_pass_at_1": 0.5569867491722107,
+          "unconstrained_pass_at_1": 0.5575234368443489,
+          "operating_point_ok": 1.0
+        }
+      },
+      "status": {
+        "stale64": "ok (8/8 seeds scored)",
+        "offline": "ok (8/8 seeds scored)"
+      },
+      "rank_change": 0.0
+    },
+    "missing_experiment": {
+      "rows": {
+        "stale64": {
+          "pass_at_1": 0.6917578056454659,
+          "hard_pass_at_1": 0.6447394341230392,
+          "unconstrained_pass_at_1": 0.6917578056454659,
+          "operating_point_ok": 1.0
+        },
+        "offline": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.0,
+          "operating_point_ok": 0.0
+        }
+      },
+      "status": {
+        "stale64": "ok (8/8 seeds scored)",
+        "offline": "failed: no run submitted for this experiment"
+      },
+      "rank_change": -0.3967182897031307,
+      "before_prev_evaluator": {
+        "rows": {
+          "stale64": {
+            "pass_at_1": 0.6672499775886536,
+            "hard_pass_at_1": 0.6464951634407043,
+            "unconstrained_pass_at_1": 0.6672499775886536,
+            "operating_point_ok": 1.0
+          },
+          "offline": {
+            "pass_at_1": 0.0,
+            "hard_pass_at_1": 0.0,
+            "unconstrained_pass_at_1": 0.0,
+            "operating_point_ok": 0.0
+          }
+        },
+        "rank_change": -0.43713489174842834
+      }
+    },
+    "nan_weights": {
+      "rows": {
+        "stale64": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.0,
+          "operating_point_ok": 1.0
+        },
+        "offline": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.0,
+          "operating_point_ok": 1.0
+        }
+      },
+      "status": {
+        "stale64": "0/8 seeds scored; seed 7: cannot evaluate policy.pt (head.bias: non-floating or non-finite values); seed 8: cannot evaluate policy.pt (head.bias: non-floating or non-finite values); seed 9: cannot evaluate policy.pt (head.bias: non-floating or non-finite values); seed 10: cannot evaluate policy.pt (head.bias: non-floating or non-finite values); seed 11: cannot evaluate policy.pt (head.bias: non-floating or non-finite values); seed 12: cannot evaluate policy.pt (head.bias: non-floating or non-finite values); seed 13: cannot evaluate policy.pt (head.bias: non-floating or non-finite values); seed 14: cannot evaluate policy.pt (head.bias: non-floating or non-finite values)",
+        "offline": "0/8 seeds scored; seed 7: cannot evaluate policy.pt (head.bias: non-floating or non-finite values); seed 8: cannot evaluate policy.pt (head.bias: non-floating or non-finite values); seed 9: cannot evaluate policy.pt (head.bias: non-floating or non-finite values); seed 10: cannot evaluate policy.pt (head.bias: non-floating or non-finite values); seed 11: cannot evaluate policy.pt (head.bias: non-floating or non-finite values); seed 12: cannot evaluate policy.pt (head.bias: non-floating or non-finite values); seed 13: cannot evaluate policy.pt (head.bias: non-floating or non-finite values); seed 14: cannot evaluate policy.pt (head.bias: non-floating or non-finite values)"
+      },
+      "rank_change": -0.9037820510566235
+    },
+    "negative_cost": {
+      "rows": {
+        "stale64": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.00014062499394640326,
+          "operating_point_ok": 0.0
+        },
+        "offline": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.00014062499394640326,
+          "operating_point_ok": 0.0
+        }
+      },
+      "status": {
+        "stale64": "failed operating point: seed 10: run.json field 'generated_completions'=-1000000 is impossible (minimum 0); seed 11: run.json field 'generated_completions'=-1000000 is impossible (minimum 0); seed 12: run.json field 'generated_completions'=-1000000 is impossible (minimum 0) (+5 more)",
+        "offline": "failed operating point: seed 10: run.json field 'generated_completions'=-1000000 is impossible (minimum 0); seed 11: run.json field 'generated_completions'=-1000000 is impossible (minimum 0); seed 12: run.json field 'generated_completions'=-1000000 is impossible (minimum 0) (+5 more)"
+      },
+      "rank_change": -0.9037820510566235
+    },
+    "null_metadata": {
+      "rows": {
+        "stale64": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.6616562455892563,
+          "operating_point_ok": 0.0
+        },
+        "offline": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.5575234368443489,
+          "operating_point_ok": 0.0
+        }
+      },
+      "status": {
+        "stale64": "failed operating point: seed 10: run.json field 'generated_completions' must be an integer, got None; seed 11: run.json field 'generated_completions' must be an integer, got None; seed 12: run.json field 'generated_completions' must be an integer, got None (+5 more)",
+        "offline": "failed operating point: seed 10: run.json field 'generated_completions' must be an integer, got None; seed 11: run.json field 'generated_completions' must be an integer, got None; seed 12: run.json field 'generated_completions' must be an integer, got None (+5 more)"
+      },
+      "rank_change": -0.9037820510566235
+    },
+    "online_declared_stale": {
+      "rows": {
+        "stale64": {
+          "pass_at_1": 0.7599140629172325,
+          "hard_pass_at_1": 0.7253380194306374,
+          "unconstrained_pass_at_1": 0.7599140629172325,
+          "operating_point_ok": 1.0
+        },
+        "offline": {
+          "pass_at_1": 0.7599140629172325,
+          "hard_pass_at_1": 0.7253380194306374,
+          "unconstrained_pass_at_1": 0.7599140629172325,
+          "operating_point_ok": 1.0
+        }
+      },
+      "status": {
+        "stale64": "ok (8/8 seeds scored)",
+        "offline": "ok (8/8 seeds scored)"
+      },
+      "rank_change": 0.21880102157592773
+    },
+    "partial_seeds": {
+      "rows": {
+        "stale64": {
+          "pass_at_1": 0.08360937237739563,
+          "hard_pass_at_1": 0.08092675358057022,
+          "unconstrained_pass_at_1": 0.08360937237739563,
+          "operating_point_ok": 1.0
+        },
+        "offline": {
+          "pass_at_1": 0.07308593392372131,
+          "hard_pass_at_1": 0.072870172560215,
+          "unconstrained_pass_at_1": 0.07308593392372131,
+          "operating_point_ok": 1.0
+        }
+      },
+      "status": {
+        "stale64": "1/8 seeds scored; seed 7: missing: no run declares this seed; seed 8: missing: no run declares this seed; seed 9: missing: no run declares this seed; seed 10: missing: no run declares this seed; seed 11: missing: no run declares this seed; seed 13: missing: no run declares this seed; seed 14: missing: no run declares this seed",
+        "offline": "1/8 seeds scored; seed 8: missing: no run declares this seed; seed 9: missing: no run declares this seed; seed 10: missing: no run declares this seed; seed 11: missing: no run declares this seed; seed 12: missing: no run declares this seed; seed 13: missing: no run declares this seed; seed 14: missing: no run declares this seed"
+      },
+      "rank_change": -0.7869851663708687,
+      "before_prev_evaluator": {
+        "rows": {
+          "stale64": {
+            "pass_at_1": 0.668874979019165,
+            "hard_pass_at_1": 0.6474140286445618,
+            "unconstrained_pass_at_1": 0.668874979019165,
+            "operating_point_ok": 1.0
+          },
+          "offline": {
+            "pass_at_1": 0.5846874713897705,
+            "hard_pass_at_1": 0.58296138048172,
+            "unconstrained_pass_at_1": 0.5846874713897705,
+            "operating_point_ok": 1.0
+          }
+        },
+        "rank_change": 0.0019914060831069946
+      }
+    },
+    "reward_artifact": {
+      "test_rows_identical_to_unmodified": true,
+      "rank_change": 0.0
+    },
+    "seed_shopping": {
+      "rows": {
+        "stale64": {
+          "pass_at_1": 0.6754140630364418,
+          "hard_pass_at_1": 0.6321869269013405,
+          "unconstrained_pass_at_1": 0.6754140630364418,
+          "operating_point_ok": 1.0
+        },
+        "offline": {
+          "pass_at_1": 0.5732031315565109,
+          "hard_pass_at_1": 0.568702407181263,
+          "unconstrained_pass_at_1": 0.5732031315565109,
+          "operating_point_ok": 1.0
+        }
+      },
+      "status": {
+        "stale64": "ok (8/8 seeds scored)",
+        "offline": "ok (8/8 seeds scored)"
+      },
+      "rank_change": 0.02074887976050377,
+      "before_prev_evaluator": {
+        "rows": {
+          "stale64": {
+            "pass_at_1": 0.668874979019165,
+            "hard_pass_at_1": 0.6474140286445618,
+            "unconstrained_pass_at_1": 0.668874979019165,
+            "operating_point_ok": 1.0
+          },
+          "offline": {
+            "pass_at_1": 0.5488749742507935,
+            "hard_pass_at_1": 0.5266473889350891,
+            "unconstrained_pass_at_1": 0.5488749742507935,
+            "operating_point_ok": 1.0
+          }
+        },
+        "rank_change": -0.029993340373039246
+      }
+    },
+    "seed_shopping_single": {
+      "rows": {
+        "stale64": {
+          "pass_at_1": 0.0842890590429306,
+          "hard_pass_at_1": 0.07828498631715775,
+          "unconstrained_pass_at_1": 0.0842890590429306,
+          "operating_point_ok": 1.0
+        },
+        "offline": {
+          "pass_at_1": 0.07367187738418579,
+          "hard_pass_at_1": 0.07364137470722198,
+          "unconstrained_pass_at_1": 0.07367187738418579,
+          "operating_point_ok": 1.0
+        }
+      },
+      "status": {
+        "stale64": "1/8 seeds scored; seed 8: missing: no run declares this seed; seed 9: missing: no run declares this seed; seed 10: missing: no run declares this seed; seed 11: missing: no run declares this seed; seed 12: missing: no run declares this seed; seed 13: missing: no run declares this seed; seed 14: missing: no run declares this seed",
+        "offline": "1/8 seeds scored; seed 8: missing: no run declares this seed; seed 9: missing: no run declares this seed; seed 10: missing: no run declares this seed; seed 11: missing: no run declares this seed; seed 12: missing: no run declares this seed; seed 13: missing: no run declares this seed; seed 14: missing: no run declares this seed"
+      },
+      "rank_change": -0.7868199925869703,
+      "before_prev_evaluator": {
+        "rows": {
+          "stale64": {
+            "pass_at_1": 0.6743124723434448,
+            "hard_pass_at_1": 0.626279890537262,
+            "unconstrained_pass_at_1": 0.6743124723434448,
+            "operating_point_ok": 1.0
+          },
+          "offline": {
+            "pass_at_1": 0.5893750190734863,
+            "hard_pass_at_1": 0.5891309976577759,
+            "unconstrained_pass_at_1": 0.5893750190734863,
+            "operating_point_ok": 1.0
+          }
+        },
+        "rank_change": 0.0033127963542938232
+      }
+    },
+    "supervised_labels": {
+      "rows": {
+        "stale64": {
+          "pass_at_1": 0.9958593621850014,
+          "hard_pass_at_1": 0.9940108954906464,
+          "unconstrained_pass_at_1": 0.9958593621850014,
+          "operating_point_ok": 1.0
+        },
+        "offline": {
+          "pass_at_1": 0.9958593621850014,
+          "hard_pass_at_1": 0.9940108954906464,
+          "unconstrained_pass_at_1": 0.9958593621850014,
+          "operating_point_ok": 1.0
+        }
+      },
+      "status": {
+        "stale64": "ok (8/8 seeds scored)",
+        "offline": "ok (8/8 seeds scored)"
+      },
+      "rank_change": 0.5890827588737011
+    },
+    "undeclared_seeds": {
+      "rows": {
+        "stale64": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.0,
+          "operating_point_ok": 0.0
+        },
+        "offline": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.0,
+          "operating_point_ok": 0.0
+        }
+      },
+      "status": {
+        "stale64": "failed: no run submitted for this experiment",
+        "offline": "failed: no run submitted for this experiment"
+      },
+      "rank_change": -0.9037820510566235,
+      "before_prev_evaluator": {
+        "rows": {
+          "stale64": {
+            "pass_at_1": 0.6305624842643738,
+            "hard_pass_at_1": 0.5879495739936829,
+            "unconstrained_pass_at_1": 0.6305624842643738,
+            "operating_point_ok": 1.0
+          },
+          "offline": {
+            "pass_at_1": 0.5227500200271606,
+            "hard_pass_at_1": 0.5086637139320374,
+            "unconstrained_pass_at_1": 0.5227500200271606,
+            "operating_point_ok": 1.0
+          }
+        },
+        "rank_change": -0.08157409727573395
+      }
+    },
+    "wrong_architecture": {
+      "rows": {
+        "stale64": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.0,
+          "operating_point_ok": 1.0
+        },
+        "offline": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.0,
+          "operating_point_ok": 1.0
+        }
+      },
+      "status": {
+        "stale64": "0/8 seeds scored; seed 7: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 8: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 9: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 10: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 11: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 12: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 13: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 14: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42))",
+        "offline": "0/8 seeds scored; seed 7: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 8: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 9: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 10: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 11: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 12: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 13: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 14: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42))"
+      },
+      "rank_change": -0.9037820510566235
+    }
+  },
+  "prev_evaluator_reference_seed7": {
+    "stale64": {
+      "pass_at_1": 0.6763125061988831,
+      "hard_pass_at_1": 0.6245733499526978,
+      "unconstrained_pass_at_1": 0.6763125061988831,
+      "operating_point_ok": 1.0
+    },
+    "offline": {
+      "pass_at_1": 0.5846874713897705,
+      "hard_pass_at_1": 0.58296138048172,
+      "unconstrained_pass_at_1": 0.5846874713897705,
+      "operating_point_ok": 1.0
+    }
+  },
+  "train_vs_test": {
+    "stale64/base_policy": {
+      "train": 0.33500000834465027,
+      "test": 0.36031249165534973
+    },
+    "stale64/grpo": {
+      "train": 0.648875005543232,
+      "test": 0.6454921960830688
+    },
+    "stale64/humanline_clip_only": {
+      "train": 0.6578124985098839,
+      "test": 0.6553749889135361
+    },
+    "stale64/humanline_grpo": {
+      "train": 0.6649374961853027,
+      "test": 0.6616562455892563
+    },
+    "stale64/humanline_sync_only": {
+      "train": 0.6599374935030937,
+      "test": 0.6548203155398369
+    },
+    "stale64/online_grpo": {
+      "train": 0.7570000067353249,
+      "test": 0.7599140629172325
+    },
+    "offline/base_policy": {
+      "train": 0.33500000834465027,
+      "test": 0.36031249165534973
+    },
+    "offline/grpo": {
+      "train": 0.5447499975562096,
+      "test": 0.5461484417319298
+    },
+    "offline/humanline_clip_only": {
+      "train": 0.4611875005066395,
+      "test": 0.4726171903312206
+    },
+    "offline/humanline_grpo": {
+      "train": 0.5614375025033951,
+      "test": 0.5575234368443489
+    },
+    "offline/humanline_sync_only": {
+      "train": 0.5598750039935112,
+      "test": 0.5568046942353249
+    },
+    "offline/online_grpo": {
+      "train": 0.7570000067353249,
+      "test": 0.7599140629172325
+    }
+  },
+  "device_check": {
+    "device_main": "cuda",
+    "max_abs_seed_diff_cpu_vs_main": {
+      "stale64": 0.0,
+      "offline": 0.0
+    }
+  },
+  "determinism": {
+    "stale64/humanline_grpo/seed7": {
+      "identical_weights": true
+    },
+    "offline/grpo/seed7": {
+      "identical_weights": true
+    },
+    "stale64/grpo/seed7_visible_vs_job4": {
+      "job4": 0.6735000014305115,
+      "final": 0.6735000014305115
+    },
+    "stale64/humanline_grpo/seed7_visible_vs_job4": {
+      "job4": 0.6794999837875366,
+      "final": 0.6794999837875366
+    },
+    "stale64/humanline_sync_only/seed7_visible_vs_job4": {
+      "job4": 0.6504999995231628,
+      "final": 0.6504999995231628
+    },
+    "stale64/humanline_clip_only/seed7_visible_vs_job4": {
+      "job4": 0.6585000157356262,
+      "final": 0.6585000157356262
+    },
+    "stale64/online_grpo/seed7_visible_vs_job4": {
+      "job4": 0.7540000081062317,
+      "final": 0.7540000081062317
+    },
+    "offline/grpo/seed7_visible_vs_job4": {
+      "job4": 0.5404999852180481,
+      "final": 0.5404999852180481
+    },
+    "offline/humanline_grpo/seed7_visible_vs_job4": {
+      "job4": 0.5975000262260437,
+      "final": 0.5975000262260437
+    },
+    "offline/humanline_sync_only/seed7_visible_vs_job4": {
+      "job4": 0.593500018119812,
+      "final": 0.593500018119812
+    },
+    "offline/humanline_clip_only/seed7_visible_vs_job4": {
+      "job4": 0.4645000100135803,
+      "final": 0.4645000100135803
+    },
+    "offline/online_grpo/seed7_visible_vs_job4": {
+      "job4": 0.7540000081062317,
+      "final": 0.7540000081062317
+    }
+  }
+}

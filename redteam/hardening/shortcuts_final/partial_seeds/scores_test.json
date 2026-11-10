@@ -1,0 +1,156 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "test",
+      "evaluated_prompts": 16000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.36031249165534973,
+          "hard_pass_at_1": 0.3563927412033081,
+          "unconstrained_pass_at_1": 0.36031249165534973,
+          "operating_point_ok": 1.0
+        },
+        "partial_seeds": {
+          "pass_at_1": 0.08360937237739563,
+          "hard_pass_at_1": 0.08092675358057022,
+          "unconstrained_pass_at_1": 0.08360937237739563,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "test",
+      "evaluated_prompts": 16000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.36031249165534973,
+          "hard_pass_at_1": 0.3563927412033081,
+          "unconstrained_pass_at_1": 0.36031249165534973,
+          "operating_point_ok": 1.0
+        },
+        "partial_seeds": {
+          "pass_at_1": 0.07308593392372131,
+          "hard_pass_at_1": 0.072870172560215,
+          "unconstrained_pass_at_1": 0.07308593392372131,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_per_seed": {
+    "stale64": {
+      "partial_seeds": {
+        "7": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "8": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "9": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "10": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "11": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "12": {
+          "pass_at_1": 0.668874979019165,
+          "hard_pass_at_1": 0.6474140286445618,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "14": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        }
+      }
+    },
+    "offline": {
+      "partial_seeds": {
+        "7": {
+          "pass_at_1": 0.5846874713897705,
+          "hard_pass_at_1": 0.58296138048172,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "9": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "10": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "11": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "12": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "13": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        },
+        "14": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "missing: no run declares this seed"
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "offline/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "stale64/partial_seeds": "1/8 seeds scored; seed 7: missing: no run declares this seed; seed 8: missing: no run declares this seed; seed 9: missing: no run declares this seed; seed 10: missing: no run declares this seed; seed 11: missing: no run declares this seed; seed 13: missing: no run declares this seed; seed 14: missing: no run declares this seed",
+    "offline/partial_seeds": "1/8 seeds scored; seed 8: missing: no run declares this seed; seed 9: missing: no run declares this seed; seed 10: missing: no run declares this seed; seed 11: missing: no run declares this seed; seed 12: missing: no run declares this seed; seed 13: missing: no run declares this seed; seed 14: missing: no run declares this seed"
+  }
+}

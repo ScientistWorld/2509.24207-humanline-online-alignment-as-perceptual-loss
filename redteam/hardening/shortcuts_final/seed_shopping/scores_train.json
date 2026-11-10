@@ -1,0 +1,156 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "seed_shopping": {
+          "pass_at_1": 0.6824374943971634,
+          "hard_pass_at_1": 0.6364957615733147,
+          "unconstrained_pass_at_1": 0.6824374943971634,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "seed_shopping": {
+          "pass_at_1": 0.5780000016093254,
+          "hard_pass_at_1": 0.5784883797168732,
+          "unconstrained_pass_at_1": 0.5780000016093254,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_per_seed": {
+    "stale64": {
+      "seed_shopping": {
+        "7": {
+          "pass_at_1": 0.6890000104904175,
+          "hard_pass_at_1": 0.6490486264228821,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.6869999766349792,
+          "hard_pass_at_1": 0.6543340086936951,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.6850000023841858,
+          "hard_pass_at_1": 0.6088795065879822,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.6825000047683716,
+          "hard_pass_at_1": 0.6659619212150574,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.6794999837875366,
+          "hard_pass_at_1": 0.626849889755249,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.6794999837875366,
+          "hard_pass_at_1": 0.6120507121086121,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.6794999837875366,
+          "hard_pass_at_1": 0.6289640665054321,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.6775000095367432,
+          "hard_pass_at_1": 0.6458773612976074,
+          "note": "ok"
+        }
+      }
+    },
+    "offline": {
+      "seed_shopping": {
+        "7": {
+          "pass_at_1": 0.5995000004768372,
+          "hard_pass_at_1": 0.6109936833381653,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.5975000262260437,
+          "hard_pass_at_1": 0.5951374173164368,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.5795000195503235,
+          "hard_pass_at_1": 0.5602536797523499,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.574999988079071,
+          "hard_pass_at_1": 0.5835095047950745,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.5715000033378601,
+          "hard_pass_at_1": 0.584566593170166,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.5699999928474426,
+          "hard_pass_at_1": 0.5581395626068115,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.5659999847412109,
+          "hard_pass_at_1": 0.5475687384605408,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.5649999976158142,
+          "hard_pass_at_1": 0.5877378582954407,
+          "note": "ok"
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "offline/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "stale64/seed_shopping": "ok (8/8 seeds scored)",
+    "offline/seed_shopping": "ok (8/8 seeds scored)"
+  }
+}

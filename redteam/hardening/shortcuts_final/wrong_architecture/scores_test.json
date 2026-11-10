@@ -1,0 +1,156 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "test",
+      "evaluated_prompts": 16000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.36031249165534973,
+          "hard_pass_at_1": 0.3563927412033081,
+          "unconstrained_pass_at_1": 0.36031249165534973,
+          "operating_point_ok": 1.0
+        },
+        "wrong_architecture": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.0,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "test",
+      "evaluated_prompts": 16000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.36031249165534973,
+          "hard_pass_at_1": 0.3563927412033081,
+          "unconstrained_pass_at_1": 0.36031249165534973,
+          "operating_point_ok": 1.0
+        },
+        "wrong_architecture": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "unconstrained_pass_at_1": 0.0,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_per_seed": {
+    "stale64": {
+      "wrong_architecture": {
+        "7": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42))"
+        },
+        "8": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42))"
+        },
+        "9": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42))"
+        },
+        "10": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42))"
+        },
+        "11": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42))"
+        },
+        "12": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42))"
+        },
+        "13": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42))"
+        },
+        "14": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42))"
+        }
+      }
+    },
+    "offline": {
+      "wrong_architecture": {
+        "7": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42))"
+        },
+        "8": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42))"
+        },
+        "9": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42))"
+        },
+        "10": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42))"
+        },
+        "11": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42))"
+        },
+        "12": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42))"
+        },
+        "13": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42))"
+        },
+        "14": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42))"
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "offline/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "stale64/wrong_architecture": "0/8 seeds scored; seed 7: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 8: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 9: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 10: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 11: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 12: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 13: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 14: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42))",
+    "offline/wrong_architecture": "0/8 seeds scored; seed 7: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 8: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 9: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 10: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 11: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 12: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 13: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42)); seed 14: cannot evaluate policy.pt (state_dict keys differ from the fixed architecture (54 vs 42))"
+  }
+}

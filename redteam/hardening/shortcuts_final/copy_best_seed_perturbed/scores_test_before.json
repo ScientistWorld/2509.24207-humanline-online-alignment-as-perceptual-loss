@@ -1,0 +1,46 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "test",
+      "evaluated_prompts": 16000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.36031249165534973,
+          "hard_pass_at_1": 0.3563927412033081,
+          "unconstrained_pass_at_1": 0.36031249165534973,
+          "operating_point_ok": 1.0
+        },
+        "copy_best_seed_perturbed": {
+          "pass_at_1": 0.6685624718666077,
+          "hard_pass_at_1": 0.6468889713287354,
+          "unconstrained_pass_at_1": 0.6685624718666077,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "test",
+      "evaluated_prompts": 16000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.36031249165534973,
+          "hard_pass_at_1": 0.3563927412033081,
+          "unconstrained_pass_at_1": 0.36031249165534973,
+          "operating_point_ok": 1.0
+        },
+        "copy_best_seed_perturbed": {
+          "pass_at_1": 0.5843124985694885,
+          "hard_pass_at_1": 0.5828301310539246,
+          "unconstrained_pass_at_1": 0.5843124985694885,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy)",
+    "offline/base_policy": "ok (evaluator-owned starting policy)",
+    "stale64/copy_best_seed_perturbed": "ok (worst of 8 runs declaring this method)",
+    "offline/copy_best_seed_perturbed": "ok (worst of 8 runs declaring this method)"
+  }
+}

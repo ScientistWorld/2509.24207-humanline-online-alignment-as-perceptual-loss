@@ -1,0 +1,156 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "test",
+      "evaluated_prompts": 16000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.36031249165534973,
+          "hard_pass_at_1": 0.3563927412033081,
+          "unconstrained_pass_at_1": 0.36031249165534973,
+          "operating_point_ok": 1.0
+        },
+        "duplicate_seeds": {
+          "pass_at_1": 0.6526874974370003,
+          "hard_pass_at_1": 0.6145313680171967,
+          "unconstrained_pass_at_1": 0.6526874974370003,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "test",
+      "evaluated_prompts": 16000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.36031249165534973,
+          "hard_pass_at_1": 0.3563927412033081,
+          "unconstrained_pass_at_1": 0.36031249165534973,
+          "operating_point_ok": 1.0
+        },
+        "duplicate_seeds": {
+          "pass_at_1": 0.5511484369635582,
+          "hard_pass_at_1": 0.5410540848970413,
+          "unconstrained_pass_at_1": 0.5511484369635582,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_per_seed": {
+    "stale64": {
+      "duplicate_seeds": {
+        "7": {
+          "pass_at_1": 0.671750009059906,
+          "hard_pass_at_1": 0.6441323161125183,
+          "note": "ok (worst of 2 runs declaring this seed)"
+        },
+        "8": {
+          "pass_at_1": 0.6783750057220459,
+          "hard_pass_at_1": 0.6186662912368774,
+          "note": "ok (worst of 2 runs declaring this seed)"
+        },
+        "9": {
+          "pass_at_1": 0.6305624842643738,
+          "hard_pass_at_1": 0.5879495739936829,
+          "note": "ok (worst of 2 runs declaring this seed)"
+        },
+        "10": {
+          "pass_at_1": 0.6642500162124634,
+          "hard_pass_at_1": 0.6277238130569458,
+          "note": "ok (worst of 2 runs declaring this seed)"
+        },
+        "11": {
+          "pass_at_1": 0.6429374814033508,
+          "hard_pass_at_1": 0.603439211845398,
+          "note": "ok (worst of 2 runs declaring this seed)"
+        },
+        "12": {
+          "pass_at_1": 0.6504999995231628,
+          "hard_pass_at_1": 0.6096088290214539,
+          "note": "ok (worst of 2 runs declaring this seed)"
+        },
+        "13": {
+          "pass_at_1": 0.6582499742507935,
+          "hard_pass_at_1": 0.6411131620407104,
+          "note": "ok (worst of 2 runs declaring this seed)"
+        },
+        "14": {
+          "pass_at_1": 0.624875009059906,
+          "hard_pass_at_1": 0.5836177468299866,
+          "note": "ok (worst of 2 runs declaring this seed)"
+        }
+      }
+    },
+    "offline": {
+      "duplicate_seeds": {
+        "7": {
+          "pass_at_1": 0.5770000219345093,
+          "hard_pass_at_1": 0.584142804145813,
+          "note": "ok (worst of 2 runs declaring this seed)"
+        },
+        "8": {
+          "pass_at_1": 0.5619999766349792,
+          "hard_pass_at_1": 0.5510632991790771,
+          "note": "ok (worst of 2 runs declaring this seed)"
+        },
+        "9": {
+          "pass_at_1": 0.5553749799728394,
+          "hard_pass_at_1": 0.5294040441513062,
+          "note": "ok (worst of 2 runs declaring this seed)"
+        },
+        "10": {
+          "pass_at_1": 0.5584999918937683,
+          "hard_pass_at_1": 0.5250722169876099,
+          "note": "ok (worst of 2 runs declaring this seed)"
+        },
+        "11": {
+          "pass_at_1": 0.5550000071525574,
+          "hard_pass_at_1": 0.5647151470184326,
+          "note": "ok (worst of 2 runs declaring this seed)"
+        },
+        "12": {
+          "pass_at_1": 0.5227500200271606,
+          "hard_pass_at_1": 0.5086637139320374,
+          "note": "ok (worst of 2 runs declaring this seed)"
+        },
+        "13": {
+          "pass_at_1": 0.5403749942779541,
+          "hard_pass_at_1": 0.531635582447052,
+          "note": "ok (worst of 2 runs declaring this seed)"
+        },
+        "14": {
+          "pass_at_1": 0.5381875038146973,
+          "hard_pass_at_1": 0.5337358713150024,
+          "note": "ok (worst of 2 runs declaring this seed)"
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "offline/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "stale64/duplicate_seeds": "ok (8/8 seeds scored)",
+    "offline/duplicate_seeds": "ok (8/8 seeds scored)"
+  }
+}

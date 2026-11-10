@@ -1,0 +1,7 @@
+{
+  "device_main": "cuda",
+  "max_abs_seed_diff_cpu_vs_main": {
+    "stale64": 0.0,
+    "offline": 0.0
+  }
+}

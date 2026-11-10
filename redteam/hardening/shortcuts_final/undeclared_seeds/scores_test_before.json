@@ -1,0 +1,46 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "test",
+      "evaluated_prompts": 16000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.36031249165534973,
+          "hard_pass_at_1": 0.3563927412033081,
+          "unconstrained_pass_at_1": 0.36031249165534973,
+          "operating_point_ok": 1.0
+        },
+        "undeclared_seeds": {
+          "pass_at_1": 0.6305624842643738,
+          "hard_pass_at_1": 0.5879495739936829,
+          "unconstrained_pass_at_1": 0.6305624842643738,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "test",
+      "evaluated_prompts": 16000,
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.36031249165534973,
+          "hard_pass_at_1": 0.3563927412033081,
+          "unconstrained_pass_at_1": 0.36031249165534973,
+          "operating_point_ok": 1.0
+        },
+        "undeclared_seeds": {
+          "pass_at_1": 0.5227500200271606,
+          "hard_pass_at_1": 0.5086637139320374,
+          "unconstrained_pass_at_1": 0.5227500200271606,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy)",
+    "offline/base_policy": "ok (evaluator-owned starting policy)",
+    "stale64/undeclared_seeds": "ok (worst of 8 runs declaring this method)",
+    "offline/undeclared_seeds": "ok (worst of 8 runs declaring this method)"
+  }
+}

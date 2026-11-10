@@ -1,0 +1,450 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "grpo__poolA": {
+          "pass_at_1": 0.6499375030398369,
+          "hard_pass_at_1": 0.627246305346489,
+          "unconstrained_pass_at_1": 0.6499375030398369,
+          "operating_point_ok": 1.0
+        },
+        "grpo__poolB": {
+          "pass_at_1": 0.6418125033378601,
+          "hard_pass_at_1": 0.6228858307003975,
+          "unconstrained_pass_at_1": 0.6418125033378601,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo__poolA": {
+          "pass_at_1": 0.6589999943971634,
+          "hard_pass_at_1": 0.6301532685756683,
+          "unconstrained_pass_at_1": 0.6589999943971634,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo__poolB": {
+          "pass_at_1": 0.6728124916553497,
+          "hard_pass_at_1": 0.6313425004482269,
+          "unconstrained_pass_at_1": 0.6728124916553497,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "grpo__poolA": {
+          "pass_at_1": 0.5435000061988831,
+          "hard_pass_at_1": 0.5417547523975372,
+          "unconstrained_pass_at_1": 0.5435000061988831,
+          "operating_point_ok": 1.0
+        },
+        "grpo__poolB": {
+          "pass_at_1": 0.5431250035762787,
+          "hard_pass_at_1": 0.538187101483345,
+          "unconstrained_pass_at_1": 0.5431250035762787,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo__poolA": {
+          "pass_at_1": 0.5528749972581863,
+          "hard_pass_at_1": 0.5437367931008339,
+          "unconstrained_pass_at_1": 0.5528749972581863,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo__poolB": {
+          "pass_at_1": 0.5633125007152557,
+          "hard_pass_at_1": 0.5525898560881615,
+          "unconstrained_pass_at_1": 0.5633125007152557,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_per_seed": {
+    "stale64": {
+      "grpo__poolA": {
+        "7": {
+          "pass_at_1": 0.6600000262260437,
+          "hard_pass_at_1": 0.646934449672699,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.6434999704360962,
+          "hard_pass_at_1": 0.6205074191093445,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.6365000009536743,
+          "hard_pass_at_1": 0.6479915380477905,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.6485000252723694,
+          "hard_pass_at_1": 0.6078224182128906,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.6740000247955322,
+          "hard_pass_at_1": 0.669133186340332,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.6704999804496765,
+          "hard_pass_at_1": 0.6205074191093445,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.6190000176429749,
+          "hard_pass_at_1": 0.5877378582954407,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.6474999785423279,
+          "hard_pass_at_1": 0.6173361539840698,
+          "note": "ok"
+        }
+      },
+      "grpo__poolB": {
+        "7": {
+          "pass_at_1": 0.6725000143051147,
+          "hard_pass_at_1": 0.663847804069519,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.6115000247955322,
+          "hard_pass_at_1": 0.5591965913772583,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.6535000205039978,
+          "hard_pass_at_1": 0.6532769799232483,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.6294999718666077,
+          "hard_pass_at_1": 0.5961945056915283,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.652999997138977,
+          "hard_pass_at_1": 0.6300211548805237,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.6399999856948853,
+          "hard_pass_at_1": 0.6035940647125244,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.6259999871253967,
+          "hard_pass_at_1": 0.6120507121086121,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.6485000252723694,
+          "hard_pass_at_1": 0.6649048328399658,
+          "note": "ok"
+        }
+      },
+      "humanline_grpo__poolA": {
+        "7": {
+          "pass_at_1": 0.6869999766349792,
+          "hard_pass_at_1": 0.6543340086936951,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.6794999837875366,
+          "hard_pass_at_1": 0.6289640665054321,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.6355000138282776,
+          "hard_pass_at_1": 0.6279069781303406,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.6704999804496765,
+          "hard_pass_at_1": 0.6511628031730652,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.6539999842643738,
+          "hard_pass_at_1": 0.6543340086936951,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.6575000286102295,
+          "hard_pass_at_1": 0.6035940647125244,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.6654999852180481,
+          "hard_pass_at_1": 0.6331923604011536,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.6225000023841858,
+          "hard_pass_at_1": 0.5877378582954407,
+          "note": "ok"
+        }
+      },
+      "humanline_grpo__poolB": {
+        "7": {
+          "pass_at_1": 0.6679999828338623,
+          "hard_pass_at_1": 0.6522198915481567,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.6850000023841858,
+          "hard_pass_at_1": 0.6088795065879822,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.6890000104904175,
+          "hard_pass_at_1": 0.6490486264228821,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.6694999933242798,
+          "hard_pass_at_1": 0.6405919790267944,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.6489999890327454,
+          "hard_pass_at_1": 0.6236786246299744,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.6754999756813049,
+          "hard_pass_at_1": 0.6183932423591614,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.6694999933242798,
+          "hard_pass_at_1": 0.6078224182128906,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.6769999861717224,
+          "hard_pass_at_1": 0.6501057147979736,
+          "note": "ok"
+        }
+      }
+    },
+    "offline": {
+      "grpo__poolA": {
+        "7": {
+          "pass_at_1": 0.5404999852180481,
+          "hard_pass_at_1": 0.562367856502533,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.5325000286102295,
+          "hard_pass_at_1": 0.5063424706459045,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.5230000019073486,
+          "hard_pass_at_1": 0.5295982956886292,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.5665000081062317,
+          "hard_pass_at_1": 0.5739957690238953,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.5605000257492065,
+          "hard_pass_at_1": 0.5591965913772583,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.5494999885559082,
+          "hard_pass_at_1": 0.5443974733352661,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.5435000061988831,
+          "hard_pass_at_1": 0.5253700017929077,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.5320000052452087,
+          "hard_pass_at_1": 0.5327695608139038,
+          "note": "ok"
+        }
+      },
+      "grpo__poolB": {
+        "7": {
+          "pass_at_1": 0.5260000228881836,
+          "hard_pass_at_1": 0.562367856502533,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.5600000023841858,
+          "hard_pass_at_1": 0.5465116500854492,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.5370000004768372,
+          "hard_pass_at_1": 0.5105708241462708,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.5375000238418579,
+          "hard_pass_at_1": 0.5391120314598083,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.5625,
+          "hard_pass_at_1": 0.5708245038986206,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.5404999852180481,
+          "hard_pass_at_1": 0.5190274715423584,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.5715000033378601,
+          "hard_pass_at_1": 0.542283296585083,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.5099999904632568,
+          "hard_pass_at_1": 0.514799177646637,
+          "note": "ok"
+        }
+      },
+      "humanline_grpo__poolA": {
+        "7": {
+          "pass_at_1": 0.5715000033378601,
+          "hard_pass_at_1": 0.584566593170166,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.559499979019165,
+          "hard_pass_at_1": 0.5116279125213623,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.5435000061988831,
+          "hard_pass_at_1": 0.5232558250427246,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.5475000143051147,
+          "hard_pass_at_1": 0.514799177646637,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.5460000038146973,
+          "hard_pass_at_1": 0.5634249448776245,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.5995000004768372,
+          "hard_pass_at_1": 0.6109936833381653,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.5364999771118164,
+          "hard_pass_at_1": 0.5295982956886292,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.5189999938011169,
+          "hard_pass_at_1": 0.5116279125213623,
+          "note": "ok"
+        }
+      },
+      "humanline_grpo__poolB": {
+        "7": {
+          "pass_at_1": 0.5540000200271606,
+          "hard_pass_at_1": 0.5676532983779907,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.5644999742507935,
+          "hard_pass_at_1": 0.5253700017929077,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.5795000195503235,
+          "hard_pass_at_1": 0.5602536797523499,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.5625,
+          "hard_pass_at_1": 0.5560253858566284,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.5590000152587891,
+          "hard_pass_at_1": 0.5412262082099915,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.5659999847412109,
+          "hard_pass_at_1": 0.5475687384605408,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.5460000038146973,
+          "hard_pass_at_1": 0.5391120314598083,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.574999988079071,
+          "hard_pass_at_1": 0.5835095047950745,
+          "note": "ok"
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "offline/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "stale64/grpo__poolA": "ok (8/8 seeds scored)",
+    "offline/grpo__poolA": "ok (8/8 seeds scored)",
+    "stale64/grpo__poolB": "ok (8/8 seeds scored)",
+    "offline/grpo__poolB": "ok (8/8 seeds scored)",
+    "stale64/humanline_grpo__poolA": "ok (8/8 seeds scored)",
+    "offline/humanline_grpo__poolA": "ok (8/8 seeds scored)",
+    "stale64/humanline_grpo__poolB": "ok (8/8 seeds scored)",
+    "offline/humanline_grpo__poolB": "ok (8/8 seeds scored)"
+  }
+}

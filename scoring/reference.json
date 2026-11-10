@@ -1,76 +1,76 @@
 {
   "experiments": {
     "stale64": {
-      "description": "Post-training from verifiable feedback when completions may only be sampled every 64 optimizer updates (64x less often than online): 512 updates, at most 8 sampling rounds, at most 131,072 generated completions, starting from the fixed base policy.",
+      "description": "Post-training from verifiable feedback when completions may only be sampled every 64 optimizer updates (64x less often than online): per training seed 512 updates, at most 8 sampling rounds, at most 131,072 generated completions, starting from the fixed base policy; scored as the mean over training seeds 7-14.",
       "weight": 0.5,
       "primary_metric": "pass_at_1",
       "metrics": {
         "pass_at_1": {
           "higher_is_better": true,
           "coefficient": 1.0,
-          "description": "Exact-match accuracy of the evaluator's own greedy decoding of the submitted policy on the hidden test prompts. Set to 0 when the run violates the experiment's fixed operating point or cannot be evaluated."
+          "description": "Exact-match accuracy of the evaluator's own greedy decoding of the submitted policy on the hidden test prompts. Mean over the eight required training seeds 7-14 (one run per seed); a seed with no usable run (missing, unevaluable, or a copy of another seed's policy) counts 0. Set to 0 when any run of the method violates the experiment's fixed operating point or declares an impossible value."
         },
         "hard_pass_at_1": {
           "higher_is_better": true,
           "coefficient": 0.5,
-          "description": "Same accuracy restricted to hidden prompts whose addition needs at least two carries (about half of the prompts, the harder half). Set to 0 on a failed run."
+          "description": "Same accuracy restricted to hidden prompts whose addition needs at least two carries (about half of the prompts, the harder half), same seed rule. Set to 0 on a failed row."
         },
         "unconstrained_pass_at_1": {
           "higher_is_better": true,
           "coefficient": 0.0,
-          "description": "Diagnostic only: accuracy ignoring the operating-point gate (e.g. the online comparator's accuracy). Never ranked, so exceeding the sampling budget cannot pay."
+          "description": "Diagnostic only: seed-mean accuracy ignoring the operating-point gate (e.g. the online comparator's accuracy). Never ranked, so exceeding the sampling budget cannot pay."
         },
         "operating_point_ok": {
           "higher_is_better": true,
           "coefficient": 0.0,
-          "description": "Constraint gate: 1 if the declared training schedule fits the experiment's fixed budget (sampling rounds, refresh interval, generated completions, optimizer updates), else 0. A 0 zeroes the scored metrics."
+          "description": "Constraint gate: 1 if every run's declared training schedule fits the experiment's fixed budget (sampling rounds, refresh interval, generated completions, optimizer updates), else 0. A 0 zeroes the scored metrics."
         }
       },
       "results": {
         "base_policy": {
           "type": "baseline",
-          "pass_at_1": 0.3577499985694885,
-          "hard_pass_at_1": 0.354144811630249,
-          "unconstrained_pass_at_1": 0.3577499985694885,
+          "pass_at_1": 0.36031249165534973,
+          "hard_pass_at_1": 0.3563927412033081,
+          "unconstrained_pass_at_1": 0.36031249165534973,
+          "operating_point_ok": 1.0
+        },
+        "grpo": {
+          "type": "baseline",
+          "pass_at_1": 0.6454921960830688,
+          "hard_pass_at_1": 0.6206353306770325,
+          "unconstrained_pass_at_1": 0.6454921960830688,
           "operating_point_ok": 1.0
         },
         "humanline_clip_only": {
           "type": "proposed",
-          "pass_at_1": 0.6637499928474426,
-          "hard_pass_at_1": 0.6484785079956055,
-          "unconstrained_pass_at_1": 0.6637499928474426,
+          "pass_at_1": 0.6553749889135361,
+          "hard_pass_at_1": 0.6245569586753845,
+          "unconstrained_pass_at_1": 0.6553749889135361,
           "operating_point_ok": 1.0
         },
         "humanline_grpo": {
           "type": "proposed",
-          "pass_at_1": 0.6827499866485596,
-          "hard_pass_at_1": 0.6280167698860168,
-          "unconstrained_pass_at_1": 0.6827499866485596,
+          "pass_at_1": 0.6616562455892563,
+          "hard_pass_at_1": 0.6197820901870728,
+          "unconstrained_pass_at_1": 0.6616562455892563,
           "operating_point_ok": 1.0
         },
         "humanline_sync_only": {
           "type": "proposed",
-          "pass_at_1": 0.6552500128746033,
-          "hard_pass_at_1": 0.6169989705085754,
-          "unconstrained_pass_at_1": 0.6552500128746033,
+          "pass_at_1": 0.6548203155398369,
+          "hard_pass_at_1": 0.6225223168730736,
+          "unconstrained_pass_at_1": 0.6548203155398369,
           "operating_point_ok": 1.0
         },
         "online_grpo": {
           "type": "baseline",
           "pass_at_1": 0.0,
           "hard_pass_at_1": 0.0,
-          "unconstrained_pass_at_1": 0.7667499780654907,
+          "unconstrained_pass_at_1": 0.7599140629172325,
           "operating_point_ok": 0.0
-        },
-        "grpo": {
-          "type": "baseline",
-          "pass_at_1": 0.6682500243186951,
-          "hard_pass_at_1": 0.6479538083076477,
-          "unconstrained_pass_at_1": 0.6682500243186951,
-          "operating_point_ok": 1.0
         }
       },
-      "notes": "Scaled setup: three-digit addition with a 0.6M-parameter transformer instead of MATH500 with Qwen2.5-1.5B, 512 updates instead of 1600. The paper's numbers are on a different task and scale and are kept under _paper_reported only. Results rows are the seed-7 reference runs scored by eval/test/evaluate.py; online_grpo is the fresh-sampling comparator, scored as failed because it samples every update (its accuracy is in unconstrained_pass_at_1).",
+      "notes": "Scaled setup: three-digit addition with a 0.6M-parameter transformer instead of MATH500 with Qwen2.5-1.5B, 512 updates instead of 1600. The paper's numbers are on a different task and scale and are kept under _paper_reported only. Results rows are the reference runs (seeds 7-14) scored by eval/test/evaluate.py on its 16,000 hidden prompts; base_policy is the evaluator-owned starting policy (one evaluation); online_grpo is the fresh-sampling comparator, scored as failed because it samples every update (its accuracy is in unconstrained_pass_at_1).",
       "_paper_reported": {
         "source": "Section 5.2.2 and Figure 6: Qwen2.5-1.5B-Instruct aligned on the MATH500 training set, evaluated on MATH500 test after 1600 steps",
         "online_grpo_pass_at_1": 0.593,
@@ -81,76 +81,76 @@
       }
     },
     "offline": {
-      "description": "Post-training from verifiable feedback with a single sampling round drawn from the starting policy and no further sampling: 512 updates, at most 131,072 generated completions, starting from the fixed base policy.",
+      "description": "Post-training from verifiable feedback with a single sampling round drawn from the starting policy and no further sampling: per training seed 512 updates, at most 131,072 generated completions, starting from the fixed base policy; scored as the mean over training seeds 7-14.",
       "weight": 0.5,
       "primary_metric": "pass_at_1",
       "metrics": {
         "pass_at_1": {
           "higher_is_better": true,
           "coefficient": 1.0,
-          "description": "Exact-match accuracy of the evaluator's own greedy decoding of the submitted policy on the hidden test prompts. Set to 0 when the run violates the experiment's fixed operating point or cannot be evaluated."
+          "description": "Exact-match accuracy of the evaluator's own greedy decoding of the submitted policy on the hidden test prompts. Mean over the eight required training seeds 7-14 (one run per seed); a seed with no usable run (missing, unevaluable, or a copy of another seed's policy) counts 0. Set to 0 when any run of the method violates the experiment's fixed operating point or declares an impossible value."
         },
         "hard_pass_at_1": {
           "higher_is_better": true,
           "coefficient": 0.5,
-          "description": "Same accuracy restricted to hidden prompts whose addition needs at least two carries (about half of the prompts, the harder half). Set to 0 on a failed run."
+          "description": "Same accuracy restricted to hidden prompts whose addition needs at least two carries (about half of the prompts, the harder half), same seed rule. Set to 0 on a failed row."
         },
         "unconstrained_pass_at_1": {
           "higher_is_better": true,
           "coefficient": 0.0,
-          "description": "Diagnostic only: accuracy ignoring the operating-point gate (e.g. the online comparator's accuracy). Never ranked, so exceeding the sampling budget cannot pay."
+          "description": "Diagnostic only: seed-mean accuracy ignoring the operating-point gate (e.g. the online comparator's accuracy). Never ranked, so exceeding the sampling budget cannot pay."
         },
         "operating_point_ok": {
           "higher_is_better": true,
           "coefficient": 0.0,
-          "description": "Constraint gate: 1 if the declared training schedule fits the experiment's fixed budget (sampling rounds, refresh interval, generated completions, optimizer updates), else 0. A 0 zeroes the scored metrics."
+          "description": "Constraint gate: 1 if every run's declared training schedule fits the experiment's fixed budget (sampling rounds, refresh interval, generated completions, optimizer updates), else 0. A 0 zeroes the scored metrics."
         }
       },
       "results": {
         "base_policy": {
           "type": "baseline",
-          "pass_at_1": 0.3577499985694885,
-          "hard_pass_at_1": 0.354144811630249,
-          "unconstrained_pass_at_1": 0.3577499985694885,
-          "operating_point_ok": 1.0
-        },
-        "humanline_clip_only": {
-          "type": "proposed",
-          "pass_at_1": 0.4724999964237213,
-          "hard_pass_at_1": 0.46694648265838623,
-          "unconstrained_pass_at_1": 0.4724999964237213,
-          "operating_point_ok": 1.0
-        },
-        "humanline_grpo": {
-          "type": "proposed",
-          "pass_at_1": 0.590499997138977,
-          "hard_pass_at_1": 0.6002098917961121,
-          "unconstrained_pass_at_1": 0.590499997138977,
-          "operating_point_ok": 1.0
-        },
-        "humanline_sync_only": {
-          "type": "proposed",
-          "pass_at_1": 0.5755000114440918,
-          "hard_pass_at_1": 0.5860440731048584,
-          "unconstrained_pass_at_1": 0.5755000114440918,
+          "pass_at_1": 0.36031249165534973,
+          "hard_pass_at_1": 0.3563927412033081,
+          "unconstrained_pass_at_1": 0.36031249165534973,
           "operating_point_ok": 1.0
         },
         "grpo": {
           "type": "baseline",
-          "pass_at_1": 0.546500027179718,
-          "hard_pass_at_1": 0.5236096382141113,
-          "unconstrained_pass_at_1": 0.546500027179718,
+          "pass_at_1": 0.5461484417319298,
+          "hard_pass_at_1": 0.5448936745524406,
+          "unconstrained_pass_at_1": 0.5461484417319298,
+          "operating_point_ok": 1.0
+        },
+        "humanline_clip_only": {
+          "type": "proposed",
+          "pass_at_1": 0.4726171903312206,
+          "hard_pass_at_1": 0.4631136767566204,
+          "unconstrained_pass_at_1": 0.4726171903312206,
+          "operating_point_ok": 1.0
+        },
+        "humanline_grpo": {
+          "type": "proposed",
+          "pass_at_1": 0.5575234368443489,
+          "hard_pass_at_1": 0.5569867491722107,
+          "unconstrained_pass_at_1": 0.5575234368443489,
+          "operating_point_ok": 1.0
+        },
+        "humanline_sync_only": {
+          "type": "proposed",
+          "pass_at_1": 0.5568046942353249,
+          "hard_pass_at_1": 0.5483722761273384,
+          "unconstrained_pass_at_1": 0.5568046942353249,
           "operating_point_ok": 1.0
         },
         "online_grpo": {
           "type": "baseline",
           "pass_at_1": 0.0,
           "hard_pass_at_1": 0.0,
-          "unconstrained_pass_at_1": 0.7667499780654907,
+          "unconstrained_pass_at_1": 0.7599140629172325,
           "operating_point_ok": 0.0
         }
       },
-      "notes": "Scaled setup as in stale64. The paper reports offline GRPO only for instruction following (AlpacaEval2 win rates, kept under _paper_reported); this experiment applies the paper's offline GRPO protocol (one pool, fixed reference, epsilon 0.5) to the gym's verifiable task. online_grpo is the same fresh-sampling comparator, scored as failed here.",
+      "notes": "Scaled setup as in stale64. The paper reports offline GRPO only for instruction following (AlpacaEval2 win rates, kept under _paper_reported); this experiment applies the paper's offline GRPO protocol (one pool, fixed reference, epsilon 0.5) to the gym's verifiable task. Results rows are the reference runs (seeds 7-14); online_grpo is the same fresh-sampling comparator, scored as failed here.",
       "_paper_reported": {
         "source": "Table 3 (instruction following, Llama3-8B-Instruct, AlpacaEval2 length-controlled win rate); the paper runs offline GRPO only in this setting",
         "offline_grpo_lc_winrate": 15.52,

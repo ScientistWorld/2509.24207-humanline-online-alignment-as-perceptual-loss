@@ -1,0 +1,156 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "test",
+      "evaluated_prompts": 16000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.36031249165534973,
+          "hard_pass_at_1": 0.3563927412033081,
+          "unconstrained_pass_at_1": 0.36031249165534973,
+          "operating_point_ok": 1.0
+        },
+        "constant_zero_training": {
+          "pass_at_1": 0.00014062499394640326,
+          "hard_pass_at_1": 0.00027894461527466774,
+          "unconstrained_pass_at_1": 0.00014062499394640326,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "test",
+      "evaluated_prompts": 16000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.36031249165534973,
+          "hard_pass_at_1": 0.3563927412033081,
+          "unconstrained_pass_at_1": 0.36031249165534973,
+          "operating_point_ok": 1.0
+        },
+        "constant_zero_training": {
+          "pass_at_1": 0.00014062499394640326,
+          "hard_pass_at_1": 0.00027894461527466774,
+          "unconstrained_pass_at_1": 0.00014062499394640326,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_per_seed": {
+    "stale64": {
+      "constant_zero_training": {
+        "7": {
+          "pass_at_1": 0.0011249999515712261,
+          "hard_pass_at_1": 0.002231556922197342,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "9": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "10": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "11": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "12": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "13": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "14": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        }
+      }
+    },
+    "offline": {
+      "constant_zero_training": {
+        "7": {
+          "pass_at_1": 0.0011249999515712261,
+          "hard_pass_at_1": 0.002231556922197342,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "9": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "10": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "11": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "12": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "13": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        },
+        "14": {
+          "pass_at_1": 0.0,
+          "hard_pass_at_1": 0.0,
+          "note": "copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "offline/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "stale64/constant_zero_training": "1/8 seeds scored; seed 8: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 9: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 10: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 11: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 12: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 13: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 14: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0",
+    "offline/constant_zero_training": "1/8 seeds scored; seed 8: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 9: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 10: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 11: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 12: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 13: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0; seed 14: copy of seed 7: identical outputs on 1.000 of the 15982 prompts where either run errs; scored 0"
+  }
+}

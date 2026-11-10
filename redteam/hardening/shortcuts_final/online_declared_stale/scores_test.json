@@ -1,0 +1,156 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "test",
+      "evaluated_prompts": 16000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.36031249165534973,
+          "hard_pass_at_1": 0.3563927412033081,
+          "unconstrained_pass_at_1": 0.36031249165534973,
+          "operating_point_ok": 1.0
+        },
+        "online_declared_stale": {
+          "pass_at_1": 0.7599140629172325,
+          "hard_pass_at_1": 0.7253380194306374,
+          "unconstrained_pass_at_1": 0.7599140629172325,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "test",
+      "evaluated_prompts": 16000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.36031249165534973,
+          "hard_pass_at_1": 0.3563927412033081,
+          "unconstrained_pass_at_1": 0.36031249165534973,
+          "operating_point_ok": 1.0
+        },
+        "online_declared_stale": {
+          "pass_at_1": 0.7599140629172325,
+          "hard_pass_at_1": 0.7253380194306374,
+          "unconstrained_pass_at_1": 0.7599140629172325,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_per_seed": {
+    "stale64": {
+      "online_declared_stale": {
+        "7": {
+          "pass_at_1": 0.7596874833106995,
+          "hard_pass_at_1": 0.6850879788398743,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.8004375100135803,
+          "hard_pass_at_1": 0.789183497428894,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.7153750061988831,
+          "hard_pass_at_1": 0.6735363602638245,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.8029375076293945,
+          "hard_pass_at_1": 0.7648988962173462,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.7556874752044678,
+          "hard_pass_at_1": 0.7074035406112671,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.7034375071525574,
+          "hard_pass_at_1": 0.6881071329116821,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.7841874957084656,
+          "hard_pass_at_1": 0.7423208355903625,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.757562518119812,
+          "hard_pass_at_1": 0.7521659135818481,
+          "note": "ok"
+        }
+      }
+    },
+    "offline": {
+      "online_declared_stale": {
+        "7": {
+          "pass_at_1": 0.7596874833106995,
+          "hard_pass_at_1": 0.6850879788398743,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.8004375100135803,
+          "hard_pass_at_1": 0.789183497428894,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.7153750061988831,
+          "hard_pass_at_1": 0.6735363602638245,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.8029375076293945,
+          "hard_pass_at_1": 0.7648988962173462,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.7556874752044678,
+          "hard_pass_at_1": 0.7074035406112671,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.7034375071525574,
+          "hard_pass_at_1": 0.6881071329116821,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.7841874957084656,
+          "hard_pass_at_1": 0.7423208355903625,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.757562518119812,
+          "hard_pass_at_1": 0.7521659135818481,
+          "note": "ok"
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "offline/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "stale64/online_declared_stale": "ok (8/8 seeds scored)",
+    "offline/online_declared_stale": "ok (8/8 seeds scored)"
+  }
+}

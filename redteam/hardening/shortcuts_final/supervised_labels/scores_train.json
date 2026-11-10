@@ -1,0 +1,156 @@
+{
+  "experiments": {
+    "stale64": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "supervised_labels": {
+          "pass_at_1": 0.9959374964237213,
+          "hard_pass_at_1": 0.993921771645546,
+          "unconstrained_pass_at_1": 0.9959374964237213,
+          "operating_point_ok": 1.0
+        }
+      }
+    },
+    "offline": {
+      "slice": "train",
+      "evaluated_prompts": 2000,
+      "required_seeds": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "results": {
+        "base_policy": {
+          "pass_at_1": 0.33500000834465027,
+          "hard_pass_at_1": 0.3234672248363495,
+          "unconstrained_pass_at_1": 0.33500000834465027,
+          "operating_point_ok": 1.0
+        },
+        "supervised_labels": {
+          "pass_at_1": 0.9959374964237213,
+          "hard_pass_at_1": 0.993921771645546,
+          "unconstrained_pass_at_1": 0.9959374964237213,
+          "operating_point_ok": 1.0
+        }
+      }
+    }
+  },
+  "_per_seed": {
+    "stale64": {
+      "supervised_labels": {
+        "7": {
+          "pass_at_1": 0.9959999918937683,
+          "hard_pass_at_1": 0.9947145581245422,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.9929999709129333,
+          "hard_pass_at_1": 0.9862579107284546,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.9975000023841858,
+          "hard_pass_at_1": 0.9989429116249084,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.9990000128746033,
+          "hard_pass_at_1": 1.0,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.9959999918937683,
+          "hard_pass_at_1": 0.9957716464996338,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.9965000152587891,
+          "hard_pass_at_1": 0.9936575293540955,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.9944999814033508,
+          "hard_pass_at_1": 0.9904862642288208,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.9950000047683716,
+          "hard_pass_at_1": 0.9915433526039124,
+          "note": "ok"
+        }
+      }
+    },
+    "offline": {
+      "supervised_labels": {
+        "7": {
+          "pass_at_1": 0.9959999918937683,
+          "hard_pass_at_1": 0.9947145581245422,
+          "note": "ok"
+        },
+        "8": {
+          "pass_at_1": 0.9929999709129333,
+          "hard_pass_at_1": 0.9862579107284546,
+          "note": "ok"
+        },
+        "9": {
+          "pass_at_1": 0.9975000023841858,
+          "hard_pass_at_1": 0.9989429116249084,
+          "note": "ok"
+        },
+        "10": {
+          "pass_at_1": 0.9990000128746033,
+          "hard_pass_at_1": 1.0,
+          "note": "ok"
+        },
+        "11": {
+          "pass_at_1": 0.9959999918937683,
+          "hard_pass_at_1": 0.9957716464996338,
+          "note": "ok"
+        },
+        "12": {
+          "pass_at_1": 0.9965000152587891,
+          "hard_pass_at_1": 0.9936575293540955,
+          "note": "ok"
+        },
+        "13": {
+          "pass_at_1": 0.9944999814033508,
+          "hard_pass_at_1": 0.9904862642288208,
+          "note": "ok"
+        },
+        "14": {
+          "pass_at_1": 0.9950000047683716,
+          "hard_pass_at_1": 0.9915433526039124,
+          "note": "ok"
+        }
+      }
+    }
+  },
+  "_status": {
+    "stale64/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "offline/base_policy": "ok (evaluator-owned starting policy, one evaluation)",
+    "stale64/supervised_labels": "ok (8/8 seeds scored)",
+    "offline/supervised_labels": "ok (8/8 seeds scored)"
+  }
+}
