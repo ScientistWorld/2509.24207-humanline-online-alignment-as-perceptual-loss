@@ -5,10 +5,18 @@ this evaluator loads the run's ``policy.pt`` into its own copy of the fixed
 policy architecture, runs greedy decoding itself on held-out prompts that only
 this directory holds, and scores exact-match accuracy.  Nothing the method
 wrote is trusted as a score: run.json is read only for the experiment name,
-the method name, and the declared operating point, which can only fail a run.
-Every method found is scored in every experiment (a missing experiment is a
-failed row), and several runs declaring one (experiment, method) score the
-worst of them.
+the method name, the training seed and the declared operating point, which can
+only fail a run.
+
+Seeds.  Training a 0.6M-parameter policy with RL is noisy from seed to seed,
+so a method is scored over a fixed set of training seeds (``SEEDS``): each
+(experiment, method) row is the mean over those seeds, and a seed with no
+usable run contributes 0.  Several runs declaring the same seed score the
+worst of them; runs declaring other seeds are ignored; a run whose greedy
+outputs repeat an earlier seed's (a copied or near-copied policy) contributes
+0.  Every method found is scored in every experiment (a missing experiment is
+a failed row).  If any submitted run of a method declares a schedule outside
+the experiment's operating point, or an impossible value, the whole row fails.
 
 Self-contained on purpose: no imports from data/, method/ or eval/train/.
 """
@@ -17,6 +25,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import json
 import math
 import re
@@ -36,13 +45,16 @@ BASE_POLICY = WORKSPACE / "data" / "base_policy.pt"
 DEFAULT_OUTPUT = WORKSPACE / "scoring" / "scores_test.json"
 BASE_ROW = "base_policy"
 
-# Fixed operating points.  Budgets are per run.
+# Fixed operating points.  Budgets are per run (one run = one training seed).
 EXPERIMENTS = {
     # sampling at most every 64 optimizer updates (64x less often than online)
     "stale64": {"max_generated": 131072, "max_updates": 512, "max_rounds": 8, "min_refresh": 64},
     # one sampling round drawn from the starting policy, then no new samples
     "offline": {"max_generated": 131072, "max_updates": 512, "max_rounds": 1, "min_refresh": 1},
 }
+SEEDS = (7, 8, 9, 10, 11, 12, 13, 14)  # required training seeds per (experiment, method)
+COPY_AGREEMENT = 0.9   # identical outputs on >= 90% of the prompts where either run errs ...
+COPY_MIN_ERRORS = 50   # ... counted over at least this many prompts
 HARD_MIN_CARRIES = 2
 METHOD_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.\-]{0,79}$")
 
@@ -83,7 +95,8 @@ class _Block(nn.Module):
         self.fc1 = nn.Linear(d_model, d_ff)
         self.fc2 = nn.Linear(d_ff, d_model)
 
-    def forward(self, x: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+    def step(self, x: torch.Tensor, past, start: int, mask: torch.Tensor):
+        """Causal self-attention over cached keys/values plus the new positions."""
         bsz, seq, dim = x.shape
         h = self.ln1(x)
         q, k, v = self.qkv(h).split(dim, dim=-1)
@@ -91,12 +104,16 @@ class _Block(nn.Module):
         q = q.view(bsz, seq, self.n_heads, dh).transpose(1, 2)
         k = k.view(bsz, seq, self.n_heads, dh).transpose(1, 2)
         v = v.view(bsz, seq, self.n_heads, dh).transpose(1, 2)
+        if past is not None:
+            k = torch.cat([past[0], k], dim=2)
+            v = torch.cat([past[1], v], dim=2)
+        total = k.shape[2]
         att = (q @ k.transpose(-2, -1)) / math.sqrt(dh)
-        att = att.masked_fill(~mask[:seq, :seq], float("-inf"))
+        att = att.masked_fill(~mask[start : start + seq, :total], float("-inf"))
         att = torch.softmax(att, dim=-1)
         y = (att @ v).transpose(1, 2).reshape(bsz, seq, dim)
         x = x + self.proj(y)
-        return x + self.fc2(F.gelu(self.fc1(self.ln2(x))))
+        return x + self.fc2(F.gelu(self.fc1(self.ln2(x)))), (k, v)
 
 
 class _Policy(nn.Module):
@@ -110,14 +127,35 @@ class _Policy(nn.Module):
         self.register_buffer("causal_mask", torch.tril(torch.ones(max_len, max_len, dtype=torch.bool)), persistent=False)
 
     def forward(self, ids: torch.Tensor) -> torch.Tensor:
-        x = self.tok(ids) + self.pos(torch.arange(ids.shape[1]))[None]
+        """Full (uncached) forward pass: logits for every position."""
+        x = self.tok(ids) + self.pos(torch.arange(ids.shape[1], device=ids.device))[None]
         for block in self.blocks:
-            x = block(x, self.causal_mask)
+            x, _ = block.step(x, None, 0, self.causal_mask)
         return self.head(self.ln_f(x))
 
+    @torch.no_grad()
+    def greedy(self, prompts: torch.Tensor) -> torch.Tensor:
+        """Greedy decoding of ANSWER_DIGITS tokens with a key/value cache."""
+        plen = prompts.shape[1]
+        x = self.tok(prompts) + self.pos(torch.arange(plen, device=prompts.device))[None]
+        caches = []
+        for block in self.blocks:
+            x, kv = block.step(x, None, 0, self.causal_mask)
+            caches.append(kv)
+        nxt = self.head(self.ln_f(x[:, -1])).argmax(dim=-1)
+        out = [nxt]
+        for t in range(1, ANSWER_DIGITS):
+            pos = plen + t - 1
+            x = self.tok(nxt[:, None]) + self.pos.weight[pos][None, None]
+            for j, block in enumerate(self.blocks):
+                x, caches[j] = block.step(x, caches[j], pos, self.causal_mask)
+            nxt = self.head(self.ln_f(x[:, -1])).argmax(dim=-1)
+            out.append(nxt)
+        return torch.stack(out, dim=1)
 
-def load_checkpoint(path: Path) -> _Policy:
-    state = torch.load(path, map_location="cpu", weights_only=True)
+
+def load_checkpoint(data: bytes) -> _Policy:
+    state = torch.load(io.BytesIO(data), map_location="cpu", weights_only=True)
     if not isinstance(state, dict) or not all(isinstance(v, torch.Tensor) for v in state.values()):
         raise ValueError("policy.pt is not a plain state_dict of tensors")
     model = _Policy()
@@ -134,14 +172,23 @@ def load_checkpoint(path: Path) -> _Policy:
 
 
 @torch.no_grad()
-def greedy_correct(model: _Policy, prompts: torch.Tensor, answers: torch.Tensor, chunk: int = 1000) -> torch.Tensor:
+def greedy_outputs(model: _Policy, prompts: torch.Tensor, device: torch.device, chunk: int = 4096) -> torch.Tensor:
+    """Greedy answer tokens for every prompt, (P, ANSWER_DIGITS) uint8 on the CPU."""
+    model = model.to(device)
+    out = [model.greedy(prompts[i : i + chunk].to(device)).to("cpu", torch.uint8) for i in range(0, len(prompts), chunk)]
+    return torch.cat(out)
+
+
+@torch.no_grad()
+def greedy_outputs_uncached(model: _Policy, prompts: torch.Tensor, device: torch.device, chunk: int = 4096) -> torch.Tensor:
+    """Reference decoding without the cache (used only by --verify-decode)."""
+    model = model.to(device)
     out = []
     for i in range(0, len(prompts), chunk):
-        ids = prompts[i : i + chunk]
+        ids = prompts[i : i + chunk].to(device)
         for _ in range(ANSWER_DIGITS):
-            nxt = model(ids)[:, -1, :].argmax(dim=-1, keepdim=True)
-            ids = torch.cat([ids, nxt], dim=1)
-        out.append((ids[:, PROMPT_LEN:] == answers[i : i + chunk]).all(dim=1))
+            ids = torch.cat([ids, model(ids)[:, -1, :].argmax(dim=-1, keepdim=True)], dim=1)
+        out.append(ids[:, PROMPT_LEN:].to("cpu", torch.uint8))
     return torch.cat(out)
 
 
@@ -177,24 +224,23 @@ def operating_point_violation(meta: dict, experiment: str) -> str | None:
     return None
 
 
+def copy_agreement(out_a: torch.Tensor, ok_a: torch.Tensor, out_b: torch.Tensor, ok_b: torch.Tensor):
+    """Share of identical outputs among prompts where either run errs, and that prompt count."""
+    either_wrong = ~(ok_a & ok_b)
+    n = int(either_wrong.sum())
+    if n == 0:
+        return 0.0, 0
+    same = ((out_a == out_b).all(dim=1) & either_wrong).sum()
+    return float(same) / n, n
+
+
 # ---------------------------------------------------------------- main ----
 def load_prompts():
     pairs = json.loads(PROMPTS_FILE.read_text())
     prompts = torch.tensor([encode_prompt(a, b) for a, b in pairs], dtype=torch.long)
-    answers = torch.tensor([encode_answer(a, b) for a, b in pairs], dtype=torch.long)
+    answers = torch.tensor([encode_answer(a, b) for a, b in pairs], dtype=torch.uint8)
     hard = torch.tensor([carries(a, b) >= HARD_MIN_CARRIES for a, b in pairs], dtype=torch.bool)
     return prompts, answers, hard
-
-
-def metrics_from(correct: torch.Tensor, hard: torch.Tensor, ok: bool) -> dict[str, float]:
-    acc = float(correct.float().mean())
-    hard_acc = float(correct[hard].float().mean())
-    return {
-        "pass_at_1": acc if ok else 0.0,
-        "hard_pass_at_1": hard_acc if ok else 0.0,
-        "unconstrained_pass_at_1": acc,
-        "operating_point_ok": 1.0 if ok else 0.0,
-    }
 
 
 FAILED = {"pass_at_1": 0.0, "hard_pass_at_1": 0.0, "unconstrained_pass_at_1": 0.0, "operating_point_ok": 0.0}
@@ -204,93 +250,180 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--runs-root", default=str(WORKSPACE / "checkpoints"))
     parser.add_argument("--output", default=str(DEFAULT_OUTPUT))
+    parser.add_argument("--device", default="auto", choices=["auto", "cpu", "cuda"])
     parser.add_argument("--dump-correct", default="", help="optional directory for per-prompt correctness vectors")
+    parser.add_argument("--verify-decode", type=int, default=0,
+                        help="check cached against uncached decoding on the first N prompts of every policy")
     args = parser.parse_args()
 
     torch.set_grad_enabled(False)
+    torch.backends.cuda.matmul.allow_tf32 = False
+    torch.backends.cudnn.allow_tf32 = False
+    if args.device == "auto":
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    else:
+        device = torch.device(args.device)
     prompts, answers, hard = load_prompts()
-    results: dict[str, dict[str, dict[str, float]]] = {name: {} for name in EXPERIMENTS}
+    n_prompts = len(prompts)
     status: dict[str, str] = {}
+    results: dict[str, dict[str, dict[str, float]]] = {name: {} for name in EXPERIMENTS}
+    per_seed: dict[str, dict[str, dict[str, dict]]] = {name: {} for name in EXPERIMENTS}
     dump_dir = Path(args.dump_correct) if args.dump_correct else None
     if dump_dir:
         dump_dir.mkdir(parents=True, exist_ok=True)
+    decode_mismatch = {"prompts_checked": 0, "mismatched_outputs": 0}
 
-    def record(experiment: str, method: str, row: dict, correct: torch.Tensor | None, note: str) -> None:
-        results[experiment][method] = row
-        status[f"{experiment}/{method}"] = note
-        if dump_dir is not None and correct is not None:
-            (dump_dir / f"{experiment}__{method}.json").write_text(json.dumps(correct.int().tolist()))
+    cache: dict[str, tuple[torch.Tensor, torch.Tensor]] = {}
 
-    base_correct = None
+    def evaluate_policy(data: bytes) -> tuple[torch.Tensor, torch.Tensor]:
+        sha = hashlib.sha256(data).hexdigest()
+        if sha not in cache:
+            model = load_checkpoint(data)
+            outputs = greedy_outputs(model, prompts, device)
+            if args.verify_decode:
+                m = min(args.verify_decode, n_prompts)
+                ref = greedy_outputs_uncached(model, prompts[:m], device)
+                decode_mismatch["prompts_checked"] += m
+                decode_mismatch["mismatched_outputs"] += int((ref != outputs[:m]).any(dim=1).sum())
+            cache[sha] = (outputs, (outputs == answers).all(dim=1))
+        return cache[sha]
+
+    def accuracy(correct: torch.Tensor) -> tuple[float, float]:
+        return float(correct.float().mean()), float(correct[hard].float().mean())
+
+    # evaluator-owned starting policy (the no-post-training baseline row)
     if BASE_HASH_FILE.is_file() and BASE_POLICY.is_file():
-        pinned = BASE_HASH_FILE.read_text().strip()
-        if hashlib.sha256(BASE_POLICY.read_bytes()).hexdigest() == pinned:
-            base_correct = greedy_correct(load_checkpoint(BASE_POLICY), prompts, answers)
+        data = BASE_POLICY.read_bytes()
+        if hashlib.sha256(data).hexdigest() == BASE_HASH_FILE.read_text().strip():
+            _, base_correct = evaluate_policy(data)
+            acc, hard_acc = accuracy(base_correct)
+            for experiment in EXPERIMENTS:
+                results[experiment][BASE_ROW] = {"pass_at_1": acc, "hard_pass_at_1": hard_acc,
+                                                 "unconstrained_pass_at_1": acc, "operating_point_ok": 1.0}
+                status[f"{experiment}/{BASE_ROW}"] = "ok (evaluator-owned starting policy, one evaluation)"
+                if dump_dir is not None:
+                    (dump_dir / f"{experiment}__{BASE_ROW}.json").write_text(
+                        json.dumps({"mean": base_correct.int().tolist()}))
         else:
             status["_base_policy"] = "data/base_policy.pt does not match the pinned hash; base row omitted"
-    for experiment in EXPERIMENTS:
-        if base_correct is not None:
-            record(experiment, BASE_ROW, metrics_from(base_correct, hard, True), base_correct,
-                   "ok (evaluator-owned starting policy)")
 
+    # ---- collect submitted runs: method -> experiment -> seed -> [entries]
     runs_root = Path(args.runs_root)
     run_files = sorted(runs_root.rglob("run.json")) if runs_root.is_dir() else []
-    # (experiment, method) -> [(row, correctness, note)] for every submitted run
-    submitted: dict[tuple[str, str], list[tuple[dict, torch.Tensor | None, str]]] = {}
+    methods: set[str] = set()
+    submitted: dict[str, dict[str, dict[int, list[dict]]]] = {}
+    violations: dict[tuple[str, str], list[str]] = {}
     for run_file in run_files:
         try:
             meta = json.loads(run_file.read_text())
-            experiment = meta.get("experiment")
-            method = meta.get("method")
+            if not isinstance(meta, dict):
+                raise ValueError("not a JSON object")
         except Exception as exc:  # unreadable run.json: nothing to attribute it to
             status[str(run_file)] = f"skipped: unreadable run.json ({exc})"
             continue
-        if experiment not in EXPERIMENTS or not isinstance(method, str) or not METHOD_RE.match(method):
-            status[str(run_file)] = f"skipped: unknown experiment {experiment!r} or invalid method name {method!r}"
+        method = meta.get("method")
+        experiment = meta.get("experiment")
+        if not isinstance(method, str) or not METHOD_RE.match(method):
+            status[str(run_file)] = f"skipped: invalid method name {method!r}"
             continue
         if method == BASE_ROW:
-            method = f"{method}_submitted"
-        entries = submitted.setdefault((experiment, method), [])
+            method = f"{BASE_ROW}_submitted"
+        methods.add(method)
+        if experiment not in EXPERIMENTS:
+            status[str(run_file)] = f"ignored: unknown experiment {experiment!r}"
+            continue
+        seed = meta.get("seed")
+        if isinstance(seed, bool) or not isinstance(seed, int) or seed not in SEEDS:
+            status[str(run_file)] = f"ignored: seed {seed!r} is not one of the required seeds {list(SEEDS)}"
+            continue
         try:
             violation = operating_point_violation(meta, experiment)
         except ValueError as exc:
-            entries.append((dict(FAILED), None, f"failed: {exc}"))
-            continue
+            violation = str(exc)
+        if violation is not None:
+            violations.setdefault((experiment, method), []).append(f"seed {seed}: {violation}")
+        entry = {"file": str(run_file), "violation": violation}
         try:
-            model = load_checkpoint(run_file.parent / "policy.pt")
-            correct = greedy_correct(model, prompts, answers)
+            entry["outputs"], entry["correct"] = evaluate_policy((run_file.parent / "policy.pt").read_bytes())
         except Exception as exc:
-            entries.append((dict(FAILED), None, f"failed: cannot evaluate policy.pt ({exc})"))
-            continue
-        note = "ok" if violation is None else f"failed operating point: {violation}"
-        entries.append((metrics_from(correct, hard, violation is None), correct, note))
+            entry["error"] = f"cannot evaluate policy.pt ({exc})"
+        submitted.setdefault(method, {}).setdefault(experiment, {}).setdefault(seed, []).append(entry)
 
-    # Every submitted method is scored in every experiment: a method with no
-    # run in an experiment gets the failed row there.  Several runs declaring
-    # the same (experiment, method) are not a choice of the best one: the
-    # worst of them is scored.
-    for method in sorted({m for _, m in submitted}):
+    # ---- aggregate: every method in every experiment, mean over the required seeds
+    for method in sorted(methods):
         for experiment in EXPERIMENTS:
-            entries = submitted.get((experiment, method))
-            if not entries:
-                record(experiment, method, dict(FAILED), None, "failed: no run submitted for this experiment")
-                continue
-            row, correct, note = min(entries, key=lambda e: (e[0]["pass_at_1"], e[0]["hard_pass_at_1"]))
-            if len(entries) > 1:
-                note = f"{note} (worst of {len(entries)} runs declaring this method)"
-            record(experiment, method, row, correct, note)
+            by_seed = submitted.get(method, {}).get(experiment, {})
+            kept: list[tuple[int, torch.Tensor, torch.Tensor]] = []
+            seed_rows: dict[str, dict] = {}
+            mean_correct = torch.zeros(n_prompts, dtype=torch.float64)
+            per_seed_correct = {}
+            for seed in SEEDS:
+                entries = by_seed.get(seed, [])
+                row = {"pass_at_1": 0.0, "hard_pass_at_1": 0.0, "accuracy": 0.0}
+                if not entries:
+                    row["note"] = "missing: no run declares this seed"
+                elif any("error" in e for e in entries):
+                    row["note"] = next(e["error"] for e in entries if "error" in e)
+                else:
+                    worst = min(entries, key=lambda e: accuracy(e["correct"]))
+                    copy_of = None
+                    for seed_b, out_b, ok_b in kept:
+                        agree, n = copy_agreement(worst["outputs"], worst["correct"], out_b, ok_b)
+                        if n >= COPY_MIN_ERRORS and agree >= COPY_AGREEMENT:
+                            copy_of = (seed_b, agree, n)
+                            break
+                    if copy_of is not None:
+                        row["note"] = (f"copy of seed {copy_of[0]}: identical outputs on {copy_of[1]:.3f} of the "
+                                       f"{copy_of[2]} prompts where either run errs; scored 0")
+                    else:
+                        kept.append((seed, worst["outputs"], worst["correct"]))
+                        acc, hard_acc = accuracy(worst["correct"])
+                        row.update({"pass_at_1": acc, "hard_pass_at_1": hard_acc, "accuracy": acc})
+                        row["note"] = "ok" if len(entries) == 1 else f"ok (worst of {len(entries)} runs declaring this seed)"
+                        mean_correct += worst["correct"].double()
+                        per_seed_correct[str(seed)] = worst["correct"].int().tolist()
+                seed_rows[str(seed)] = row
+            mean_correct /= len(SEEDS)
+            unconstrained = sum(r["accuracy"] for r in seed_rows.values()) / len(SEEDS)
+            failed = violations.get((experiment, method))
+            if not by_seed:
+                results[experiment][method] = dict(FAILED)
+                status[f"{experiment}/{method}"] = "failed: no run submitted for this experiment"
+            elif failed:
+                results[experiment][method] = {**FAILED, "unconstrained_pass_at_1": unconstrained}
+                status[f"{experiment}/{method}"] = "failed operating point: " + "; ".join(failed[:3]) + (
+                    f" (+{len(failed) - 3} more)" if len(failed) > 3 else "")
+            else:
+                results[experiment][method] = {
+                    "pass_at_1": sum(r["pass_at_1"] for r in seed_rows.values()) / len(SEEDS),
+                    "hard_pass_at_1": sum(r["hard_pass_at_1"] for r in seed_rows.values()) / len(SEEDS),
+                    "unconstrained_pass_at_1": unconstrained,
+                    "operating_point_ok": 1.0,
+                }
+                scored = sum(1 for r in seed_rows.values() if r["note"].startswith("ok"))
+                problems = [f"seed {s}: {r['note']}" for s, r in seed_rows.items() if not r["note"].startswith("ok")]
+                status[f"{experiment}/{method}"] = (f"ok ({scored}/{len(SEEDS)} seeds scored)" if not problems else
+                                                    f"{scored}/{len(SEEDS)} seeds scored; " + "; ".join(problems))
+            per_seed[experiment][method] = {s: {k: r[k] for k in ("pass_at_1", "hard_pass_at_1", "note")}
+                                            for s, r in seed_rows.items()}
+            if dump_dir is not None:
+                (dump_dir / f"{experiment}__{method}.json").write_text(json.dumps(
+                    {"mean": [round(v, 4) for v in mean_correct.tolist()], "per_seed": per_seed_correct}))
 
     scores = {
         "experiments": {
-            name: {"slice": SLICE, "evaluated_prompts": int(len(prompts)), "results": rows}
+            name: {"slice": SLICE, "evaluated_prompts": int(n_prompts), "required_seeds": list(SEEDS), "results": rows}
             for name, rows in results.items()
         },
+        "_per_seed": per_seed,
         "_status": status,
     }
+    if args.verify_decode:
+        scores["_decode_check"] = {**decode_mismatch, "device": str(device)}
     out = Path(args.output)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(scores, indent=2) + "\n")
-    print(json.dumps(scores, indent=2))
+    print(json.dumps({"experiments": scores["experiments"], "_status": status}, indent=2))
 
 
 if __name__ == "__main__":

@@ -238,3 +238,7 @@ core.[0-9]*
 # Hardening harness run artifacts (weights, logs) are regenerable by the job.
 redteam/hardening/runs/
 redteam/hardening/shortcuts_runs/**/*.pt
+# Final hardening job: shortcut submissions (weights, prediction files) are rebuilt by the job;
+# their scores_*.json files are kept.
+redteam/hardening/shortcuts_final/*/stale64/
+redteam/hardening/shortcuts_final/*/offline/

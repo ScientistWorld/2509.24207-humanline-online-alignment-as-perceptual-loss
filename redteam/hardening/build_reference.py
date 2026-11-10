@@ -1,20 +1,30 @@
-"""Write scoring/reference.json from a scores_test.json (reference runs only)."""
-import json, sys
+"""Write scoring/reference.json from a scores_test.json holding the reference runs only."""
+import json
+import sys
 from pathlib import Path
 
 src = json.loads(Path(sys.argv[1]).read_text())["experiments"]
-alias = {"stale_grpo": "grpo", "offline_grpo": "grpo"}
 TYPES = {"humanline_grpo": "proposed", "humanline_sync_only": "proposed", "humanline_clip_only": "proposed",
          "grpo": "baseline", "online_grpo": "baseline", "base_policy": "baseline"}
+SEED_RULE = ("Mean over the eight required training seeds 7-14 (one run per seed); a seed with no usable run "
+             "(missing, unevaluable, or a copy of another seed's policy) counts 0.")
 METRICS = {
     "pass_at_1": {"higher_is_better": True, "coefficient": 1.0,
-                  "description": "Exact-match accuracy of the evaluator's own greedy decoding of the submitted policy on the hidden test prompts. Set to 0 when the run violates the experiment's fixed operating point or cannot be evaluated."},
+                  "description": "Exact-match accuracy of the evaluator's own greedy decoding of the submitted policy on "
+                                 "the hidden test prompts. " + SEED_RULE + " Set to 0 when any run of the method violates "
+                                 "the experiment's fixed operating point or declares an impossible value."},
     "hard_pass_at_1": {"higher_is_better": True, "coefficient": 0.5,
-                       "description": "Same accuracy restricted to hidden prompts whose addition needs at least two carries (about half of the prompts, the harder half). Set to 0 on a failed run."},
+                       "description": "Same accuracy restricted to hidden prompts whose addition needs at least two "
+                                      "carries (about half of the prompts, the harder half), same seed rule. Set to 0 "
+                                      "on a failed row."},
     "unconstrained_pass_at_1": {"higher_is_better": True, "coefficient": 0.0,
-                                "description": "Diagnostic only: accuracy ignoring the operating-point gate (e.g. the online comparator's accuracy). Never ranked, so exceeding the sampling budget cannot pay."},
+                                "description": "Diagnostic only: seed-mean accuracy ignoring the operating-point gate "
+                                               "(e.g. the online comparator's accuracy). Never ranked, so exceeding "
+                                               "the sampling budget cannot pay."},
     "operating_point_ok": {"higher_is_better": True, "coefficient": 0.0,
-                           "description": "Constraint gate: 1 if the declared training schedule fits the experiment's fixed budget (sampling rounds, refresh interval, generated completions, optimizer updates), else 0. A 0 zeroes the scored metrics."},
+                           "description": "Constraint gate: 1 if every run's declared training schedule fits the "
+                                          "experiment's fixed budget (sampling rounds, refresh interval, generated "
+                                          "completions, optimizer updates), else 0. A 0 zeroes the scored metrics."},
 }
 PAPER = {
     "stale64": {
@@ -36,22 +46,23 @@ PAPER = {
     },
 }
 DESC = {
-    "stale64": "Post-training from verifiable feedback when completions may only be sampled every 64 optimizer updates (64x less often than online): 512 updates, at most 8 sampling rounds, at most 131,072 generated completions, starting from the fixed base policy.",
-    "offline": "Post-training from verifiable feedback with a single sampling round drawn from the starting policy and no further sampling: 512 updates, at most 131,072 generated completions, starting from the fixed base policy.",
+    "stale64": "Post-training from verifiable feedback when completions may only be sampled every 64 optimizer updates (64x less often than online): per training seed 512 updates, at most 8 sampling rounds, at most 131,072 generated completions, starting from the fixed base policy; scored as the mean over training seeds 7-14.",
+    "offline": "Post-training from verifiable feedback with a single sampling round drawn from the starting policy and no further sampling: per training seed 512 updates, at most 131,072 generated completions, starting from the fixed base policy; scored as the mean over training seeds 7-14.",
 }
 NOTES = {
-    "stale64": "Scaled setup: three-digit addition with a 0.6M-parameter transformer instead of MATH500 with Qwen2.5-1.5B, 512 updates instead of 1600. The paper's numbers are on a different task and scale and are kept under _paper_reported only. Results rows are the seed-7 reference runs scored by eval/test/evaluate.py; online_grpo is the fresh-sampling comparator, scored as failed because it samples every update (its accuracy is in unconstrained_pass_at_1).",
-    "offline": "Scaled setup as in stale64. The paper reports offline GRPO only for instruction following (AlpacaEval2 win rates, kept under _paper_reported); this experiment applies the paper's offline GRPO protocol (one pool, fixed reference, epsilon 0.5) to the gym's verifiable task. online_grpo is the same fresh-sampling comparator, scored as failed here.",
+    "stale64": "Scaled setup: three-digit addition with a 0.6M-parameter transformer instead of MATH500 with Qwen2.5-1.5B, 512 updates instead of 1600. The paper's numbers are on a different task and scale and are kept under _paper_reported only. Results rows are the reference runs (seeds 7-14) scored by eval/test/evaluate.py on its 16,000 hidden prompts; base_policy is the evaluator-owned starting policy (one evaluation); online_grpo is the fresh-sampling comparator, scored as failed because it samples every update (its accuracy is in unconstrained_pass_at_1).",
+    "offline": "Scaled setup as in stale64. The paper reports offline GRPO only for instruction following (AlpacaEval2 win rates, kept under _paper_reported); this experiment applies the paper's offline GRPO protocol (one pool, fixed reference, epsilon 0.5) to the gym's verifiable task. Results rows are the reference runs (seeds 7-14); online_grpo is the same fresh-sampling comparator, scored as failed here.",
 }
 out = {"experiments": {}}
 for exp in ("stale64", "offline"):
     results = {}
     for m, r in src[exp]["results"].items():
-        name = alias.get(m, m)
-        results[name] = {"type": TYPES[name], **{k: r[k] for k in METRICS}}
+        if m not in TYPES:
+            raise SystemExit(f"unexpected method {m!r} in {sys.argv[1]}: build reference.json from the reference runs only")
+        results[m] = {"type": TYPES[m], **{k: r[k] for k in METRICS}}
     out["experiments"][exp] = {
         "description": DESC[exp], "weight": 0.5, "primary_metric": "pass_at_1",
         "metrics": METRICS, "results": results, "notes": NOTES[exp], "_paper_reported": PAPER[exp],
     }
 Path("scoring/reference.json").write_text(json.dumps(out, indent=2) + "\n")
-print(json.dumps({e: {m: r["pass_at_1"] for m, r in v["results"].items()} for e, v in out["experiments"].items()}, indent=1))
+print(json.dumps({e: {m: round(r["pass_at_1"], 4) for m, r in v["results"].items()} for e, v in out["experiments"].items()}, indent=1))

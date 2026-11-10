@@ -5,4 +5,4 @@ action: submit
 gpus: 1
 test: false
 milestone: core_claim_plus
-notes: "Final hardening job: retrain reference set from final scripts (baseline renamed grpo), score on 16k-prompt hidden test with missing-experiment/duplicate-run fixes, rescore saved variants, rebuild shortcut cases, analysis."
+notes: "Final hardening job: multi-seed (7-14) evaluators with copy detection + cached decoding; rerun reference set (80 runs) via reproduce.sh; 8-seed variants, 16 extra seeds per method for noise, rebuilt shortcuts (incl. seed-aggregation attacks) through the hidden test; analysis + reference.json."

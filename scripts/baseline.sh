@@ -1,5 +1,6 @@
 #!/bin/bash
-# Run the comparison baselines with the same GRPO code path, without humanline.
+# Run the comparison baselines with the same GRPO code path, without humanline,
+# for every required training seed (7-14).
 #
 #   grpo        (stale64): sample every 64 updates; the reference is the policy
 #               that generated the current round (the paper's 64x-stale GRPO).
@@ -11,24 +12,28 @@
 #
 # Learning rates were selected per method on the visible validation slice:
 #   grpo 1e-4 (both experiments), online_grpo 3e-4.
+# Writes checkpoints/<experiment>/<name>/seed<seed>/.
 # Usage: bash scripts/baseline.sh
 
 set -e
 cd /home/user
 
-SEED="${SEED:-7}"
+SEEDS="${SEEDS:-7 8 9 10 11 12 13 14}"
+PARALLEL="${PARALLEL:-4}"
 LR_STALE="${LR_STALE:-1e-4}"
 LR_OFFLINE="${LR_OFFLINE:-1e-4}"
 LR_ONLINE="${LR_ONLINE:-3e-4}"
 OUT="${OUTPUT_ROOT:-checkpoints}"
+source scripts/launch.sh
 
-python -m baseline.stale_grpo --name grpo --experiment stale64 --output-root "${OUT}" \
-  --refresh-interval 64 --train-steps 512 --seed "${SEED}" --lr "${LR_STALE}"
-
-python -m baseline.stale_grpo --name grpo --experiment offline --output-root "${OUT}" \
-  --refresh-interval 512 --train-steps 512 --grpo-epsilon 0.5 --seed "${SEED}" --lr "${LR_OFFLINE}"
-
-for EXP in stale64 offline; do
-  python -m baseline.stale_grpo --name online_grpo --experiment "${EXP}" --output-root "${OUT}" \
-    --refresh-interval 1 --train-steps 512 --seed "${SEED}" --lr "${LR_ONLINE}"
+for SEED in ${SEEDS}; do
+  launch "${OUT}/stale64/grpo/seed${SEED}" baseline.stale_grpo --name grpo --experiment stale64 \
+    --refresh-interval 64 --train-steps 512 --seed "${SEED}" --lr "${LR_STALE}"
+  launch "${OUT}/offline/grpo/seed${SEED}" baseline.stale_grpo --name grpo --experiment offline \
+    --refresh-interval 512 --train-steps 512 --grpo-epsilon 0.5 --seed "${SEED}" --lr "${LR_OFFLINE}"
+  for EXP in stale64 offline; do
+    launch "${OUT}/${EXP}/online_grpo/seed${SEED}" baseline.stale_grpo --name online_grpo --experiment "${EXP}" \
+      --refresh-interval 1 --train-steps 512 --seed "${SEED}" --lr "${LR_ONLINE}"
+  done
 done
+finish
